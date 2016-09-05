@@ -25,7 +25,7 @@ import com.docsflow.core.web.elements.TextInput;
 
 public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_RegistrationPage>
 {
-	private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Edit/";
+	private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/";
 	
 	public IncomingDocs_RegistrationPage(WebDriver driver) 
 	{
@@ -57,7 +57,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		
 		// Проверка недоступности кнопки сохранения и генерации номера
 		assertThat(save.getAttribute("disabled"), is(equalTo("true")));
-		assertThat(numGenerate.getAttribute("disabled"), is(equalTo("true")));
+		//assertThat(numGenerate.getAttribute("disabled"), is(equalTo("true")));
 		
 		// Определение ожидаемого номера
 		String index = expectedIndex_Define(sqlConnection);
@@ -89,7 +89,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		assertThat(docIndex.getAttribute("value"), is(equalTo(expectedIndex)));
 		
 		// Запись индекса в текстовую переменную
-		new CustomMethods().new WorkWith_TextFiles().file_Create("IncomingDoc_Index", expectedIndex);
+		new CustomMethods().new WorkWith_TextFiles().file_Create(TextFiles_Path + "IncomingDoc_Index", expectedIndex);
 	}
 	
 	private String expectedIndex_Define(Connection sqlConnection)
@@ -223,18 +223,18 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		String resolutionDate = new Elements().new Resolution_Elements().new Values().resolutionDate;
 		String author = new Elements().new Resolution_Elements().new Values().author;
 		String projectType = new Elements().new Resolution_Elements().new Values().projectType;
+		String deadlineDate = new Elements().new Resolution_Elements().new Values().deadlineDate;
 		//endregion
 		
 		// Определение ожидаемых значений
 		String[][] ExpectedValues = new String [1][];
 		ExpectedValues[0] = new String[] {"",
 										  "",
+										  projectType,
+										  author,
 										  resolutionDate, 
-										  resolution, 
-										  author, 
-								  		  "Департамент_2", 						//Надо будет изменить, добавив sql скриптом автора
-								  		  "Заступник директора департаменту",	//Надо будет изменить, добавив sql скриптом автора
-								  		  projectType};
+										  resolution, 										   
+										  deadlineDate};
 		
 		// Вытянуть последнее значения из грида
 		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
@@ -270,7 +270,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		new CustomMethods().elementExistenceCheck(numGenerate, false);
 		
 		// Проверка индекса и даты регистрации
-		assertThat(docIndex.getAttribute("value"), is(equalTo(new CustomMethods().new WorkWith_TextFiles().file_Read("IncomingDoc_Index"))));
+		assertThat(docIndex.getAttribute("value"), is(equalTo(new CustomMethods().new WorkWith_TextFiles().file_Read(TextFiles_Path + "IncomingDoc_Index.txt"))));
 		assertThat(regDate.getAttribute("value"), is(equalTo(new Elements().new Values().regDate)));
 		
 		// Проверка 'Select' полей
@@ -444,13 +444,13 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		private TextInput getAdditionsCount_Input() 	{ return new TextInput(driver, By.id("516")); }
 		
 		// 'Вид кореспондента'
-		private TextInput getCorrType_Input()   		{ return new TextInput(driver, By.id("517")); }
+		private TextInput getCorrType_Input()   		{ return new TextInput(driver, By.id("517_auto")); }
 		
 		// 'Корреспондент'
-		private TextInput getCorrespondent_Input()  	{ return new TextInput(driver, By.id("518")); }
+		private TextInput getCorrespondent_Input()  	{ return new TextInput(driver, By.id("518_auto")); }
 		
 		// 'ФИО корреспондента'
-		private TextInput getCorrInfo_Input()   		{ return new TextInput(driver, By.id("519")); }
+		private TextInput getCorrInfo_Input()   		{ return new TextInput(driver, By.id("519_auto")); }
 		
 		// 'Дата корреспондента'
 		private TextInput getCorrDate_Input()   		{ return new TextInput(driver, By.id("520")); }
@@ -459,19 +459,19 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		private TextInput getCorrNum_Input()   			{ return new TextInput(driver, By.id("521")); }
 		
 		// 'Название дела по номенклатуре'
-		private TextInput getCaseName_Input()   		{ return new TextInput(driver, By.id("522")); }		
+		private TextInput getCaseName_Input()   		{ return new TextInput(driver, By.id("522_auto")); }		
 		
 		// 'Краткое содержание'
-		private WebElement getShortSummary_Text()   	{ WebElement element = driver.findElement(By.id("customTextEditor_Tab0Text1")); return element; }
+		private WebElement getShortSummary_Text()   	{ WebElement element = driver.findElement(By.id("customTextEditor_523")); return element; }
 	
 		// 'Краткое содержание' фрэйм
-		private WebElement getShortSummary_Frame()   	{ return driver.findElement(By.id("customTextEditor_Tab0Text1_DesignIFrame")); }
+		private WebElement getShortSummary_Frame()   	{ return driver.findElement(By.id("customTextEditor_523_DesignIFrame")); }
 			
 		// 'Заметки'
-		private WebElement getNotes_Text()   			{ WebElement element = driver.findElement(By.id("customTextEditor_Tab0Text2")); return element; }
+		private WebElement getNotes_Text()   			{ WebElement element = driver.findElement(By.id("customTextEditor_524")); return element; }
 		
 		// 'Заметки' фрэйм
-		private WebElement getNotes_Frame()  	 		{ return driver.findElement(By.id("customTextEditor_Tab0Text2_DesignIFrame")); }	
+		private WebElement getNotes_Frame()  	 		{ return driver.findElement(By.id("customTextEditor_524_DesignIFrame")); }	
 		
 		// Значения, которые будут использоваться для заполнения элементов
 		private class Values
@@ -554,7 +554,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 			public Custom getInfo_PopUp()   					{ return new Custom(driver, By.id("add_edit_dialog")); }	
 			
 			// Кнопка закрытия
-			public Button getNo_Button()   					{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Ні')]")); }
+			public Button getNo_Button()   						{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Ні')]")); }
 		
 			// Кнопка Так
 			public Button getYes_Button()   					{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Так')]")); }

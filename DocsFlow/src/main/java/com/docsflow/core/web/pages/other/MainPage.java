@@ -164,12 +164,12 @@ public class MainPage extends WebPage<MainPage>
 		
 
 		// Для тестирования/дебагинга
-		public IncomingDocs_FilesPage directRedirect()
+		public IncomingDocs_RegistrationPage direct_Redirect()
 		{
-			driver.get(BASE_URL + "/IODocs/InputDocs/AddEditPage/4626/58");
+			driver.get(BASE_URL + "/CommonDocs/Docs/Edit/55/5157");
 			new CommonActions().simpleWait(3);
 			
-			return new IncomingDocs_FilesPage(driver).waitUntilAvailable();
+			return new IncomingDocs_RegistrationPage(driver).waitUntilAvailable();
 		}
 	}
 	

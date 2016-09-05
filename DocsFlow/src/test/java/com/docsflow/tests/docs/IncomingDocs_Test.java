@@ -35,7 +35,7 @@ public class IncomingDocs_Test extends BaseTest
 			LogInPage authorizationPage = new MainPage(driver).redirectToLogInPage();
 			MainPage mainPage = authorizationPage.logInAs("admin_auto", "123456");
 			
-			// Переход на страничку пользователей
+/*			// Переход на страничку пользователей
 			IncomingDocs_Page docsPage = mainPage.new goTo().new DocsBlock().IncomingDocs_Page(browser);
 			docsPage.waitFor_PageReady();
 			
@@ -43,7 +43,8 @@ public class IncomingDocs_Test extends BaseTest
 			docsPage.tree_Open();
 			IncomingDocs_RegistrationPage addPage = docsPage.card_add();
 			addPage.card_Generate(sqlConnection);
-			IncomingDocs_RegistrationPage editPage = addPage.cardInfo_Set();
+			IncomingDocs_RegistrationPage editPage = addPage.cardInfo_Set();*/
+			IncomingDocs_RegistrationPage editPage = mainPage.new goTo().direct_Redirect();
 			editPage.card_Check();
 			
 			// Редактирование карточки				

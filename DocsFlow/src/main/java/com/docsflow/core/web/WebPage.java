@@ -14,6 +14,7 @@ public abstract class WebPage<T extends WebPage<T>> extends Component<T>
 			       						     ENVIRONMENT.host + ":" + 
 			       						     ENVIRONMENT.port;
 	protected static final String BASE_DIR = System.getProperties().get("basedir").toString();
+	protected static final String TextFiles_Path = BASE_DIR + "/storage/files/temp_files/text_files/";
 	
 	public WebPage(WebDriver driver)
 	{
