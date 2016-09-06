@@ -52,7 +52,11 @@ public abstract class CommonElements
 			public Button save_Button(WebDriver driver)   						{ return new Button(driver, By.id("saveBtnTop")); }	
 			
 			// Кнопка 'Генерація наступного номера'
-			public WebElement numGenerate_Button(WebDriver driver) 			{ return driver.findElement(By.id("btnGenerateNum")); }
+			public WebElement numGenerate_Button(WebDriver driver) 				{ return driver.findElement(By.id("btnGenerateNum")); }
+			
+			// Єлемент меню карточки
+			public WebElement inset_Link(WebDriver driver, String inset_Number)	{ return driver.findElement(By.xpath("(//div[@class='item'])[" + inset_Number + "]")); }  
+														  						// Где, 'InsetId': 56-'Реэстраційні данні', 57-'Контроль виконання', 58-Пов'язані документи і файли 
 		}
 		
 		// Элементы универсального грида внутри карточки
@@ -62,23 +66,35 @@ public abstract class CommonElements
 			public Button add_Button(WebDriver driver, String GridId)   		{ return new Button(driver, By.id("btnAdd" + GridId)); }
 		
 			// Грид
-			public WebElement grid_Body(WebDriver driver, String GridId)		{ return driver.findElement(By.xpath("//*[@id='grid" + GridId + "']/tbody")); }
+			public WebElement grid_Body(WebDriver driver, String grid_Id)		{ return driver.findElement(By.xpath("//*[@id='grid" + grid_Id + "']/tbody")); }
 			
 			// Div 'Завантаження'
 			public Custom download_Div(WebDriver driver, String GridId)  		{ return new Custom(driver, By.id("load_grid" + GridId)); }
 				
 			// Кнопка редактирования
-			public Button edit_Button(WebDriver driver)   						{ return new Button(driver, By.className("btn btn-edit")); }
-			
-			// Кнопка редактирования
-			public Button delete_Button(WebDriver driver)   					{ return new Button(driver, By.className("btn btn-delete")); }
+			public Button edit_Button(WebDriver driver, String GridId)   		{ return new Button(driver, By.xpath("//td[@aria-describedby='grid" + GridId + "_edit']")); }
+				
+			// Кнопка удаления
+			public Button delete_Button(WebDriver driver, String GridId)   		{ return new Button(driver, By.xpath("//td[@aria-describedby='grid" + GridId + "_del']")); }
 		}
 		
 		// Поп-апы
 		public static class Pop_Ups
 		{
+			// Информационный поп-ап
+			public Custom info_PopUp(WebDriver driver)   				{ return new Custom(driver, By.cssSelector(".ui-dialog-content.ui-widget-content")); }	
+			
+			// Кнопка 'Так'
+			public Button yes_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Так')]")); }
+			
+			// Кнопка 'Ні'
+			public Button no_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Ні')]")); }
+			
+			// Кнопка 'Закрити'
+			public Button close_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Закрити')]")); }
+			
 			// Кнопка сохранения
-			public Button save_Button(WebDriver driver)   						{ return new Button(driver, By.xpath("//span[@class='ui-button-text' and text()='Зберегти']")); }
+			public Button save_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[@class='ui-button-text' and text()='Зберегти']")); }
 		}
 		
 		// Блок файлов

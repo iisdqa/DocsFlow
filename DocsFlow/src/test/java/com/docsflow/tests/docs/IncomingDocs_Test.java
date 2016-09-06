@@ -15,8 +15,8 @@ import com.docsflow.core.web.pages.other.MainPage;
 
 public class IncomingDocs_Test extends BaseTest 
 {
-	@BeforeMethod(alwaysRun = true, dependsOnMethods = {"setUp"})
-/*	public void DeletionViaDatabase() throws Exception
+	/*@BeforeMethod(alwaysRun = true, dependsOnMethods = {"setUp"})
+	public void DeletionViaDatabase() throws Exception
 	{
 	    // Определение ошибки, которая будет появляться в случае падения запроса
 	    String ErrorMessage = DbQueries.DocsTests.Incoming_Docs.Deletion_Queries.DocDeletion_ErrorMessage;
@@ -35,6 +35,8 @@ public class IncomingDocs_Test extends BaseTest
 			LogInPage authorizationPage = new MainPage(driver).redirectToLogInPage();
 			MainPage mainPage = authorizationPage.logInAs("admin_auto", "123456");
 			
+			IncomingDocs_PerformControlPage controlPage = mainPage.new goTo().direct_Redirect();
+			
 /*			// Переход на страничку пользователей
 			IncomingDocs_Page docsPage = mainPage.new goTo().new DocsBlock().IncomingDocs_Page(browser);
 			docsPage.waitFor_PageReady();
@@ -43,38 +45,40 @@ public class IncomingDocs_Test extends BaseTest
 			docsPage.tree_Open();
 			IncomingDocs_RegistrationPage addPage = docsPage.card_add();
 			addPage.card_Generate(sqlConnection);
-			IncomingDocs_RegistrationPage editPage = addPage.cardInfo_Set();*/
-			IncomingDocs_RegistrationPage editPage = mainPage.new goTo().direct_Redirect();
+
+			IncomingDocs_RegistrationPage editPage = addPage.cardInfo_Set();
 			editPage.card_Check();
-			
+
 			// Редактирование карточки				
 			editPage.corr_ExistenceCheck();
 			editPage.card_Edit();
 			editPage.editedCard_Check();
 			
-			/*
+			
 			// Добавление/редактирование контроля выполнения
 			// Проверка автогенерации записи в гриде истории 		
-			IncomingDocs_PerformControlPage controlPage = editPage.goTo_PerformControl_Page();			
+			IncomingDocs_PerformControlPage controlPage = editPage.goTo_PerformControl_Page();		
 			controlPage.control_Add();
 			controlPage.controlGrid_Check("add");
 			controlPage.inset_Save();			
 			controlPage.controlGrid_Check("add");
-			//controlPage.control_Edit();
-			//controlPage.controlGrid_Check("edit");
-			//controlPage.inset_Save();
-			//controlPage.controlGrid_Check("refreshed");
-			//controlPage.historyGrid_Check();
+			controlPage.control_Edit();
+			controlPage.controlGrid_Check("edit");
+			controlPage.inset_Save();
+			controlPage.controlGrid_Check("refreshed");
+			controlPage.historyGrid_Check();
 			
-			// Проверка грида 'Перенос сроков' 			
+			// Проверка грида 'Перенос сроков' 	
+			
 			controlPage.termsChange_Add();
 			controlPage.termsGrid_Check("add");
 			controlPage.inset_Save();
-			//controlPage.controlGrid_Check("refreshed");
-			//controlPage.historyGrid_Check();
-			controlPage.termsGrid_Check("add");
+			controlPage.controlGrid_Check("refreshed");
+			controlPage.historyGrid_Check();
+			controlPage.termsGrid_Check("add");	
 			controlPage.termsChange_Edit();
 			controlPage.termsGrid_Check("edit");
+			controlPage.control_DeleteInability_Check();
 			controlPage.secondControl_Add();
 			controlPage.inset_Save();
 			controlPage.termsGrid_Check("edit");
@@ -82,10 +86,10 @@ public class IncomingDocs_Test extends BaseTest
 			
 			// Удаление записей из гридов 'Перенос сроков' и 'Контроль версий'
 						
-			controlPage.control_Delete("2");
-			//controlPage.controlGrid_Check("refreshed");
+			controlPage.control_Delete("1");
+			controlPage.controlGrid_Check("refreshed");
 			controlPage.inset_Save();
-			//controlPage.controlGrid_Check("refreshed");
+			controlPage.controlGrid_Check("refreshed");*/
 			
 			// Работа со вкладкой 'Связанные документы и файлы'
 						
@@ -103,7 +107,7 @@ public class IncomingDocs_Test extends BaseTest
 			// Проверка поиска карточки
 			// Проверка кнопок редактирования/просмотра
 			
-			docsPage = filesPage.card_Close();
+			/*docsPage = filesPage.card_Close();
 			docsPage.waitFor_PageReady();
 			docsPage.tree_Open();*/	
 			

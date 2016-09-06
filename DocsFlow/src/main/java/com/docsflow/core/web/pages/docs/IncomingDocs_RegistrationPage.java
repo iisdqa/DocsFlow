@@ -195,15 +195,15 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		// Открыть поп-ап добавления
 		new Elements().new Resolution_Elements().add_Button(driver, GridId).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new Resolution_Elements().new Pop_Up().getResolution_Text());
+		waitUntilUnblocked(new Elements().new Resolution_Elements().new Pop_Up().resolution_Text());
 		
 		// Заполнение полей
 		sendKeys(resolution);
-		sendKeys("\t");
+		new Elements().new Resolution_Elements().new Pop_Up().deadlineDate_Input().click();
 		sendKeys(deadlineDate);
 		new Elements().new Resolution_Elements().new Pop_Up().getProjectType_Select().selectByVisibleText(projectType);
 		new Elements().new Resolution_Elements().new Pop_Up().getAuthor_Select().selectByVisibleText(author);
-		sendKeys("\t");
+		new Elements().new Resolution_Elements().new Pop_Up().resolutionDate_Input().click();
 		sendKeys(resolutionDate);
 				
 		// Сохранить
@@ -219,7 +219,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		WebElement grid = new Elements().new Resolution_Elements().grid_Body(driver, GridId);
 		String resolution = "";
 		if(checkType == "add") resolution = new Elements().new Resolution_Elements().new Values().resolution;
-		else if(checkType == "edit") resolution = new Elements().new Resolution_Elements().new Values().resolution + " 2";
+		else if(checkType == "edit") resolution = new Elements().new Resolution_Elements().new Values().resolution + "2";
 		String resolutionDate = new Elements().new Resolution_Elements().new Values().resolutionDate;
 		String author = new Elements().new Resolution_Elements().new Values().author;
 		String projectType = new Elements().new Resolution_Elements().new Values().projectType;
@@ -270,7 +270,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		new CustomMethods().elementExistenceCheck(numGenerate, false);
 		
 		// Проверка индекса и даты регистрации
-		assertThat(docIndex.getAttribute("value"), is(equalTo(new CustomMethods().new WorkWith_TextFiles().file_Read(TextFiles_Path + "IncomingDoc_Index.txt"))));
+		assertThat(docIndex.getAttribute("value"), is(equalTo(new CustomMethods().new WorkWith_TextFiles().file_Read(TextFiles_Path + "IncomingDoc_Index"))));
 		assertThat(regDate.getAttribute("value"), is(equalTo(new Elements().new Values().regDate)));
 		
 		// Проверка 'Select' полей
@@ -303,9 +303,9 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 	public void corr_ExistenceCheck()
 	{
 		//region Variables
-		Button search = new Elements().new CorrespondentCheck_Elements().getSearch_Button();
-		Custom info = new Elements().new CorrespondentCheck_Elements().getInfo_PopUp();
-		Button close = new Elements().new CorrespondentCheck_Elements().getClose_Button();
+		Button search = new Elements().new CorrespondentCheck_Elements().search_Button();
+		Custom info = new Elements().new CorrespondentCheck_Elements().info_PopUp();
+		Button close = new Elements().new CorrespondentCheck_Elements().close_Button();
 		//endregion
 		
 		// Поиск 
@@ -354,14 +354,17 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 	
 	private void resolution_edit()
 	{			
-		// Открыть поп-ап добавления
+		//region Variables
 		String GridId = new Elements(). new Resolution_Elements().GridId;
-		new Elements().new Resolution_Elements().edit_Button(driver).click();
+		//endregion
+		
+		// Открыть поп-ап добавления		
+		new Elements().new Resolution_Elements().edit_Button(driver, GridId).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new Resolution_Elements().new Pop_Up().getResolution_Text());
+		waitUntilUnblocked(new Elements().new Resolution_Elements().new Pop_Up().resolution_Text());
 		
 		// Заполнение полей
-		sendKeys(" 2");
+		sendKeys("2");
 		sendKeys("\t");
 				
 		// Сохранить
@@ -387,9 +390,9 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 	{
 		//region Variables	
 		Select docWorkStage = new Elements().getDocWorkStage_Select();
-		WebElement insetLink = new Elements().new SaveOrNot_Elements().getInset_Link("57");
-		Custom info = new Elements().new SaveOrNot_Elements().getInfo_PopUp();
-		Button no = new Elements().new SaveOrNot_Elements().getNo_Button();
+		WebElement insetLink = new Elements().inset_Link(driver, "2");
+		Custom info = new Elements().new SaveOrNot_Elements().info_PopUp(driver);
+		Button yes = new Elements().new SaveOrNot_Elements().yes_Button(driver);
 		//endregion
 		
 		// Изменение этапа обработки
@@ -406,7 +409,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		assertThat(info.getText(), is(equalTo(new Elements().new SaveOrNot_Elements().new Values().info)));
 		
 		// Закрытие поп-апа
-		no.click();
+		yes.click();
 		new CommonActions().simpleWait(1);
 		
 		return new IncomingDocs_PerformControlPage(driver).waitUntilAvailable();
@@ -490,8 +493,8 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 			private String corrDate = new CustomMethods().getCurrentDate(); 		// 'Дата корреспондента'
 			private String corrNum = "222111"; 										// '№ корреспондента'
 			private String caseName = "Номенклатура Тест_1"; 						// 'Название дела по номенклатуре'
-			private String shortSummary = "Тестовий зміст"; 						// 'Краткое содержание'
-			private String notes = "Тестова примітка"; 								// 'Заметки'
+			private String shortSummary = "Зміст_"; 								// 'Краткое содержание'
+			private String notes = "Примітка_"; 									// 'Заметки'
 		}
 		
 		private class Resolution_Elements extends CommonElements.Card_Elements.Grid
@@ -505,14 +508,14 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 				// Автор
 				private Select getAuthor_Select()      			{ return new Select(driver.findElement(By.id("527"))); }
 				
-	/*			// Дата резолюции
-				private TextInput getResolutionDate_Input() 	{ return new TextInput(driver, By.id("Tab0_KFullNameStr")); }*/
+				// Дата резолюции
+				private TextInput resolutionDate_Input() 		{ return new TextInput(driver, By.id("528")); }
 				
 				// 'Резолюция'
-				private Custom getResolution_Text()   			{ return new Custom(driver, By.id("customTextEditor_529")); }
+				private Custom resolution_Text()   				{ return new Custom(driver, By.id("customTextEditor_529")); }
 				
-	/*			// Термин выполнения
-				private TextInput getDeadlineDate_Input() 		{ return new TextInput(driver, By.id("Tab_FrontPage_Grid_DateTermExec")); }*/
+				// Термин выполнения
+				private TextInput deadlineDate_Input() 			{ return new TextInput(driver, By.id("530")); }
 			}
 			
 			// Значения, которые будут использоваться для заполнения элементов
@@ -521,7 +524,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 				private String projectType = "Проект";					// 'Проект'
 				private String author = "Петров П.П";					// 'Автор'
 				private String resolutionDate = "02.01.2020";			// 'Дата резолюции'
-				private String resolution = "Тестова резолюція";		// 'Резолюция'
+				private String resolution = "Резолюція_";				// 'Резолюция'
 				private String deadlineDate = "03.01.2020";				// 'Термин выполнения'
 			}
 		}
@@ -529,40 +532,27 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		private class CorrespondentCheck_Elements
 		{
 			// Кнопка добавления
-			private Button getSearch_Button()   				{ return new Button(driver, By.id("chckBtn")); }	
+			private Button search_Button()   				{ return new Button(driver, By.id("chckBtn")); }	
 		
 			// Поп-ап
-			private Custom getInfo_PopUp()   					{ return new Custom(driver, By.id("add_edit_dialog")); }	
+			private Custom info_PopUp()   					{ return new Custom(driver, By.id("dialogText")); }	
 			
 			// Кнопка закрытия
-			private Button getClose_Button()   					{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Закрити')]")); }
+			private Button close_Button()   				{ return new Button(driver, By.xpath("//input[(@onclick='CloseDialog()') and (@value='Закрити')]")); }
 		
 			// Значения, которые будут использоваться для заполнения элементов
 			private class Values
 			{
-				private String noMatches_Info = "За відповідними датою та номером в базі даних не існує реєстраційної картки документа";
+				private String noMatches_Info = "За відповідними датою та номером в базі даних не існує реєстраційної картки вхідного документа";
 			}
 		}
 		
-		public class SaveOrNot_Elements
+		public class SaveOrNot_Elements extends CommonElements.Card_Elements.Pop_Ups
 		{
-			// Єлемент меню карточки
-			public WebElement getInset_Link(String InsetId){ return driver.findElement(By.xpath("//div[@onclick=\"RedirectTo('"+ InsetId +"\')\"]")); }  
-														  // Где, 'InsetId': 56-'Реэстраційні данні', 57-'Контроль виконання', 58-Пов'язані документи і файли 
-		
-			// Поп-ап
-			public Custom getInfo_PopUp()   					{ return new Custom(driver, By.id("add_edit_dialog")); }	
-			
-			// Кнопка закрытия
-			public Button getNo_Button()   						{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Ні')]")); }
-		
-			// Кнопка Так
-			public Button getYes_Button()   					{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Так')]")); }
-			
 			// Значения, которые будут использоваться для заполнения элементов
 			public class Values
 			{
-				public String info = "Дані було змінено. Бажаєте зберегти дані?";
+				public String info = "Дані на сторінці були змінені. Перейти до іншої сторінки без збереження даних?";
 			}
 		}
 	}	

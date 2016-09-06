@@ -11,6 +11,7 @@ import java.util.Date;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -206,9 +207,33 @@ public class CustomMethods
 		catch(InterruptedException e){throw new RuntimeException(e);}
 	}
 	
+	// Managing JS actions
+	public class Js_Actions
+	{
+		public void webElement_Click(WebDriver driver, WebElement element)
+		{
+			JavascriptExecutor executor = (JavascriptExecutor)driver;
+			executor.executeScript("arguments[0].click();", element);
+		}
+		
+		public void webElement_SendText(WebDriver driver, WebElement element, String text)
+		{
+			JavascriptExecutor executor = (JavascriptExecutor)driver;
+			executor.executeScript("arguments[0].innerHTML = '<span>" + text + "</>';", element);
+		}
+	}
+	
 	// Класс для работы с текстовым редактором
 	public class WorkWith_TextEditor
 	{
+		public void setTextValue(WebDriver driver, WebElement frame, String text)
+		{
+			driver.switchTo().frame(frame);
+			WebElement body = driver.findElement(By.cssSelector("body"));
+			body.sendKeys(text);
+			driver.switchTo().defaultContent();
+		}
+		
 		public String getTextValue(WebDriver driver, WebElement frame)
 		{
 			driver.switchTo().frame(frame);
