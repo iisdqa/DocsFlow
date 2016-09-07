@@ -13,9 +13,9 @@ import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage;
 import com.docsflow.core.web.pages.other.LogInPage;
 import com.docsflow.core.web.pages.other.MainPage;
 
-public class IncomingDocs_Test extends BaseTest 
+public class IncomingDocsAdd_Test extends BaseTest 
 {
-	/*@BeforeMethod(alwaysRun = true, dependsOnMethods = {"setUp"})
+	@BeforeMethod(alwaysRun = true, dependsOnMethods = {"setUp"})
 	public void DeletionViaDatabase() throws Exception
 	{
 	    // Определение ошибки, которая будет появляться в случае падения запроса
@@ -26,18 +26,16 @@ public class IncomingDocs_Test extends BaseTest
 	    
 	    // Выполнение запроса
 	    new DbStatements().SimpleStatement(sqlConnection, DeletionStatement, ErrorMessage);
-	}*/
+	}
 	
-	@Test(groups = { "IncomingDocs_Test" })
-	public void IncomingDocs_TestMethod() throws Exception
+	@Test(groups = { "IncomingDocsAdd_Test" })
+	public void IncomingDocsAdd_TestMethod() throws Exception
 	{	
 			// Переход на главную
 			LogInPage authorizationPage = new MainPage(driver).redirectToLogInPage();
 			MainPage mainPage = authorizationPage.logInAs("admin_auto", "123456");
 			
-			IncomingDocs_PerformControlPage controlPage = mainPage.new goTo().direct_Redirect();
-			
-/*			// Переход на страничку пользователей
+			// Переход на страничку пользователей
 			IncomingDocs_Page docsPage = mainPage.new goTo().new DocsBlock().IncomingDocs_Page(browser);
 			docsPage.waitFor_PageReady();
 			
@@ -57,7 +55,7 @@ public class IncomingDocs_Test extends BaseTest
 			
 			// Добавление/редактирование контроля выполнения
 			// Проверка автогенерации записи в гриде истории 		
-			IncomingDocs_PerformControlPage controlPage = editPage.goTo_PerformControl_Page();		
+			IncomingDocs_PerformControlPage controlPage = editPage.goTo_PerformControl_Page("tricky");		
 			controlPage.control_Add();
 			controlPage.controlGrid_Check("add");
 			controlPage.inset_Save();			
@@ -89,11 +87,12 @@ public class IncomingDocs_Test extends BaseTest
 			controlPage.control_Delete("1");
 			controlPage.controlGrid_Check("refreshed");
 			controlPage.inset_Save();
-			controlPage.controlGrid_Check("refreshed");*/
+			controlPage.controlGrid_Check("refreshed");
+			controlPage.termsChange_Delete();
 			
 			// Работа со вкладкой 'Связанные документы и файлы'
 						
-			IncomingDocs_FilesPage filesPage = controlPage.goTo_Files_Page();			
+			IncomingDocs_FilesPage filesPage = controlPage.goTo_Files_Page("tricky");		
 			filesPage.file_Add();
 			filesPage.filesGrid_Check("add");
 			filesPage.inset_Save();
@@ -101,24 +100,48 @@ public class IncomingDocs_Test extends BaseTest
 			filesPage.file_Edit();
 			filesPage.filesGrid_Check("edit");
 			filesPage.inset_Save();
-			filesPage.filesGrid_Check("edit");
+			filesPage.filesGrid_Check("edit");	
 			filesPage.fileUnload_check();
+			filesPage.file_Delete();
 			
 			// Проверка поиска карточки
-			// Проверка кнопок редактирования/просмотра
+			// Проверка редактирования
 			
-			/*docsPage = filesPage.card_Close();
+			docsPage = filesPage.card_Close("tricky");
 			docsPage.waitFor_PageReady();
-			docsPage.tree_Open();*/	
+			docsPage.tree_Open();
+			docsPage.card_Search();
+			docsPage.card_Check("add");
+			editPage = docsPage.card_Edit();
+			editPage.cardHeader_Check();
+			editPage.resolution_grid_check("edit");
+			editPage = editPage.shortSummary_Edit();
+			docsPage = editPage.card_Close();
 			
+			// Проверка просмотра
+			docsPage.waitFor_PageReady();
+			docsPage.tree_Open();
+			docsPage.card_Search();
+			docsPage.card_Check("edit");
+			IncomingDocs_RegistrationPage viewPage = docsPage.card_View();
+			viewPage.cardHeader_Check();
+			viewPage.resolution_grid_check("view");
+			IncomingDocs_PerformControlPage view_controlPage = viewPage.goTo_PerformControl_Page("simple");
+			view_controlPage.wait_ForPageReady();
+			view_controlPage.controlGrid_Check("view");
+			view_controlPage.historyGrid_Check();
+			view_controlPage.termsGrid_Check("view");
+			IncomingDocs_FilesPage view_filesPage = view_controlPage.goTo_Files_Page("simple");
+			view_filesPage.wait_ForPageReady();
+			view_filesPage.filesGrid_Check("view");
+			view_filesPage.fileUnload_check();
 			
+			// Проверка посдвечивания строки в гриде
+			docsPage = view_filesPage.card_Close("simple");
+			//docsPage.card_Check("edit");
+			// Дописать проверку подсвечивания
 			
-			
-			
-			
-			
-			
-			
-			//IncomingDocs_FilesPage filesPage = mainPage.new goTo().directRedirect();
+			// Выход из системы
+			docsPage.user_Out();
 	}
 }

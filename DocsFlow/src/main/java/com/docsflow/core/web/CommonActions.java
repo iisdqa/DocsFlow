@@ -1,5 +1,9 @@
 package com.docsflow.core.web;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -8,8 +12,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-import com.docsflow.core.web.elements.Button;
-import com.docsflow.core.web.elements.Link;
 import com.docsflow.core.web.elements.TextInput;
 import com.docsflow.core.web.pages.other.LogInPage;
 import com.docsflow.core.web.pages.other.MainPage;
@@ -27,25 +29,30 @@ public class CommonActions
 	
 	public LogInPage userOut(WebDriver driver)
 	{
-		new Elements().getUserOutButton(driver).click();
+		new Elements().userOut_Button(driver).click();
 		return new LogInPage(driver).waitUntilAvailable();
 	}
 	
 	public MainPage backToMainPage(WebDriver driver)
 	{
-		new Elements().getBackToMainLink(driver).click();
+		new Elements().backToMain_Link(driver).click();
 		return new MainPage(driver).waitUntilAvailable();
 	}
 	
-	public void autoCompleteValue_Set(WebDriver driver, TextInput element)
+	public void autoCompleteValue_Set(WebDriver driver, TextInput element, int stepsDown_Count)
 	{
 		try
 		{
 			element.click();
 			Thread.sleep(1000);
 			Actions action = new Actions(driver);
-			action.sendKeys(Keys.DOWN).build().perform();
-			Thread.sleep(1000);
+			
+			for(int i = 0; i< stepsDown_Count; i++)
+			{
+				action.sendKeys(Keys.DOWN).build().perform();
+				Thread.sleep(1000);
+			}
+			
 			action.sendKeys(Keys.ENTER).build().perform();
 			Thread.sleep(1000);
 		}
@@ -59,7 +66,7 @@ public class CommonActions
 	public void menu_Handler(WebDriver driver, int mainMenu_Num,  int subMenu_Num)
 	{
 		// Определение всех пунктов главного меню
-		List<WebElement> main_Items = new Elements().getMainMenu_Div(driver).findElements(By.xpath("//div[contains(@class, 'menu-item left')]"));
+		List<WebElement> main_Items = new Elements().mainMenu_Div(driver).findElements(By.xpath("//div[contains(@class, 'menu-item left')]"));
 		
 		// Определение нужного элемента главного меня
 		WebElement main_Item = main_Items.get(mainMenu_Num - 1);
@@ -84,51 +91,61 @@ public class CommonActions
 	}
 	
 	// Навигация по дереву подразделений
-		public void tree_Handler(WebDriver driver, int[] tree_Path)  // где tree_Path - массив номеров элементов в дереве по которым нужно пройти.
-		{														     // соответственно количество элементов в массиве = глубина иерархии
-			// Билдер
-			Actions builder = new Actions(driver);
-			
-			// Опускаемся по иерархии tree_Path, кликая по элементам дерева в соответствии с tree_Path
-			for (int i = 0; i < tree_Path.length; i++)
-			{				
-				// Клик ARROW_DOWN
-				for(int j = 0; j < tree_Path[i]; j++)
-				{
-					builder.sendKeys(Keys.ARROW_DOWN).build().perform();
-					simpleWait(1);
-				}
-				
-				// Как только уровень иерархии предположительно закончен - ARROW_RIGHT
-				builder.sendKeys(Keys.ARROW_RIGHT).build().perform();
+	public void tree_Handler(WebDriver driver, int[] tree_Path)  // где tree_Path - массив номеров элементов в дереве по которым нужно пройти.
+	{														     // соответственно количество элементов в массиве = глубина иерархии
+		// Билдер
+		Actions builder = new Actions(driver);
+		
+		// Опускаемся по иерархии tree_Path, кликая по элементам дерева в соответствии с tree_Path
+		for (int i = 0; i < tree_Path.length; i++)
+		{				
+			// Клик ARROW_DOWN
+			for(int j = 0; j < tree_Path[i]; j++)
+			{
+				builder.sendKeys(Keys.ARROW_DOWN).build().perform();
 				simpleWait(1);
 			}
 			
-			// Выбрать подразделение
-			builder.sendKeys(Keys.ENTER).build().perform();
+			// Как только уровень иерархии предположительно закончен - ARROW_RIGHT
+			builder.sendKeys(Keys.ARROW_RIGHT).build().perform();
 			simpleWait(1);
 		}
+		
+		// Выбрать подразделение
+		builder.sendKeys(Keys.ENTER).build().perform();
+		simpleWait(1);
+	}
+	
+	// Фильтрация грида
+	public void grid_Filtration(WebDriver driver, String fieldName, String matchType, String value)
+	{
+		// Открыть аккордеон
+		new Elements().new FiltrationAccordion().accordion_Div(driver).click();
+		
+		// Заполнить реквизиты фильтрации
+		new Elements().new FiltrationAccordion().fieldName_Select(driver).selectByVisibleText(fieldName);
+		new Elements().new FiltrationAccordion().matchType_Select(driver).selectByVisibleText(matchType);
+		new Elements().new FiltrationAccordion().value_TextInput(driver).inputText(value);
+		
+		//Фильтровать грид
+		new Elements().new FiltrationAccordion().search_Button(driver).click();
+		simpleWait(1);
+	}
+	
+	// Проверка хэдера карточки
+	public void cardHeader_Check(WebDriver driver, String expected_Header)
+	{
+		assertThat(new Elements().new Card_Elements().card_Header(driver).getText(), is(equalTo(expected_Header)));
+	}
 	
 	/*______________________________ Элементы ________________________________*/
 	
-	private class Elements 
-	{
-		// Ссылка выхода из системы
-		private Button getUserOutButton(WebDriver driver)
-		{
-			return new Button(driver, By.xpath("//a[@href='/Account/LogOff']"));
-		}
+	private class Elements extends CommonElements.Other_Elements
+	{		
+		// Аккордеон фильтрации
+		private class FiltrationAccordion extends CommonElements.FiltrationControl_Elements{}
 		
-		// Ссылка возврата на главную страничку(В header(е))
-		private Link getBackToMainLink(WebDriver driver)
-		{
-			return new Link(driver, By.className("header_link"));
-		}
-		
-		// <div> в котором лежит главная меню
-		private WebElement getMainMenu_Div(WebDriver driver)
-		{
-			return driver.findElement(By.className("main-menu"));
-		}
+		// Элементы карточки
+		private class Card_Elements extends CommonElements.Card_Elements.General_Elements{}
 	}
 }

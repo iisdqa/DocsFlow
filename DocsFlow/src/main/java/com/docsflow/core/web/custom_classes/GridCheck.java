@@ -4,6 +4,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -147,5 +149,19 @@ public abstract class GridCheck
 				assertThat(ActualValues[rowNum][colNum], is(equalTo(ExpectedValues[rowNum][colNum])));
 			}			
 		}
+	}
+	
+	// Cut single-dimensional array
+	public String[] arrayElements_Remove(String[] array, int[] elements_ToRemove)
+	{
+		// Create list and remove elemenets
+		List<String> list = new ArrayList<String>(Arrays.asList(array));
+		for(int i=0; i<elements_ToRemove.length; i++)list.remove(elements_ToRemove[i]);
+		
+		// Convert list to array
+		array = new String[list.size()];
+		array = list.toArray(array);
+		
+		return array;
 	}
 }

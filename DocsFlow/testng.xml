@@ -48,11 +48,11 @@
 	<test name="preserve-order Other tests" preserve-order="true">
 	    <groups>
         	<run>
-      			<include name="IncomingDocs_Test"/>
+      			<include name="IncomingDocsAdd_Test"/>
         	</run>
     	</groups>
     	<classes>
-    		<class name="com.docsflow.tests.docs.IncomingDocs_Test" />
+    		<class name="com.docsflow.tests.docs.IncomingDocsAdd_Test" />
     	</classes>
 	</test>
 </suite>

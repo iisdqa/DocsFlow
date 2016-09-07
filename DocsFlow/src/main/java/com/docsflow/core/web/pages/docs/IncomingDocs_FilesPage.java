@@ -7,9 +7,9 @@ import static org.hamcrest.Matchers.is;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 
 import com.docsflow.core.web.CommonActions;
+import com.docsflow.core.web.CommonElements;
 import com.docsflow.core.web.CustomMethods;
 import com.docsflow.core.web.WebPage;
 import com.docsflow.core.web.elements.Button;
@@ -18,7 +18,7 @@ import com.docsflow.core.web.elements.TextInput;
 
 public class IncomingDocs_FilesPage extends WebPage<IncomingDocs_FilesPage> 
 {
-private static final String PAGE_URL = BASE_URL + "/IODocs/InputDocs/List";
+private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Edit/55/";
 	
 	public IncomingDocs_FilesPage(WebDriver driver) 
 	{
@@ -34,58 +34,61 @@ private static final String PAGE_URL = BASE_URL + "/IODocs/InputDocs/List";
 
 	@Override
 	public boolean isAvailable()
+	{	
+		return new Elements().close_Button(driver).isAvailable();
+	}
+	
+	public void wait_ForPageReady()
 	{
-		return new Elements().new Files().getAdd_Button().isAvailable();
+		//region Variables
+		String grid_Id = new Elements().new Files().new Grid().grid_Id;
+		//endregion
+		
+		new CustomMethods().simpleWait(1);
+		waitForBlockStatus(new Elements().new Files().new Grid().download_Div(driver, grid_Id), false);
 	}
 	
 	public void file_Add()
 	{
 		//region Variables
-		String date = new Elements().new Files().new Values().date;
-		String user = new Elements().new Files().new Values().user;
+		String grid_Id = new Elements().new Files().new Grid().grid_Id;
 		String fileName = new Elements().new Files().new Values().fileName;
 		String fileWay = new Elements().new Files().new Values().fileWay;
 		String comment = new Elements().new Files().new Values().comment;
-		Custom save = new Elements().getSave_Button();
+		Button save = new Elements().save_Button(driver);
 		//endregion
 		
 		// Открыть поп-ап добавления
-		new Elements().new Files().getAdd_Button().click();
+		new Elements().new Files().new Grid().add_Button(driver, grid_Id).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new Files().getComment_Text());
+		waitUntilUnblocked(new Elements().new Files().comment_Text());
 		
-		// Заполнение полей
+		// Заполнение поля 'Коментар'
 		sendKeys(comment);
-		new Elements().new Files().get_Date().click();
-		new Elements().new Files().get_Date().inputText(date);
 		
 		// Добавление файл + проверка подстановки в текстовое поле
-		new Elements().new Files().getFileUpload_Button().inputText(fileWay);
+		new Elements().new Files().fileUpload_Button(driver).inputText(fileWay);
 		new CommonActions().simpleWait(2);
-		assertThat(new Elements().new Files().getFile_Input().getAttribute("value"), is(equalTo(fileName)));
-		//assertThat(new Elements().new Files().getFile_Input().getAttribute("readonly"), is(equalTo("true")));
-		
-		// Проверка подтягивания пользователя
-		assertThat(new Elements().new Files().getUser_Input().getAttribute("value"), is(equalTo(user)));
-		//assertThat(new Elements().new Files().getUser_Input().getAttribute("readonly"), is(equalTo("true")));
+		assertThat(new Elements().new Files().file_Input().getAttribute("value"), is(equalTo(fileName)));
+		assertThat(new Elements().new Files().file_Input().getAttribute("readonly"), is(equalTo("true")));
 		
 		// Сохранить
-		new Elements().new Files().getSave_Button().click();
+		new Elements().new Files().save_Button(driver).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(save);
-		waitForBlockStatus(new Elements().new Files().getDownload_Div(), false);
+		save.waitUntilAvailable();
+		waitForBlockStatus(new Elements().new Files().new Grid().download_Div(driver, grid_Id), false);
 	}
 	
 	public void filesGrid_Check(String checkType)
 	{
 		//region Variables
-		WebElement grid = new Elements().new Files().getGridBody();
+		String grid_Id = new Elements().new Files().new Grid().grid_Id;
+		WebElement grid = new Elements().new Files().new Grid().grid_Body(driver, grid_Id);
 		String date = new Elements().new Files().new Values().date;
 		String user = new Elements().new Files().new Values().user;
 		String fileName = new Elements().new Files().new Values().fileName;
 		String comment = new Elements().new Files().new Values().comment;
-		if (checkType == "edit") comment = new Elements().new Files().new Values().comment + " 2";
-		Select docWorkStatus = new Elements().getDocWorkStage_Select();
+		if (checkType != "add") comment = new Elements().new Files().new Values().comment + "2";
 		//endregion
 		
 		// Определение ожидаемых значений
@@ -98,150 +101,150 @@ private static final String PAGE_URL = BASE_URL + "/IODocs/InputDocs/List";
 										  user, 
 										  comment};
 		
+		// Удалить лишние поля для просмотровой формы
+		if(checkType == "view")
+		{
+			int[] elements_ToRemove = new int[]{ 0, 0};
+			ExpectedValues[0] = new CustomMethods().new Grid().arrayElements_Remove(ExpectedValues[0], elements_ToRemove);
+		}
+		
 		// Вытянуть последнее значения из грида
 		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);	
-		
-		// Проверка этапа обработки
-		if (checkType == "add") assertThat(docWorkStatus.getFirstSelectedOption().getText(), is(equalTo(new Elements().new Values().docWorkStage)));
 	}
 	
 	public void inset_Save()
 	{
 		//region Variables
-		Custom save = new Elements().getSave_Button();
+		String grid_Id = new Elements().new Files().new Grid().grid_Id;
+		Button save = new Elements().save_Button(driver);
 		//endregion
 		
 		// Сохранение вкладки
 		save.click();
 		new CommonActions().simpleWait(3);
-		waitUntilUnblocked(save);
-		waitForBlockStatus(new Elements().new Files().getDownload_Div(), false);
+		save.waitUntilAvailable();
+		waitForBlockStatus(new Elements().new Files().new Grid().download_Div(driver, grid_Id), false);
 	}
 	
 	public void file_Edit()
 	{
 		//region Variables
-		Custom save = new Elements().getSave_Button();
+		String grid_Id = new Elements().new Files().new Grid().grid_Id;
+		Button save = new Elements().save_Button(driver);
 		//endregion
 		
 		// Открыть поп-ап редактирования
-		new Elements().new Files().getEdit_Button().click();
+		new Elements().new Files().new Grid().edit_Button(driver, grid_Id).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new Files().getComment_Text());
+		waitUntilUnblocked(new Elements().new Files().comment_Text());
 		
 		// Изменить комментарий
-		sendKeys(" 2");
+		sendKeys("2");
 		
 		// Сохранить
-		new Elements().new Files().getSave_Button().click();
+		new Elements().new Files().save_Button(driver).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(save);
-		waitForBlockStatus(new Elements().new Files().getDownload_Div(), false);
+		save.waitUntilAvailable();
+		waitForBlockStatus(new Elements().new Files().new Grid().download_Div(driver, grid_Id), false);
 	}	
 	
 	public void fileUnload_check()
 	{
 		//region Variables
-		Button download = new Elements().new Files().getFileDownload_Button();
+		Button download = new Elements().new Files().fileDownload_Button(driver);
 		String fileName = new Elements().new Files().new Values().fileName;
 		//endregion
 		
 		new CustomMethods().new WorkWith_TextFiles().fileDownload_Check(download, fileName);
 	}
 	
-	public IncomingDocs_Page card_Close()
+	public void file_Delete()
 	{
-		// Закрытие редактирования карточки
-		new Elements().get_CloseButton().click();
+		//region Variables
+		String grid_Id = new Elements().new Files().new Grid().grid_Id;
+		Button deleteButton = new Elements().new Files().new Grid().delete_Button(driver, grid_Id);
+		Custom info = new Elements().new Files().info_PopUp(driver);
+		Button yes = new Elements().new Files().yes_Button(driver);
+		Button add_Button = new Elements().new Files().new Grid().add_Button(driver, grid_Id);
+		//endregion
+		
+		// Открытие поп-апа
+		deleteButton.click();
 		new CommonActions().simpleWait(1);
+		waitUntilUnblocked(info);
+		
+		// Проверка сообщения
+		assertThat(info.getText(), is(equalTo(new Elements().new Files().deletion_Message)));
+		
+		// Закрытие поп-апа
+		yes.click();
+		new CommonActions().simpleWait(1);
+		add_Button.waitUntilAvailable();
+		waitForBlockStatus(new Elements().new Files().new Grid().download_Div(driver, grid_Id), false);
+	}
+	
+	public IncomingDocs_Page card_Close(String close_Type)
+	{
+		//region Variables	
+		Custom info = new Elements().new Files().info_PopUp(driver);
+		Button yes = new Elements().new Files().yes_Button(driver);
+		//endregion
+		
+		// Закрытие редактирования карточки
+		new Elements().close_Button(driver).click();
+		new CommonActions().simpleWait(1);
+		
+		// С проверкой поп-апа при уходе с не сохраненными данными
+		if(close_Type == "tricky")
+		{
+			//Отказ в сохранении данных
+			new CommonActions().simpleWait(1);
+			waitUntilUnblocked(info);
+			
+			// Проверка сообщеия
+			assertThat(info.getText(), is(equalTo(new Elements().new Files().cardGoAway_Message)));
+			
+			// Закрытие поп-апа
+			yes.click();
+			new CommonActions().simpleWait(1);
+		}
 		
 		return new IncomingDocs_Page(driver).waitUntilAvailable();
 	}
 	
 	/*__________________________________________________ Элементы _______________________________________________________*/	
 	
-	private class Elements
-	{
-		// Кнопка 'Зберегти'
-		private Custom getSave_Button()   				{ return new Custom(driver, By.id("saveBtnTop")); }		
-		
-		// Кнопка 'Зберегти'
-		private Custom get_CloseButton()   				{ return new Custom(driver, By.id("cancelBtnTop")); }		
-		
-		
-		// 'Этап обработки документа'
-		private Select getDocWorkStage_Select() 		{ return new Select(driver.findElement(By.id("DocPhase"))); } 
-		
-		// Значения, которые будут использоваться для заполнения элементов
-		private class Values
+	private class Elements extends CommonElements.Card_Elements.General_Elements
+	{			
+		private class Files extends CommonElements.Card_Elements.Card_Files_Elements
 		{
-			private String docWorkStage = "На резолюції";   					// 'Этап обработки документа'
-		}
-		
-		private class DeletionPopUp_Elements
-		{
-			// Кнопка удаления
-			private Button getDelete_Button(String rowToDelete) { return new Button(driver, By.xpath("(//input[contains(@class, 'btn-delete')])[" + rowToDelete + "]")); }	
-		
-			// Поп-ап
-			private Custom getInfo_PopUp()   					{ return new Custom(driver, By.id("add_edit_dialog")); }	
+			// Название файла
+			public TextInput file_Input()      			{ return new TextInput(driver, By.id("569_fname"));
 			
-			// Кнопка закрытия
-			private Button getYes_Button()   					{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Так')]")); }
-		
-			// Значения, которые будут использоваться для заполнения элементов
-			private class Values
-			{
-				private String message = "Ви впевнені, що бажаєте видалити запис?";
 			}
-		}
-		
-		private class Files
-		{
-			// Кнопка добавления
-			private Button getAdd_Button()   				{ return new Button(driver, By.id("add_edit_tab2_1")); }	
-			
-			// Кнопка редактирования
-			private Button getEdit_Button()   				{ return new Button(driver, By.className("btn-edit")); }
-			
-			// Кнопка редактирования
-			private Button getFileDownload_Button()   		{ return new Button(driver, By.className("btn-filedownload-s")); }
-						
-			// Дата
-			private TextInput get_Date()      				{ return new TextInput(driver, By.id("Tab2_1Grid_DocumentsDate")); }
-			
-			// Пользователь
-			private TextInput getUser_Input()      			{ return new TextInput(driver, By.id("Tab2_1Grid_DocumentsUser")); }
-			
-			// ФАйл
-			private TextInput getFile_Input()      			{ return new TextInput(driver, By.id("Tab2_1Grid_DocumentFileName")); }
-			
-			// Кнопка загрузки файла
-			private TextInput getFileUpload_Button()		{return new TextInput(driver, By.id("file_source"));}
-			
 			// 'Комментарий'
-			private Custom getComment_Text()   				{ return new Custom(driver, By.id("customTextEditor_Tab2_1Text1")); }
-			
-			// Кнопка сохранения
-			private Button getSave_Button()   				{ return new Button(driver, By.id("save_btn")); }	
+			public Custom comment_Text()   				{ return new Custom(driver, By.id("customTextEditor_572")); }
 			
 			// Грид
-			private WebElement getGridBody()				{ return driver.findElement(By.xpath("//*[@id='list_tab_2_1']/tbody")); }			
-			
-			// Div 'Завантаження'
-			private Custom getDownload_Div()  				{ return new Custom(driver, By.id("load_list_tab_2_1")); }
+			private class Grid extends CommonElements.Card_Elements.Grid
+			{
+				private String grid_Id = "568";
+			}
 			
 			private class Values
-			{	private String date = "05.01.2020";	  									// Дата
-				private String user = "admin_auto";						     			// Пользователь
-				private String fileWay = "C:\\Selenium_TestData\\Other\\ForDocAdd.txt";	// Ссылка на файл(реальная)
-				private String fileName = "ForDocAdd.txt";								// Название файла
-				private String comment = "Тестовий коментар";			     			// Ссылка на файл
+			{	private String date = new CustomMethods().getCurrentDate();	  			// Дата
+				private String user = "Админий Админ Админович";						// Пользователь
+				private String fileWay = BASE_DIR + 
+										"\\storage\\files\\test_data\\simple_File.txt";	// Ссылка на файл(реальная)
+				private String fileName = "simple_File.txt";							// Название файла
+				private String comment = "Коментар_";			     					// Ссылка на файл
 			}
 		}
+		
+		private class LinkedDocs extends CommonElements.Card_Elements.Card_LinkedDocs_Elements{}
 	
 	}
 }

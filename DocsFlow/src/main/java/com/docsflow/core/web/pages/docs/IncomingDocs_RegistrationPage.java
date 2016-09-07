@@ -22,7 +22,6 @@ import com.docsflow.core.web.elements.Button;
 import com.docsflow.core.web.elements.Custom;
 import com.docsflow.core.web.elements.TextInput;
 
-
 public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_RegistrationPage>
 {
 	private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/";
@@ -42,7 +41,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 	@Override
 	public boolean isAvailable()
 	{
-		return new Elements().getDocIndex_Input().isAvailable();
+		return new Elements().close_Button(driver).isAvailable();
 	}
 	
 	public void card_Generate(Connection sqlConnection)
@@ -68,7 +67,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		caseName.inputText(new Elements().new Values().caseName);
 		
 		// Выбор значения из автокомплита для 'Название по номенклатуре'
-		new CommonActions().autoCompleteValue_Set(driver, caseName);
+		new CommonActions().autoCompleteValue_Set(driver, caseName, 1);
 	
         // Нажать на кнопку генерации нового номера карточки
         numGenerate.click();
@@ -148,11 +147,11 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 
 		// Заполнение автокомплитных полей
 		corrType.inputText(new Elements().new Values().corrType);
-		new CommonActions().autoCompleteValue_Set(driver, corrType);
+		new CommonActions().autoCompleteValue_Set(driver, corrType, 1);
 		correspondent.inputText(new Elements().new Values().correspondent);
-		new CommonActions().autoCompleteValue_Set(driver, correspondent);
+		new CommonActions().autoCompleteValue_Set(driver, correspondent, 1);
 		corrInfo.inputText(new Elements().new Values().corrInfo);
-		new CommonActions().autoCompleteValue_Set(driver, corrInfo);
+		new CommonActions().autoCompleteValue_Set(driver, corrInfo, 1);
 		
 		// Заполнение обычных текстовых полей
 		pages.inputText(new Elements().new Values().pages);
@@ -217,9 +216,8 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		//region Variables
 		String GridId = new Elements(). new Resolution_Elements().GridId;
 		WebElement grid = new Elements().new Resolution_Elements().grid_Body(driver, GridId);
-		String resolution = "";
-		if(checkType == "add") resolution = new Elements().new Resolution_Elements().new Values().resolution;
-		else if(checkType == "edit") resolution = new Elements().new Resolution_Elements().new Values().resolution + "2";
+		String resolution = new Elements().new Resolution_Elements().new Values().resolution;
+		if(checkType != "add") resolution = new Elements().new Resolution_Elements().new Values().resolution + "2";
 		String resolutionDate = new Elements().new Resolution_Elements().new Values().resolutionDate;
 		String author = new Elements().new Resolution_Elements().new Values().author;
 		String projectType = new Elements().new Resolution_Elements().new Values().projectType;
@@ -235,6 +233,11 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 										  resolutionDate, 
 										  resolution, 										   
 										  deadlineDate};
+		if(checkType == "view")
+		{
+			int[] elements_ToRemove = new int[]{ 0, 0};
+			ExpectedValues[0] = new CustomMethods().new Grid().arrayElements_Remove(ExpectedValues[0], elements_ToRemove);
+		}
 		
 		// Вытянуть последнее значения из грида
 		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
@@ -373,6 +376,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		waitForBlockStatus(new Elements().new Resolution_Elements().download_Div(driver, GridId), false);
 	}
 	
+	// Проверка отредактированной карточки
 	public void editedCard_Check()
 	{
 		//region Variables	
@@ -386,42 +390,79 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		resolution_grid_check("edit");
 	}
 	
-	public IncomingDocs_PerformControlPage goTo_PerformControl_Page()
+	// Проверка хэдера карточки
+	public void cardHeader_Check()
 	{
 		//region Variables	
-		Select docWorkStage = new Elements().getDocWorkStage_Select();
+		String index = new CustomMethods().new WorkWith_TextFiles().file_Read(TextFiles_Path + "IncomingDoc_Index");
+		String regDate = new Elements().new Values().regDate;
+		String expected_Header = "Вхідні документи " + index + " від " + regDate;
+		//endregion
+		
+		new CommonActions().cardHeader_Check(driver, expected_Header);
+	}
+	
+	// Изменить краткое содержание
+	public IncomingDocs_RegistrationPage shortSummary_Edit()
+	{
+		// Установить краткое содержание
+		new Elements().getShortSummary_Text().click();
+		sendKeys("2");
+		
+		// Сохранить введенную инфу
+		new Elements().save_Button(driver).click();
+		new CommonActions().simpleWait(3);
+				
+		return new IncomingDocs_RegistrationPage(driver).waitUntilAvailable();		
+	}
+	
+	public IncomingDocs_PerformControlPage goTo_PerformControl_Page(String go_Type)
+	{
+		//region Variables	
 		WebElement insetLink = new Elements().inset_Link(driver, "2");
 		Custom info = new Elements().new SaveOrNot_Elements().info_PopUp(driver);
 		Button yes = new Elements().new SaveOrNot_Elements().yes_Button(driver);
 		//endregion
 		
 		// Изменение этапа обработки
-		docWorkStage.selectByVisibleText(new Elements().new Values().docWorkStage);
+		if(go_Type == "tricky") new Elements().getDocWorkStage_Select().selectByVisibleText(new Elements().new Values().docWorkStage);
 		
 	 	// Клик по вкладке
 		insetLink.click();
 		
-		//Отказ в сохранении данных
-		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(info);
-		
-		// Проверка сообщеия
-		assertThat(info.getText(), is(equalTo(new Elements().new SaveOrNot_Elements().new Values().info)));
-		
-		// Закрытие поп-апа
-		yes.click();
-		new CommonActions().simpleWait(1);
+		// С проверкой поп-апа при уходе с не сохраненными данными
+		if(go_Type == "tricky")
+		{
+			//Отказ в сохранении данных
+			new CommonActions().simpleWait(1);
+			waitUntilUnblocked(info);
+			
+			// Проверка сообщеия
+			assertThat(info.getText(), is(equalTo(new Elements().new SaveOrNot_Elements().new Values().info)));
+			
+			// Закрытие поп-апа
+			yes.click();
+			new CommonActions().simpleWait(1);
+		}
 		
 		return new IncomingDocs_PerformControlPage(driver).waitUntilAvailable();
+	}
+	
+	// Возврат ко всем документам
+	public IncomingDocs_Page card_Close()
+	{
+		// Закрытие редактирования карточки
+		new Elements().close_Button(driver).click();
+		new CommonActions().simpleWait(1);
+		
+		return new IncomingDocs_Page(driver).waitUntilAvailable();
 	}
 	
 	
 	/*__________________________________________________ Элементы _______________________________________________________*/	
 	
 	public class Elements extends CommonElements.Card_Elements.General_Elements
-	{	
-	
-		
+	{		
 		// 'Этап обработки документа'
 		private Select getDocWorkStage_Select() 		{ return new Select(driver.findElement(By.id("509"))); } 
 			
@@ -477,23 +518,23 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		private WebElement getNotes_Frame()  	 		{ return driver.findElement(By.id("customTextEditor_524_DesignIFrame")); }	
 		
 		// Значения, которые будут использоваться для заполнения элементов
-		private class Values
+		public class Values
 		{
 			private String docWorkStage = "Новий";   								// 'Этап обработки документа'
 			private String docWorkStage_Edit = "В обробці";   						// 'Этап обработки документа'
-			private String regDate = "01.01.2020"; 									// 'Дата регистрации'
-			private String regulation = "Інформаційні"; 							// 'Контроль'
+			protected String regDate = "01.01.2020"; 									// 'Дата регистрации'
+			protected String regulation = "Інформаційні"; 							// 'Контроль'
 			private String docType = "Акт"; 										// 'Вид документа'
 			private String docForm = "Електронна пошта"; 							// 'Форма поступления документа'
 			private String pages = "1"; 											// 'Листов'
 			private String additionsCount = "2"; 									// 'Дополнений'
 			private String corrType = "Суди"; 										// 'Вид кореспондента'
-			private String correspondent = "Суд_2"; 								// 'Корреспондент'
+			protected String correspondent = "Суд_2"; 								// 'Корреспондент'
 			private String corrInfo = "Сидоров С.С"; 								// 'ФИО корреспондента'
-			private String corrDate = new CustomMethods().getCurrentDate(); 		// 'Дата корреспондента'
-			private String corrNum = "222111"; 										// '№ корреспондента'
+			protected String corrDate = new CustomMethods().getCurrentDate(); 		// 'Дата корреспондента'
+			protected String corrNum = "222111"; 										// '№ корреспондента'
 			private String caseName = "Номенклатура Тест_1"; 						// 'Название дела по номенклатуре'
-			private String shortSummary = "Зміст_"; 								// 'Краткое содержание'
+			protected String shortSummary = "Зміст_"; 								// 'Краткое содержание'
 			private String notes = "Примітка_"; 									// 'Заметки'
 		}
 		

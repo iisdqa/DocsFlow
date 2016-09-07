@@ -36,7 +36,17 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 	@Override
 	public boolean isAvailable()
 	{
-		return new Elements().new PerformControl_Elements().add_Button().isAvailable();
+		return new Elements().close_Button(driver).isAvailable();
+	}
+	
+	public void wait_ForPageReady()
+	{
+		//region Variables
+		String grid_Id = new Elements().new PerformControl_Elements().grid_Id;
+		//endregion
+		
+		new CustomMethods().simpleWait(1);
+		waitForBlockStatus(new Elements().new PerformControl_Elements().new Grid().download_Div(driver, grid_Id), false);
 	}
 	
 	public void control_Add()
@@ -94,10 +104,10 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		String controller = new Elements().new PerformControl_Elements().new Values().controller;
 		String performer = new Elements().new PerformControl_Elements().new Values().performer;
 		String deadlineDate = new Elements().new PerformControl_Elements().new Values().deadlineDate;
-		if(checkType == "refreshed") deadlineDate = new CustomMethods().getChangedDate(7);
+		if(checkType == "refreshed" || checkType == "view") deadlineDate = new CustomMethods().getChangedDate(7);
 		String periodicity = new Elements().new PerformControl_Elements().new Values().periodicity;
 		String performDate = " ";
-		if(checkType == "edit")performDate =	new Elements().new PerformControl_Elements().new Values().performDate;
+		if(checkType == "edit")performDate = new Elements().new PerformControl_Elements().new Values().performDate;
 		String condition = new Elements().new PerformControl_Elements().new Values().condition;
 		//endregion
 		
@@ -115,6 +125,14 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 										  periodicity,
 										  performDate,
 										  condition};
+		
+		// Удалить лишние поля для просмотровой формы
+		if(checkType == "view")
+		{
+			int[] elements_ToRemove = new int[]{ 0, 0};
+			ExpectedValues[0] = new CustomMethods().new Grid().arrayElements_Remove(ExpectedValues[0], elements_ToRemove);
+		}
+		
 		
 		// Вытянуть последнее значения из грида
 		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
@@ -242,7 +260,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		String oldDate = new Elements().new TermsChange_Elements().new Values().oldDate;
 		String newDate = new Elements().new TermsChange_Elements().new Values().newDate;
 		String reason = new Elements().new TermsChange_Elements().new Values().reason;
-		if (checkType == "edit") reason = new Elements().new TermsChange_Elements().new Values().reason + "2";
+		if (checkType != "add") reason = new Elements().new TermsChange_Elements().new Values().reason + "2";
 		//endregion
 		
 		// Определение ожидаемых значений
@@ -253,6 +271,13 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 										  oldDate, 
 										  newDate, 
 										  reason};
+		
+		// Удалить лишние поля для просмотровой формы
+		if(checkType == "view")
+		{
+			int[] elements_ToRemove = new int[]{ 0, 0};
+			ExpectedValues[0] = new CustomMethods().new Grid().arrayElements_Remove(ExpectedValues[0], elements_ToRemove);
+		}
 		
 		// Вытянуть последнее значения из грида
 		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
@@ -388,9 +413,11 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 	public void control_Delete(String rowToDelete)
 	{
 		//region Variables
+		String grid_Id = new Elements().new PerformControl_Elements().grid_Id;
 		Button deleteButton = new Elements().new PerformControl_Elements().new Grid().delete_Button(rowToDelete);
 		Custom info = new Elements().new DeletionPopUp_Elements().info_PopUp(driver);
 		Button yes = new Elements().new DeletionPopUp_Elements().yes_Button(driver);
+		Button add_Button = new Elements().new PerformControl_Elements().new Grid().add_Button(driver, grid_Id);
 		//endregion
 		
 		// Открытие поп-апа
@@ -404,12 +431,39 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Закрытие поп-апа
 		yes.click();
 		new CommonActions().simpleWait(1);
+		add_Button.waitUntilAvailable();
+		waitForBlockStatus(new Elements().new PerformControl_Elements().new Grid().download_Div(driver, grid_Id), false);
 	}
 	
-	public IncomingDocs_FilesPage goTo_Files_Page()
+	public void termsChange_Delete()
+	{
+		//region Variables
+		String grid_Id = new Elements().new TermsChange_Elements().grid_Id;
+		Button deleteButton = new Elements().new TermsChange_Elements().new Grid().delete_Button(driver, grid_Id);
+		Custom info = new Elements().new DeletionPopUp_Elements().info_PopUp(driver);
+		Button yes = new Elements().new DeletionPopUp_Elements().yes_Button(driver);
+		Button add_Button = new Elements().new TermsChange_Elements().new Grid().add_Button(driver, grid_Id);
+		//endregion
+		
+		// Открытие поп-апа
+		deleteButton.click();
+		new CommonActions().simpleWait(1);
+		waitUntilUnblocked(info);
+		
+		// Проверка сообщения
+		assertThat(info.getText(), is(equalTo(new Elements().new DeletionPopUp_Elements().new Values().message)));
+		
+		// Закрытие поп-апа
+		yes.click();
+		new CommonActions().simpleWait(1);
+		add_Button.waitUntilAvailable();
+		waitForBlockStatus(new Elements().new TermsChange_Elements().new Grid().download_Div(driver, grid_Id), false);
+	}
+	
+	public IncomingDocs_FilesPage goTo_Files_Page(String go_Type)
 	{
 		//region Variables	
-		WebElement insetLink = new IncomingDocs_RegistrationPage(driver).new Elements().inset_Link(driver, "58");
+		WebElement insetLink = new IncomingDocs_RegistrationPage(driver).new Elements().inset_Link(driver, "3");
 		Custom info = new IncomingDocs_RegistrationPage(driver).new Elements().new SaveOrNot_Elements().info_PopUp(driver);
 		Button yes = new IncomingDocs_RegistrationPage(driver).new Elements().new SaveOrNot_Elements().yes_Button(driver);
 		//endregion
@@ -417,16 +471,20 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 	 	// Клик по вкладке
 		insetLink.click();
 		
-		//Отказ в сохранении данных
-		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(info);
-		
-		// Проверка сообщеия
-		assertThat(info.getText(), is(equalTo(new IncomingDocs_RegistrationPage(driver).new Elements().new SaveOrNot_Elements().new Values().info)));
-		
-		// Закрытие поп-апа
-		yes.click();
-		new CommonActions().simpleWait(1);
+		// С проверкой поп-апа при уходе с не сохраненными данными
+		if(go_Type == "tricky")
+		{
+			//Отказ в сохранении данных
+			new CommonActions().simpleWait(1);
+			waitUntilUnblocked(info);
+			
+			// Проверка сообщеия
+			assertThat(info.getText(), is(equalTo(new IncomingDocs_RegistrationPage(driver).new Elements().new SaveOrNot_Elements().new Values().info)));
+			
+			// Закрытие поп-апа
+			yes.click();
+			new CommonActions().simpleWait(1);
+		}
 		
 		return new IncomingDocs_FilesPage(driver).waitUntilAvailable();
 	}
@@ -448,7 +506,8 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Блок элементов для грида 'Контроль исполнения'
 		private class PerformControl_Elements extends CommonElements.Card_Elements.Pop_Ups
 		{
-			private String grid_Id = "539";				// [id] грида
+			// [id] грида
+			private String grid_Id = "539";				
 			
 			// Кнопка добавления
 			private Button add_Button()   				{ return new Button(driver, By.id("btnAdd" + grid_Id)); }			

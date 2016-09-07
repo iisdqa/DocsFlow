@@ -1,9 +1,11 @@
 package com.docsflow.core.web.pages.docs;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import com.docsflow.core.web.CommonActions;
 import com.docsflow.core.web.CommonElements;
+import com.docsflow.core.web.CustomMethods;
 import com.docsflow.core.web.WebPage;
 
 public class IncomingDocs_Page extends WebPage<IncomingDocs_Page>
@@ -28,11 +30,16 @@ public class IncomingDocs_Page extends WebPage<IncomingDocs_Page>
 		return new Elements().new Units_Tree().units_Accordion(driver).isAvailable();
 	}
 
+	
+	/*________________________________________________________ Actions ___________________________________________________*/
+	
+	// Ожидание готовности странички
 	public void waitFor_PageReady()
 	{
 		waitUntilUnblocked(new Elements().new Units_Tree().tree_Div(driver));
 	}
 	
+	// Открыть дерево подразделений
 	public void tree_Open()
 	{
 		// Путь к подразделению
@@ -42,10 +49,17 @@ public class IncomingDocs_Page extends WebPage<IncomingDocs_Page>
 		new CommonActions().tree_Handler(driver, tree_Path);
 		
 		// Ожидание прогрузки грида
-		waitForBlockStatus(new Elements().new Grid().gridDownload_Div(driver), false);
+		gridDownload_Wait();
+	}
+	
+	// Ожидание прогрузки грида
+	public void gridDownload_Wait()
+	{
+		waitForBlockStatus(new Elements().new Grid().download_Div(driver), false);
 		new CommonActions().simpleWait(1);
 	}
 	
+	// Перейти к добавлению карточки документа
 	public IncomingDocs_RegistrationPage card_add()
 	{
 		// Нажать на кнопку добавления
@@ -60,16 +74,36 @@ public class IncomingDocs_Page extends WebPage<IncomingDocs_Page>
 		return new IncomingDocs_RegistrationPage(driver).waitUntilAvailable();	
 	}
 	
-/*	public void grid_Check()
+	// Поиск карточки
+	public void card_Search()
+	{
+		//region Variables	
+		String fieldName = new Elements().new Filtration_Accordion().new Values().fieldName;
+		String matchType = new Elements().new Filtration_Accordion().new Values().matchType;
+		String value = new Elements().new Filtration_Accordion().new Values().value;
+		//endregion
+		
+		// Фильтрация
+		new CommonActions().grid_Filtration(driver, fieldName, matchType, value);
+		
+		// Ожидание прогрузки грида
+		waitForBlockStatus(new Elements().new Grid().download_Div(driver), false);
+	}
+	
+	// Проверка найденной карточки
+	public void card_Check(String checkType)
 	{
 		//region Variables
-		WebElement grid = new Elements().new Files().getGridBody();
-		String date = new Elements().new Files().new Values().date;
-		String user = new Elements().new Files().new Values().user;
-		String fileName = new Elements().new Files().new Values().fileName;
-		String comment = new Elements().new Files().new Values().comment;
-		if (checkType == "edit") comment = new Elements().new Files().new Values().comment + " 2";
-		Select docWorkStatus = new Elements().getDocWorkStage_Select();
+		WebElement grid = new Elements().new Grid().grid_Body(driver);
+		String index = new Elements().new Filtration_Accordion().new Values().value;
+		String number  = index.substring(index.lastIndexOf('0') + 1);
+		String regDate = new IncomingDocs_RegistrationPage(driver).new Elements().new Values().regDate;
+		String correspondent = new IncomingDocs_RegistrationPage(driver).new Elements().new Values().correspondent;
+		String corrNum = new IncomingDocs_RegistrationPage(driver).new Elements().new Values().corrNum;
+		String corrDate = new IncomingDocs_RegistrationPage(driver).new Elements().new Values().corrDate;
+		String shortSummary = new IncomingDocs_RegistrationPage(driver).new Elements().new Values().shortSummary;
+		if (checkType == "edit") shortSummary = shortSummary + "2";
+		String regulation = new IncomingDocs_RegistrationPage(driver).new Elements().new Values().regulation;
 		//endregion
 		
 		// Определение ожидаемых значений
@@ -77,22 +111,47 @@ public class IncomingDocs_Page extends WebPage<IncomingDocs_Page>
 		ExpectedValues[0] = new String[] {"",
 										  "",
 										  "",
-										  fileName, 
-										  date, 
-										  user, 
-										  comment};
+										  number, 
+										  index, 
+										  regDate, 
+										  correspondent,
+										  corrNum,
+										  corrDate,
+										  shortSummary,
+										  regulation};
 		
 		// Вытянуть последнее значения из грида
 		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
 		
 		// Проверка значений грида
-		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);	
-		
-		// Проверка этапа обработки
-		if (checkType == "add") assertThat(docWorkStatus.getFirstSelectedOption().getText(), is(equalTo(new Elements().new Values().docWorkStage)));
-	}*/
+		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);
+	}
 	
-	/*__________________________________________________ Элементы _______________________________________________________*/
+	// Переход к редактированию карточки
+	public IncomingDocs_RegistrationPage card_Edit()
+	{
+		// Нажать на кнопку редактирования
+		new Elements().new Grid().edit_Button(driver).click();
+		new CommonActions().simpleWait(2);
+		
+		return new IncomingDocs_RegistrationPage(driver).waitUntilAvailable();	
+	}
+	
+	// Переход к просмотру карточки
+	public IncomingDocs_RegistrationPage card_View()
+	{
+		// Нажать на кнопку просмотра
+		new Elements().new Grid().view_Button(driver).click();
+		new CommonActions().simpleWait(2);
+		
+		return new IncomingDocs_RegistrationPage(driver).waitUntilAvailable();	
+	}
+	
+	/*____________________________________________________________________________________________________________________*/
+	
+	
+	
+	/*__________________________________________________ Elements ________________________________________________________*/
 	
 	private class Elements
 	{
@@ -101,5 +160,18 @@ public class IncomingDocs_Page extends WebPage<IncomingDocs_Page>
 		
 		// Унаследовать элементы грида
 		private class Grid extends CommonElements.BaseGrid_Elements {}
+		
+		// Унаследовать элементы аккордеона фильтрации
+		private class Filtration_Accordion extends CommonElements.FiltrationControl_Elements 
+		{
+			// Используемые значения
+			private class Values
+			{
+				private String fieldName = "Індекс документа";
+				private String matchType = "Дорівнює";
+				private String value = new CustomMethods().new WorkWith_TextFiles().file_Read(TextFiles_Path + "IncomingDoc_Index");
+			}
+		}	
 	}
+	/*____________________________________________________________________________________________________________________*/
 }

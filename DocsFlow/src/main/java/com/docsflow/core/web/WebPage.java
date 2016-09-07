@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.docsflow.core.EnvironmentConfiguration;
 import com.docsflow.core.YamlEnvironment;
+import com.docsflow.core.web.pages.other.LogInPage;
 import com.docsflow.core.web.pages.other.MainPage;
 
 public abstract class WebPage<T extends WebPage<T>> extends Component<T>
@@ -14,7 +15,7 @@ public abstract class WebPage<T extends WebPage<T>> extends Component<T>
 			       						     ENVIRONMENT.host + ":" + 
 			       						     ENVIRONMENT.port;
 	protected static final String BASE_DIR = System.getProperties().get("basedir").toString();
-	protected static final String TextFiles_Path = BASE_DIR + "/storage/files/temp_files/text_files/";
+	protected static final String TextFiles_Path = BASE_DIR + "\\storage\\files\\temp_files\\text_files\\";
 	
 	public WebPage(WebDriver driver)
 	{
@@ -33,5 +34,11 @@ public abstract class WebPage<T extends WebPage<T>> extends Component<T>
 	public MainPage backToMainPage()
 	{
 		return new CommonActions().backToMainPage(driver);
+	}
+	
+	// Выход из системы
+	public LogInPage user_Out()
+	{
+		return new CommonActions().userOut(driver);
 	}
 }
