@@ -14,7 +14,9 @@ import com.docsflow.core.web.CustomMethods;
 public class DbQueries 
 {	
 	private static String queriesPath = "C:\\Selenium_TestData\\Projects\\DocsFlow\\SQL\\SQL_Queries\\";
+	private static String TextFiles_Path = System.getProperties().get("basedir").toString() + "\\storage\\files\\temp_files\\text_files\\";
 	
+	// Тесты по блоку 'Документи'
 	public static class DocsTests
 	{
 		public static class Incoming_Docs
@@ -22,7 +24,7 @@ public class DbQueries
 			public static class Select_Queries
 			{
 				// Определение ошибки, которую будем выводить в случае падения запроса
-			    public static final String IndexesCountDefine_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке выборки количества документов из БД за определенный период.\r\nТекст ошибки:\r\n";
+			    public static String IndexesCountDefine_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке выборки количества документов из БД за определенный период.\r\nТекст ошибки:\r\n";
  			 			    
 			    // Определение текста запроса
 			    public static String IndexesCount_Define = "select dc.DNM_NUM" + "\r\n" +
@@ -34,11 +36,41 @@ public class DbQueries
 			public static class Deletion_Queries
 			{
 				// Определение ошибки, которую будем выводить в случае падения запроса
-			    public static final String DocDeletion_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке удаления входящего документа.\r\nТекст ошибки:\r\n";
+			    public static String DocDeletion_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке удаления входящего документа.\r\nТекст ошибки:\r\n";
  			 			    
 			    // Определение текста запроса
-			    public static String DocDeletion_Statement = new CustomMethods().new WorkWith_TextFiles().file_Read(queriesPath + "incoming_doc_deletion.sql");
+			    public static String DocDeletion_Statement()
+			    {
+			    	String statement = new CustomMethods().new WorkWith_TextFiles().file_Read(queriesPath + "incoming_doc_deletion.sql");
+			    	String docIndex = new CustomMethods().new WorkWith_TextFiles().file_Read(TextFiles_Path + "IncomingDoc_Index");
+			    	statement = statement.replace("&", docIndex);
+			    	return statement;
+			    }
 			}	
+		}
+	}
+	
+	// Тесты по блоку 'ЦНАП'
+	public static class CnapTests
+	{
+		// Реестры
+		public static class Registers
+		{
+			// Реестр 'ФО'
+			public static class Individuals
+			{
+				// Запросы для удаления данных
+				public static class Deletion_Queries
+				{
+					// Определение ошибок, которые будем выводить в случае падения запросов
+				    public static String FoDeletion_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке удаления карточек в реестре 'ФО'.\r\nТекст ошибки:\r\n";
+				    public static String RegPlaceDeletion_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке удаления страны, области, города и тд. из словаря НДИ.\r\nТекст ошибки:\r\n";		    
+				    
+				    // Определение самих запросов
+				    public static String FoDeletion_Statement = new CustomMethods().new WorkWith_TextFiles().file_Read(queriesPath + "fo_deletion.sql");
+				    public static String RegPlaceDeletion_Statement = new CustomMethods().new WorkWith_TextFiles().file_Read(queriesPath + "registration_place_deletion.sql");
+				}	
+			}
 		}
 	}
 	

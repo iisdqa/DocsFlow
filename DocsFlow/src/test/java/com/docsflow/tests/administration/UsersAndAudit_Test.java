@@ -68,7 +68,7 @@ public class UsersAndAudit_Test extends BaseTest
 			
 			mainPage = authorizationPage.logInAs("auto_user", "auto_user");
 			mainPage.userNameCheck("Тестовко Василий Петрович");
-			authorizationPage = mainPage.userOut();
+			authorizationPage = mainPage.user_Out();
 			
 			// Проверка аудита
 			

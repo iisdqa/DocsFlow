@@ -70,13 +70,6 @@ public class MainPage extends WebPage<MainPage>
 		assertThat(actualUserName, is(equalTo(expectedUserName)));
 	}
 	
-	// Выход из системы
-	public LogInPage userOut()
-	{
-		// Выход из системы
-		return new CommonActions().userOut(driver);
-	}
-	
 	// Навигация по меню
 	public class goTo
 	{

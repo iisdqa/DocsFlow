@@ -132,7 +132,7 @@ public abstract class CommonElements
 		}
 		
 		// Поп-апы
-		public static class Pop_Ups
+		public static class Pop_Ups extends CommonElements.General_PopUps
 		{
 			// Сообщение при удалении записи
 			public String deletion_Message = "Обраний документ буде видалено, продовжити?";
@@ -142,21 +142,6 @@ public abstract class CommonElements
 			
 			// Сообщение при уходе без сохранения данных
 			public String cardGoAway_Message = "Дані на сторінці були змінені. Закрити картку без збереження даних?";
-			
-			// Информационный поп-ап
-			public Custom info_PopUp(WebDriver driver)   				{ return new Custom(driver, By.cssSelector(".ui-dialog-content.ui-widget-content")); }	
-			
-			// Кнопка 'Так'
-			public Button yes_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Так')]")); }
-			
-			// Кнопка 'Ні'
-			public Button no_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Ні')]")); }
-			
-			// Кнопка 'Закрити'
-			public Button close_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Закрити')]")); }
-			
-			// Кнопка сохранения
-			public Button save_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[@class='ui-button-text' and text()='Зберегти']")); }
 		}
 		
 		// Блок файлов
@@ -178,5 +163,24 @@ public abstract class CommonElements
 			// Кнопка 'Видалити зв'язок'
 			public Button deleteLink_Button(WebDriver driver)   			{ return new Button(driver, By.id("btnDelLink")); }
 		}
+	}
+	
+	// Общие элементы поп-апов
+	public static class General_PopUps
+	{
+		// Информационный поп-ап
+		public Custom info_PopUp(WebDriver driver)   				{ return new Custom(driver, By.cssSelector(".ui-dialog-content.ui-widget-content")); }	
+		
+		// Кнопка 'Так'
+		public Button yes_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Так')]")); }
+		
+		// Кнопка 'Ні'
+		public Button no_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Ні')]")); }
+		
+		// Кнопка 'Закрити'
+		public Button close_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Закрити')]")); }
+		
+		// Кнопка сохранения
+		public Button save_Button(WebDriver driver)   				{ return new Button(driver, By.xpath("//span[@class='ui-button-text' and text()='Зберегти']")); }
 	}
 }

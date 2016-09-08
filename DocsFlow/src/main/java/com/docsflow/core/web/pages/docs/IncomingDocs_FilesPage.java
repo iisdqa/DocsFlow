@@ -222,9 +222,8 @@ private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Edit/55/";
 		private class Files extends CommonElements.Card_Elements.Card_Files_Elements
 		{
 			// Название файла
-			public TextInput file_Input()      			{ return new TextInput(driver, By.id("569_fname"));
+			public TextInput file_Input()      			{ return new TextInput(driver, By.id("569_fname")); }
 			
-			}
 			// 'Комментарий'
 			public Custom comment_Text()   				{ return new Custom(driver, By.id("customTextEditor_572")); }
 			
@@ -245,6 +244,5 @@ private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Edit/55/";
 		}
 		
 		private class LinkedDocs extends CommonElements.Card_Elements.Card_LinkedDocs_Elements{}
-	
 	}
 }

@@ -22,7 +22,7 @@ public class IncomingDocsAdd_Test extends BaseTest
 	    String ErrorMessage = DbQueries.DocsTests.Incoming_Docs.Deletion_Queries.DocDeletion_ErrorMessage;
 	    
 	    // Определение текста запроса
-	    String DeletionStatement = DbQueries.DocsTests.Incoming_Docs.Deletion_Queries.DocDeletion_Statement;
+	    String DeletionStatement = DbQueries.DocsTests.Incoming_Docs.Deletion_Queries.DocDeletion_Statement();
 	    
 	    // Выполнение запроса
 	    new DbStatements().SimpleStatement(sqlConnection, DeletionStatement, ErrorMessage);
@@ -112,7 +112,7 @@ public class IncomingDocsAdd_Test extends BaseTest
 			docsPage.tree_Open();
 			docsPage.card_Search();
 			docsPage.card_Check("add");
-			editPage = docsPage.card_Edit();
+		    editPage = docsPage.card_Edit();
 			editPage.cardHeader_Check();
 			editPage.resolution_grid_check("edit");
 			editPage = editPage.shortSummary_Edit();
