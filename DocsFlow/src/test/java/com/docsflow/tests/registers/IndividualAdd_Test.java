@@ -10,6 +10,7 @@ import com.docsflow.core.database.DbStatements;
 import com.docsflow.core.web.pages.other.Handbooks_Page;
 import com.docsflow.core.web.pages.other.LogInPage;
 import com.docsflow.core.web.pages.other.MainPage;
+import com.docsflow.core.web.pages.registers.Individuals_FilesPage;
 import com.docsflow.core.web.pages.registers.Individuals_Page;
 import com.docsflow.core.web.pages.registers.Individuals_RegPage;
 
@@ -18,7 +19,14 @@ public class IndividualAdd_Test extends BaseTest
 	@BeforeMethod(alwaysRun = true, dependsOnMethods = {"setUp"})
 	public void DeletionViaDatabase_BeforeTest() throws Exception
 	{
-		
+	    // Определение ошибки, которая будет появляться в случае падения запроса
+	    String ErrorMessage = DbQueries.CnapTests.Registers.Individuals.Deletion_Queries.FoDeletion_ErrorMessage;
+	    
+	    // Определение текста запроса
+	    String DeletionStatement = DbQueries.CnapTests.Registers.Individuals.Deletion_Queries.FoDeletion_Statement;
+	    
+	    // Выполнение запроса
+	    new DbStatements().SimpleStatement(sqlConnection, DeletionStatement, ErrorMessage);
 	}
 	
 	@Test(groups = { "IndividualAdd_Test" })
@@ -28,7 +36,11 @@ public class IndividualAdd_Test extends BaseTest
 		LogInPage authorizationPage = new MainPage(driver).redirectToLogInPage();
 		MainPage mainPage = authorizationPage.logInAs("admin_auto", "123456");
 		
-		// Добавление записи в словарь НДИ(для обновления кэша веб-сервера)
+		
+		Individuals_RegPage addPage = mainPage.new goTo().direct_Redirect();
+		
+		
+/*		// Добавление записи в словарь НДИ(для обновления кэша веб-сервера)
 		Handbooks_Page handbooksPage = mainPage.new goTo().handbooksPage();
 		handbooksPage.wait_ForPageReady();
 		handbooksPage.dictionaryCache_Update(sqlConnection);
@@ -37,22 +49,55 @@ public class IndividualAdd_Test extends BaseTest
 		mainPage = handbooksPage.backToMainPage();
 		Individuals_Page individuals_Page = mainPage.new goTo().new CnapBlock().individuals_Page();
 		individuals_Page.gridDownload_Wait();
-		Individuals_RegPage addPage = individuals_Page.cardAdd_Call();
+		Individuals_RegPage addPage = individuals_Page.cardAdd_Call();*/
 		
 		// Заполнение + сохранение карточки
+		// Проверка добавленной карточки
+		addPage.country_Add();
 		addPage.personInfo_Fill();
 		addPage.docInfo_Fill();
 		addPage.bornPlaceInfo_Fill();
 		addPage.dictValue_SetInability_Check();
 		addPage.residenceInfo_Fill();
 		Individuals_RegPage editPage = addPage.card_Save();
+		editPage.card_Check();
+		
+		// Проверка подсвечивания записи в гриде
+		Individuals_Page individuals_Page = editPage.card_Close();
+		individuals_Page.gridDownload_Wait();
+		individuals_Page.rowHighlighted_Check();
+		
+		// Добавление 2го ФО
+		addPage = individuals_Page.cardAdd_Call();
+		addPage.secondCard_Fill();
+		addPage.card_Save();
+		individuals_Page = editPage.card_Close();
+		
+		// Проверка фильтрации на страничке реестра ФО
+		individuals_Page.gridDownload_Wait();
+		individuals_Page.card_Search();
+		individuals_Page.card_Check("add");
 		
 		
+		
+		// Работа со вкладкой 'Связанные документы и файлы'
+		
+		/*Individuals_FilesPage filesPage = editPage.goTo_Files_Page();		
+		filesPage.file_Add();
+		filesPage.filesGrid_Check("add");
+		filesPage.inset_Save();
+		filesPage.filesGrid_Check("add");
+		filesPage.file_Edit();
+		filesPage.filesGrid_Check("edit");
+		filesPage.inset_Save();
+		filesPage.filesGrid_Check("edit");	
+		filesPage.fileUnload_check();
+		filesPage.file_Delete();*/
 		
 		
 	}
 	
-	@AfterMethod(alwaysRun = true, dependsOnMethods = {"IndividualAdd_TestMethod"})
+	@AfterMethod(alwaysRun = true, groups = {"DrugChanges_Test"})
 	public void DeletionViaDatabase_AfterTest() throws Exception
 	{
 	    // Определение ошибки, которая будет появляться в случае падения запроса

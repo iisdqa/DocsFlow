@@ -156,7 +156,7 @@ public class CommonActions
 		assertThat(info_PopUp.getText(), is(equalTo(askMessage)));
 		
 		// Нажать 'Так'
-		new Elements().new PopUps().yes_Button(driver);
+		new Elements().new PopUps().yes_Button(driver).click();
 		new CustomMethods().simpleWait(1);
 		info_PopUp.waitUntilAvailable();
 		

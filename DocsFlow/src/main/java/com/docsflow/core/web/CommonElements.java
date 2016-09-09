@@ -25,7 +25,7 @@ public abstract class CommonElements
 		// Ссылка возврата на главную страничку(В header(е))
 		public Link backToMain_Link(WebDriver driver)
 		{
-			return new Link(driver, By.className("header_link"));
+			return new Link(driver, By.className("header-link"));
 		}
 		
 		// <div> в котором лежит главная меню

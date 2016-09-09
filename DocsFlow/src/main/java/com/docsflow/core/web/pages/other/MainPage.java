@@ -23,6 +23,7 @@ import com.docsflow.core.web.pages.docs.IncomingDocs_FilesPage;
 import com.docsflow.core.web.pages.docs.IncomingDocs_PerformControlPage;
 import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage;
 import com.docsflow.core.web.pages.registers.Individuals_Page;
+import com.docsflow.core.web.pages.registers.Individuals_RegPage;
 import com.docsflow.core.web.elements.Text;
 
 public class MainPage extends WebPage<MainPage> 
@@ -112,7 +113,7 @@ public class MainPage extends WebPage<MainPage>
 		public Handbooks_Page handbooksPage()
 		{
 			// Использовать менюшку
-			new CommonActions().menu_Handler(driver, 3, 0);
+			new CommonActions().menu_Handler(driver, 4, 0);
 			
 			return new Handbooks_Page(driver).waitUntilAvailable();
 		}
@@ -173,12 +174,12 @@ public class MainPage extends WebPage<MainPage>
 		
 		
 		// Для тестирования/дебагинга
-		public IncomingDocs_RegistrationPage direct_Redirect()
+		public Individuals_RegPage direct_Redirect()
 		{
-			driver.get(BASE_URL + "/CommonDocs/Docs/View/55/7086");
+			driver.get(BASE_URL + "/CommonDocs/Docs/Add/63");
 			new CommonActions().simpleWait(3);
 			
-			return new IncomingDocs_RegistrationPage(driver).waitUntilAvailable();
+			return new Individuals_RegPage(driver).waitUntilAvailable();
 		}
 	}
 	

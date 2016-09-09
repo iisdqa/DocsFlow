@@ -62,7 +62,7 @@ public class Handbooks_Page extends WebPage<Handbooks_Page>
 		waitUntilClickable(new Elements().new DictValues().new PopUps().new AddEdit().fullValue_Input());
 		new Elements().new DictValues().new PopUps().new AddEdit().fullValue_Input().inputText(fullValue);
 		new Elements().new DictValues().new PopUps().new AddEdit().shortValue_Input().inputText(shortValue);
-		new Elements().new DictValues().new PopUps().save_Button(driver);
+		new Elements().new DictValues().new PopUps().new AddEdit().save_Button().click();
 		new Elements().new DictValues().new Grid().add_Button().waitUntilAvailable();
 		waitForBlockStatus(new Elements().new DictValues().new Grid().download_Div(), false);
 	}
@@ -96,6 +96,9 @@ public class Handbooks_Page extends WebPage<Handbooks_Page>
 					
 					// Краткое значение
 					private TextInput shortValue_Input()				{return new TextInput(driver, By.xpath("//input[contains(@id, 'DICV_SNAME')]"));}
+					
+					// Кнопка сохранения
+					public Button save_Button( )   						{ return new Button(driver, By.xpath("//input[contains(@onclick, 'SaveValueUDB()')]")); }
 					
 					// Используемые значения
 					private class Values

@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.is;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import com.docsflow.core.web.CommonActions;
@@ -246,16 +247,159 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		
 		return new Individuals_RegPage(driver).waitUntilAvailable();
 	}
+	
+	public void card_Check()
+	{
+		//region Variables
+		/*____________________________ 'Особа' _________________________________*/
+		String idCode = new Elements().new PersonInfo().new Values().idCode;
+		String surname = new Elements().new PersonInfo().new Values().surname;
+		String name = new Elements().new PersonInfo().new Values().name;
+		String patronymic = new Elements().new PersonInfo().new Values().patronymic;
+		String gender = new Elements().new PersonInfo().new Values().gender;
+		String citizenship = new Elements().new PersonInfo().new Values().citizenship;
+		String bornDate = new Elements().new PersonInfo().new Values().bornDate;
+		String phone = new Elements().new PersonInfo().new Values().phone;
+		String сellPhone = new Elements().new PersonInfo().new Values().сellPhone;
+		String email = new Elements().new PersonInfo().new Values().email;
+		/*_______________________________________________________________________*/
+		
+		/*____________________________ 'Документ' _________________________________*/
+		String docType = new Elements().new DocInfo().new Values().docType;
+		String serial = new Elements().new DocInfo().new Values().serial;
+		String number = new Elements().new DocInfo().new Values().number;
+		String giveDate = new Elements().new DocInfo().new Values().giveDate;
+		String organization = new Elements().new DocInfo().new Values().organization;
+		/*_______________________________________________________________________*/
+		
+		/*_________________________ 'Місце народження' __________________________*/
+		String country = new Elements().new BornPlaceInfo().new Values().country;
+		String place = new Elements().new BornPlaceInfo().new Values().place;
+		/*_______________________________________________________________________*/
+		
+		/*_________________________ 'Місце реєстрації' __________________________*/
+		String region = new Elements().new ResidenceInfo().new Values().region;
+		String district = new Elements().new ResidenceInfo().new Values().district;
+		String village = new Elements().new ResidenceInfo().new Values().village;
+		String street = new Elements().new ResidenceInfo().new Values().street;
+		String house = new Elements().new ResidenceInfo().new Values().house;
+		/*_______________________________________________________________________*/
+		//endregion
+		
+		// Проверка блока 'Особа'
+		assertThat(new Elements().new PersonInfo().idCode_TextInput().getAttribute("value"), is(equalTo(idCode)));
+		assertThat(new Elements().new PersonInfo().surname_TextInput().getAttribute("value"), is(equalTo(surname)));
+		assertThat(new Elements().new PersonInfo().name_TextInput().getAttribute("value"), is(equalTo(name)));
+		assertThat(new Elements().new PersonInfo().patronymic_TextInput().getAttribute("value"), is(equalTo(patronymic)));
+		assertThat(new Elements().new PersonInfo().gender_Select().getFirstSelectedOption().getText(), is(equalTo(gender)));
+		assertThat(new Elements().new PersonInfo().citizenship_TextInput().getAttribute("value"), is(equalTo(citizenship)));
+		assertThat(new Elements().new PersonInfo().bornDate_TextInput().getAttribute("value"), is(equalTo(bornDate)));
+		assertThat(new Elements().new PersonInfo().phone_TextInput().getAttribute("value"), is(equalTo(phone)));
+		assertThat(new Elements().new PersonInfo().cellPhone_TextInput().getAttribute("value"), is(equalTo(сellPhone)));
+		assertThat(new Elements().new PersonInfo().email_TextInput().getAttribute("value"), is(equalTo(email)));
+		
+		// Проверка блока 'Документ'
+		assertThat(new Elements().new DocInfo().docKind_Select().getFirstSelectedOption().getText(), is(equalTo(docType)));
+		assertThat(new Elements().new DocInfo().serial_TextInput().getAttribute("value"), is(equalTo(serial)));
+		assertThat(new Elements().new DocInfo().number_TextInput().getAttribute("value"), is(equalTo(number)));
+		assertThat(new Elements().new DocInfo().giveDate_TextInput().getAttribute("value"), is(equalTo(giveDate)));
+		assertThat(new Elements().new DocInfo().organization_TextInput().getAttribute("value"), is(equalTo(organization)));
+		
+		// Проверка блока 'Місце народження'
+		assertThat(new Elements().new BornPlaceInfo().country_Select().getFirstSelectedOption().getText(), is(equalTo(country)));
+		assertThat(new Elements().new BornPlaceInfo().place_TextInput().getAttribute("value"), is(equalTo(place)));
+		
+		// Проверка блока 'Місце реєстрації'
+		assertThat(new Elements().new ResidenceInfo().country_TextInput().getAttribute("value"), is(equalTo(country)));
+		assertThat(new Elements().new ResidenceInfo().region_TextInput().getAttribute("value"), is(equalTo(region)));
+		assertThat(new Elements().new ResidenceInfo().district_TextInput().getAttribute("value"), is(equalTo(district)));
+		assertThat(new Elements().new ResidenceInfo().village_TextInput().getAttribute("value"), is(equalTo(village)));
+		assertThat(new Elements().new ResidenceInfo().street_TextInput().getAttribute("value"), is(equalTo(street)));
+		assertThat(new Elements().new ResidenceInfo().house_TextInput().getAttribute("value"), is(equalTo(house)));
+	}
+	
+	public Individuals_Page card_Close()
+	{
+		// Закрытие редактирования карточки
+		new Elements().close_Button(driver).click();
+		new CommonActions().simpleWait(1);
+		
+		return new Individuals_Page(driver).waitUntilAvailable();
+	}
+	
+	public void secondCard_Fill()
+	{
+		//region Variables	
+		/*____________________________ 'Особа' _________________________________*/
+		String idCode = new Elements().new PersonInfo().new Values().second_idCode;
+		String surname = new Elements().new PersonInfo().new Values().surname + "2";
+		String name = new Elements().new PersonInfo().new Values().name + "2";
+		String gender = new Elements().new PersonInfo().new Values().gender;
+		String citizenship = new Elements().new PersonInfo().new Values().citizenship;
+		String bornDate = new Elements().new PersonInfo().new Values().second_bornDate;
+		/*_______________________________________________________________________*/
+		
+		/*____________________________ 'Документ' _________________________________*/
+		String docType = new Elements().new DocInfo().new Values().docType;
+		/*_______________________________________________________________________*/
+		
+		/*_________________________ 'Місце народження' __________________________*/
+		String country = new Elements().new BornPlaceInfo().new Values().country;
+		String place = new Elements().new BornPlaceInfo().new Values().place;
+		/*_______________________________________________________________________*/
+		
+		/*_________________________ 'Місце реєстрації' __________________________*/
+		String street = new Elements().new ResidenceInfo().new Values().street;
+		String house = new Elements().new ResidenceInfo().new Values().house;
+		/*_______________________________________________________________________*/
+		//endregion
+		
+		// Заполнение полей блока 'Особа'
+		new Elements().new PersonInfo().idCode_TextInput().inputText(idCode);
+		new Elements().new PersonInfo().surname_TextInput().inputText(surname);
+		new Elements().new PersonInfo().name_TextInput().inputText(name);
+		new Elements().new PersonInfo().gender_Select().selectByVisibleText(gender);
+		new Elements().new PersonInfo().citizenship_TextInput().inputText(citizenship);
+		new CommonActions().autoCompleteValue_Set(driver, new Elements().new PersonInfo().citizenship_TextInput(), 1);
+		new Elements().new PersonInfo().bornDate_TextInput().inputText(bornDate);
+		
+		// Заполнение полей блока 'Документ'
+		new Elements().new DocInfo().docKind_Select().selectByVisibleText(docType);
+		
+		// Заполнение полей блока 'Місце народження'
+		new Elements().new BornPlaceInfo().country_Select().selectByVisibleText(country);
+		new Elements().new BornPlaceInfo().place_TextInput().inputText(place);
+		
+		// Заполнение полей блока 'Місце реєстрації'
+		new Elements().new ResidenceInfo().street_TextInput().inputText(street);
+		new CommonActions().autoCompleteValue_Set(driver, new Elements().new ResidenceInfo().street_TextInput(), 1);
+		new Elements().new ResidenceInfo().house_TextInput().inputText(house);
+		
+		
+	}
+	
+	public Individuals_FilesPage goTo_Files_Page()
+	{
+		//region Variables	
+		WebElement insetLink = new Elements().inset_Link(driver, "2");
+		//endregion
+				
+	 	// Клик по вкладке
+		insetLink.click();
+		
+		return new Individuals_FilesPage(driver).waitUntilAvailable();
+	}
+	
 	/*___________________________________________________________________________________________________________________*/
 	
 	
 	
 	/*__________________________________________________ Elements _______________________________________________________*/
 	
-	private class Elements extends CommonElements.Card_Elements.General_Elements
+	protected class Elements extends CommonElements.Card_Elements.General_Elements
 	{
 		// Блок 'Особа'
-		private class PersonInfo extends CommonElements.Card_Elements.Pop_Ups
+		protected class PersonInfo extends CommonElements.Card_Elements.Pop_Ups
 		{
 			// 'Громадянство'
 			private Button countryAdd_Button() 			{ return new Button(driver,By.id("705_btn_add")); } 
@@ -276,7 +420,7 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 			private Select gender_Select() 				{ return new Select(driver.findElement(By.id("704"))); } 
 			
 			// 'Громадянство'
-			private TextInput citizenship_TextInput() 	{ return new TextInput(driver,By.id("705")); } 
+			private TextInput citizenship_TextInput() 	{ return new TextInput(driver,By.id("705_auto")); } 
 			
 			// 'Дата народження'
 			private TextInput bornDate_TextInput() 		{ return new TextInput(driver,By.id("706")); } 
@@ -291,15 +435,17 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 			private TextInput email_TextInput() 		{ return new TextInput(driver,By.id("710")); } 
 			
 			// Используемые значения
-			private class Values 
+			protected class Values 
 			{
-				private String idCode = "0007771110";			// 'ІДН'
-				private String surname = "Автоматизатор";		// 'Прізвище'				
-				private String name = "Петро";					// 'Ім'я'				
-				private String patronymic = "Васильович";		// 'По-батькові'				
+				protected String idCode = "0007771110";			// 'ІДН'
+				protected String second_idCode = "7770001110";	// 'ІДН'
+				protected String surname = "Автоматизатор";		// 'Прізвище'				
+				protected String name = "Петро";					// 'Ім'я'				
+				protected String patronymic = "Васильович";		// 'По-батькові'				
 				private String gender = "Чоловіча";				// 'Стать' 				
 				private String citizenship = new ResidenceInfo().new Values().country;	// 'Громадянство'				
-				private String bornDate = "01.01.1975";			// 'Дата народження'				
+				protected String bornDate = "01.01.1975";			// 'Дата народження'	
+				protected String second_bornDate = "02.01.1975";	// 'Дата народження'	
 				private String phone = "(000)1112233";			// 'Телефон'				
 				private String сellPhone = "(099)3332211";		// 'Мобільний телефон'				
 				private String email = "autmtn@email.com";		// 'Email'
@@ -336,7 +482,7 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		}
 		
 		// Блок 'Місце народження'
-		private class BornPlaceInfo
+		protected class BornPlaceInfo
 		{
 			// 'Країна народження'
 			private Select country_Select() 				{ return new Select(driver.findElement(By.id("716"))); } 
@@ -345,10 +491,10 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 			private TextInput place_TextInput() 			{ return new TextInput(driver, By.id("717")); } 
 			
 			// Используемые значения
-			private class Values 
+			protected class Values 
 			{
-				String country = new ResidenceInfo().new Values().country;	// 'Країна народження'
-				String place = "вул. Тестова, д. 11, кв. 1";				// 'Місце народження'
+				private String country = new ResidenceInfo().new Values().country;	// 'Країна народження'
+				protected String place = "вул. Тестова, д. 11, кв. 1";				// 'Місце народження'
 			}
 		}
 		
