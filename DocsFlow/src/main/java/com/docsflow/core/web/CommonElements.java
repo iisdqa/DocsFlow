@@ -142,6 +142,20 @@ public abstract class CommonElements
 			
 			// Сообщение при уходе без сохранения данных
 			public String cardGoAway_Message = "Дані на сторінці були змінені. Закрити картку без збереження даних?";
+			
+			// Сообщение при добавлении записи в словарь
+			public String dictValueAdd_AskMessage(String value) 
+			{
+				String message = "Ви дійсно хочете додати значення '" + value + "' в довідник?";
+				return message;
+			}
+			
+			// Сообщение при успешном добавлении записи в словарь
+			public String dictValueAdd_SuccessMessage(String dictName) 
+			{
+				String message = "Значення успішно додано в довідник '" + dictName + "'";
+				return message;
+			}
 		}
 		
 		// Блок файлов

@@ -1,25 +1,33 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <!--
 <suite name="All tests">
+	<listeners>
+		<listener class-name="com.docsflow.core.Listeners" />
+	</listeners>
+	
 	<test name="preserve-order All tests" preserve-order="true">
 	    <groups>
 	        <define name="other_tests">
       			<include name="UsersAndAudit_Test"/>
-      			<include name="Declarers_Test"/>
-      			<include name="Manufacturers_Test"/>
     		</define>
 			
-			<define name="drug_tests">
-      			<include name="DrugRegistration_Test"/>
-      			<include name="DrugInstructions_Test"/>
-      			<include name="DrugChanges_Test"/>
-      			<include name="DrugReferents_Test"/>
-      			<include name="DrugDeletion_Test"/>
+			<define name="docs_tests">
+      			<include name="IncomingDocsAdd_Test"/>
+    		</define>
+    		
+    		<define name="registers_tests">
+      			<include name="IndividualAdd_Test"/>
+    		</define>
+			
+			<define name="cnap_tests">
+      			<include name=""/>
     		</define>
 			
 			<define name="all_tests">
       			<include name="other_tests"/>
-      			<include name="drug_tests"/>
+      			<include name="docs_tests"/>
+      			<include name="registers_tests"/>
+      			<include name="cnap_tests"/>
     		</define>
     			    
         	<run>
@@ -27,14 +35,9 @@
         	</run>
     	</groups>
     	<classes>
-       		<class name="com.dsbase.administration.tests.UsersAndAudit_Test" />
-    		<class name="com.dsbase.dictionary.tests.Manufacturers_Test" />
-    		<class name="com.dsbase.dictionary.tests.Declarers_Test" />
-    		<class name="com.dsbase.drug_registry.tests.DrugRegistration_Test" />
-    		<class name="com.dsbase.drug_registry.tests.DrugInstructions_Test" />
-    		<class name="com.dsbase.drug_registry.tests.DrugChanges_Test" />
-    		<class name="com.dsbase.drug_registry.tests.DrugReferents_Test" />
-    		<class name="com.dsbase.drug_registry.tests.DrugDeletion_Test" />
+       		<class name="com.docsflow.tests.administration.UsersAndAudit_Test" />
+			<class name="com.docsflow.tests.docs.IncomingDocsAdd_Test" />
+    		<class name="com.docsflow.tests.registers.IndividualAdd_Test" /> 		
     	</classes>
 	</test>
 </suite>
@@ -48,11 +51,11 @@
 	<test name="preserve-order Other tests" preserve-order="true">
 	    <groups>
         	<run>
-      			<include name="IncomingDocsAdd_Test"/>
+      			<include name="IndividualAdd_Test"/>
         	</run>
     	</groups>
     	<classes>
-    		<class name="com.docsflow.tests.docs.IncomingDocsAdd_Test" />
+    		<class name="com.docsflow.tests.registers.IndividualAdd_Test" />
     	</classes>
 	</test>
 </suite>

@@ -12,6 +12,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import com.docsflow.core.web.elements.Button;
+import com.docsflow.core.web.elements.Custom;
 import com.docsflow.core.web.elements.TextInput;
 import com.docsflow.core.web.pages.other.LogInPage;
 import com.docsflow.core.web.pages.other.MainPage;
@@ -138,6 +140,34 @@ public class CommonActions
 		assertThat(new Elements().new Card_Elements().card_Header(driver).getText(), is(equalTo(expected_Header)));
 	}
 	
+	// Добавление записи в словарь из карточки
+	public void dictValue_Add(WebDriver driver, Button add_Button, String askMessage, String successMessage)
+	{
+		//region Variables
+		Custom info_PopUp = new Elements().new PopUps().info_PopUp(driver);
+		//endregion
+		
+		// Нажать кнопку добавления
+		add_Button.click();
+		simpleWait(1);
+		info_PopUp.waitUntilAvailable();
+
+		// Проверка сообщения
+		assertThat(info_PopUp.getText(), is(equalTo(askMessage)));
+		
+		// Нажать 'Так'
+		new Elements().new PopUps().yes_Button(driver);
+		new CustomMethods().simpleWait(1);
+		info_PopUp.waitUntilAvailable();
+		
+		// Проверка сообщения об успешном добавлении
+		assertThat(info_PopUp.getText(), is(equalTo(successMessage)));
+		
+		// Закрыть
+		new Elements().new PopUps().close_Button(driver).click();
+		add_Button.waitUntilAvailable();
+	}
+	
 	/*______________________________ Элементы ________________________________*/
 	
 	private class Elements extends CommonElements.Other_Elements
@@ -147,5 +177,8 @@ public class CommonActions
 		
 		// Элементы карточки
 		private class Card_Elements extends CommonElements.Card_Elements.General_Elements{}
+		
+		// Поп-апы
+		private class PopUps extends CommonElements.General_PopUps{}
 	}
 }

@@ -10,7 +10,7 @@ import com.docsflow.core.web.WebPage;
 
 public class IncomingDocs_Page extends WebPage<IncomingDocs_Page>
 {
-	private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/List/55";
+	private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/List/63";
 	
 	public IncomingDocs_Page(WebDriver driver) 
 	{
@@ -36,7 +36,7 @@ public class IncomingDocs_Page extends WebPage<IncomingDocs_Page>
 	// Ожидание готовности странички
 	public void waitFor_PageReady()
 	{
-		waitUntilUnblocked(new Elements().new Units_Tree().tree_Div(driver));
+		waitUntilClickable(new Elements().new Units_Tree().tree_Div(driver));
 	}
 	
 	// Открыть дерево подразделений

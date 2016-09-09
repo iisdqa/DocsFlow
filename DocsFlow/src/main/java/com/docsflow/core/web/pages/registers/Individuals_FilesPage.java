@@ -1,4 +1,4 @@
-package com.docsflow.core.web.pages.docs;
+package com.docsflow.core.web.pages.registers;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -15,18 +15,19 @@ import com.docsflow.core.web.WebPage;
 import com.docsflow.core.web.elements.Button;
 import com.docsflow.core.web.elements.Custom;
 import com.docsflow.core.web.elements.TextInput;
+import com.docsflow.core.web.pages.docs.IncomingDocs_Page;
 
-public class IncomingDocs_FilesPage extends WebPage<IncomingDocs_FilesPage> 
+public class Individuals_FilesPage extends WebPage<Individuals_FilesPage>
 {
-private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Edit/55/";
+	private static final String PAGE_URL = BASE_URL + "CommonDocs/Docs/Edit/63/";
 	
-	public IncomingDocs_FilesPage(WebDriver driver) 
+	public Individuals_FilesPage(WebDriver driver) 
 	{
 		super(driver);
 	}
 
 	@Override
-	public IncomingDocs_FilesPage load()
+	public Individuals_FilesPage load()
 	{
 		driver.get(PAGE_URL);
 		return this;
@@ -34,10 +35,14 @@ private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Edit/55/";
 
 	@Override
 	public boolean isAvailable()
-	{	
+	{
 		return new Elements().close_Button(driver).isAvailable();
 	}
+
 	
+
+	/*__________________________________________________ Actions ________________________________________________________*/
+
 	public void wait_ForPageReady()
 	{
 		//region Variables
@@ -186,39 +191,23 @@ private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Edit/55/";
 		waitForBlockStatus(new Elements().new Files().new Grid().download_Div(driver, grid_Id), false);
 	}
 	
-	public IncomingDocs_Page card_Close(String close_Type)
-	{
-		//region Variables	
-		Custom info = new Elements().new Files().info_PopUp(driver);
-		Button yes = new Elements().new Files().yes_Button(driver);
-		//endregion
-		
+	public IncomingDocs_Page card_Close()
+	{		
 		// Закрытие редактирования карточки
 		new Elements().close_Button(driver).click();
 		new CommonActions().simpleWait(1);
 		
-		// С проверкой поп-апа при уходе с не сохраненными данными
-		if(close_Type == "tricky")
-		{
-			//Отказ в сохранении данных
-			new CommonActions().simpleWait(1);
-			waitUntilClickable(info);
-			
-			// Проверка сообщеия
-			assertThat(info.getText(), is(equalTo(new Elements().new Files().cardGoAway_Message)));
-			
-			// Закрытие поп-апа
-			yes.click();
-			new CommonActions().simpleWait(1);
-		}
-		
 		return new IncomingDocs_Page(driver).waitUntilAvailable();
 	}
 	
-	/*__________________________________________________ Элементы _______________________________________________________*/	
+	/*___________________________________________________________________________________________________________________*/
+	
+	
+	
+	/*__________________________________________________ Elements _______________________________________________________*/
 	
 	private class Elements extends CommonElements.Card_Elements.General_Elements
-	{			
+	{
 		private class Files extends CommonElements.Card_Elements.Card_Files_Elements
 		{
 			// Название файла
@@ -245,4 +234,5 @@ private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Edit/55/";
 		
 		private class LinkedDocs extends CommonElements.Card_Elements.Card_LinkedDocs_Elements{}
 	}
+
 }

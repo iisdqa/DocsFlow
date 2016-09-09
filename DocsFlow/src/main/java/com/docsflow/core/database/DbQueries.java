@@ -76,7 +76,18 @@ public class DbQueries
 	
 	public static class DictionaryTests
 	{
-	
+		// Запросы для удаления данных
+		public static class Deletion_Queries
+		{
+			// Определение ошибок, которые будем выводить в случае падения запросов
+		    public static String cacheUpdateValueDeletion_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке удаления карточек в реестре 'ФО'.\r\nТекст ошибки:\r\n";
+		    
+		    // Определение текста запроса
+		    public static String cacheUpdateValueDeletion_Statement = "delete from [dbo].[Dictionary_Value]" + "\r\n" +
+		    														  "where DICV_IDP = (select dv.DICV_IDP from [dbo].[Dictionary_Value] dv" + "\r\n" +
+		    														  "join [dbo].[Dictionary] dc on dv.DIC_IDP = dc.DIC_IDP" + "\r\n" +
+		    														  "where dc.DIC_NAME = 'Класифікація проекту' and dv.DICV_LNAM = 'Test Automation')";
+		}
 	}
 	
 	public static class AdministrationTests

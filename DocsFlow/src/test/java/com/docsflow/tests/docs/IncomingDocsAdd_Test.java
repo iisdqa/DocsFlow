@@ -36,7 +36,7 @@ public class IncomingDocsAdd_Test extends BaseTest
 			MainPage mainPage = authorizationPage.logInAs("admin_auto", "123456");
 			
 			// Переход на страничку пользователей
-			IncomingDocs_Page docsPage = mainPage.new goTo().new DocsBlock().IncomingDocs_Page(browser);
+			IncomingDocs_Page docsPage = mainPage.new goTo().new DocsBlock().IncomingDocs_Page();
 			docsPage.waitFor_PageReady();
 			
 			// Добавление карточки

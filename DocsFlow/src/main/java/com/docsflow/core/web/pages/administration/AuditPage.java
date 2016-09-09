@@ -48,7 +48,7 @@ private static final String PAGE_URL = BASE_URL + "/User";
 		new CommonActions().simpleWait(1);
 		
 		// ќжидание прогрузки грида
-		waitUntilUnblocked(getGridTable());
+		waitUntilClickable(getGridTable());
 	}
 	
 	public void operationsCheck()

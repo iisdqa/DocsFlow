@@ -27,7 +27,8 @@ public abstract class Component <T extends Component<T>>
 	}
 	
 	// Ожидание исчезновения элемента
-	public void waitUntilUnblocked(Custom element)
+	//public void waitUntilUnblocked(Custom element)
+	public void waitUntilClickable(WebComponent<?> element)
 	{
 		// Определение необходимых переменных
 		boolean clickResult = false;

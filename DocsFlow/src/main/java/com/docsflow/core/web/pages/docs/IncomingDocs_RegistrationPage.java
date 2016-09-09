@@ -74,7 +74,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
         new CommonActions().simpleWait(3);
         
         // Ожидание доступности элемента
-        waitUntilUnblocked(docIndex);
+        waitUntilClickable(docIndex);
         
         // Проверка сгенерированного индекса
         Integer indexLength = index.length();
@@ -194,7 +194,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		// Открыть поп-ап добавления
 		new Elements().new Resolution_Elements().add_Button(driver, GridId).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new Resolution_Elements().new Pop_Up().resolution_Text());
+		waitUntilClickable(new Elements().new Resolution_Elements().new Pop_Up().resolution_Text());
 		
 		// Заполнение полей
 		sendKeys(resolution);
@@ -314,7 +314,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		// Поиск 
 		search.click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(info);
+		waitUntilClickable(info);
 		
 		// Проверка сообщеия
 		assertThat(info.getText(), is(equalTo(new Elements().new CorrespondentCheck_Elements().new Values().noMatches_Info)));
@@ -351,7 +351,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		new CommonActions().simpleWait(3);
 		
 		// Ожидание загрузки странички
-		waitUntilUnblocked(docIndex);
+		waitUntilClickable(docIndex);
 		waitForBlockStatus(new Elements().new Resolution_Elements().download_Div(driver, GridId), false);
 	}
 	
@@ -364,7 +364,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		// Открыть поп-ап добавления		
 		new Elements().new Resolution_Elements().edit_Button(driver, GridId).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new Resolution_Elements().new Pop_Up().resolution_Text());
+		waitUntilClickable(new Elements().new Resolution_Elements().new Pop_Up().resolution_Text());
 		
 		// Заполнение полей
 		sendKeys("2");
@@ -435,7 +435,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		{
 			//Отказ в сохранении данных
 			new CommonActions().simpleWait(1);
-			waitUntilUnblocked(info);
+			waitUntilClickable(info);
 			
 			// Проверка сообщеия
 			assertThat(info.getText(), is(equalTo(new Elements().new SaveOrNot_Elements().new Values().info)));

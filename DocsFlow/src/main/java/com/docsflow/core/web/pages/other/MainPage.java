@@ -22,6 +22,7 @@ import com.docsflow.core.web.pages.docs.IncomingDocs_Page;
 import com.docsflow.core.web.pages.docs.IncomingDocs_FilesPage;
 import com.docsflow.core.web.pages.docs.IncomingDocs_PerformControlPage;
 import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage;
+import com.docsflow.core.web.pages.registers.Individuals_Page;
 import com.docsflow.core.web.elements.Text;
 
 public class MainPage extends WebPage<MainPage> 
@@ -77,7 +78,7 @@ public class MainPage extends WebPage<MainPage>
 		public class DocsBlock
 		{						
 			// Пункт меню 'Вхідні документи'
-			public IncomingDocs_Page IncomingDocs_Page(String browser)
+			public IncomingDocs_Page IncomingDocs_Page()
 			{    
 				// Использовать менюшку
 				new CommonActions().menu_Handler(driver, 1, 1);
@@ -95,7 +96,17 @@ public class MainPage extends WebPage<MainPage>
 			}
 		}
 		
-		
+		public class CnapBlock
+		{
+			// Пункт меню 'Реестр ФО'
+			public Individuals_Page individuals_Page()
+			{    
+				// Использовать менюшку
+				new CommonActions().menu_Handler(driver, 2, 2);
+				
+			    return new Individuals_Page(driver).waitUntilAvailable();			   
+			}
+		}
 		
 		// Страничка 'НДІ'
 		public Handbooks_Page handbooksPage()
@@ -156,6 +167,11 @@ public class MainPage extends WebPage<MainPage>
 		}
 		
 
+		
+		
+		
+		
+		
 		// Для тестирования/дебагинга
 		public IncomingDocs_RegistrationPage direct_Redirect()
 		{

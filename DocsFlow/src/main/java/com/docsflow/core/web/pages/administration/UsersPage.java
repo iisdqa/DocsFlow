@@ -43,7 +43,7 @@ private static final String PAGE_URL = BASE_URL + "/User/Search";
 	public void WaitForGridReady()
 	{
 		// ќжидание доступности элемента
-		waitUntilUnblocked(getGridTable());
+		waitUntilClickable(getGridTable());
 		// ќжидание прогрузки грида
 		waitForBlockStatus(getGridDownload_Div(), false);
 		new CommonActions().simpleWait(1);
@@ -131,10 +131,10 @@ private static final String PAGE_URL = BASE_URL + "/User/Search";
 	{
 		getUserDeleteutton().click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(getDeletionPopUp());
+		waitUntilClickable(getDeletionPopUp());
 		getDeletionAcceptButton().click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(getGridPager());
+		waitUntilClickable(getGridPager());
 	}
 	
 	public void UserDeletionCheck()

@@ -68,7 +68,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Открыть поп-ап добавления
 		new Elements().new PerformControl_Elements().add_Button().click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new PerformControl_Elements().task_Text());
+		waitUntilClickable(new Elements().new PerformControl_Elements().task_Text());
 		
 		// Заполнение полей
 		sendKeys(task);
@@ -76,7 +76,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		new Elements().new PerformControl_Elements().informTo_Input().selectByVisibleText(informTo);
 		new Elements().new PerformControl_Elements().controller_Select().selectByVisibleText(controller);
 		new Elements().new PerformControl_Elements().performer_Select().selectByVisibleText(performer);
-		waitUntilUnblocked(new Elements().new PerformControl_Elements().performerUnit_Input());		
+		waitUntilClickable(new Elements().new PerformControl_Elements().performerUnit_Input());		
 		new Elements().new PerformControl_Elements().periodicity_Select().selectByVisibleText(periodicity);
 		new Elements().new PerformControl_Elements().deadline_Date().click();
 		new Elements().new PerformControl_Elements().deadline_Date().inputText(deadlineDate);
@@ -89,7 +89,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Сохранить
 		save.click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new TermsChange_Elements().add_Button());
+		waitUntilClickable(new Elements().new TermsChange_Elements().add_Button());
 		waitForBlockStatus(new Elements().new PerformControl_Elements().new Grid().download_Div(driver, grid_Id), false);
 	}
 	
@@ -152,7 +152,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Сохранение вкладки
 		save.click();
 		new CommonActions().simpleWait(3);
-		waitUntilUnblocked(termsChange_Add);
+		waitUntilClickable(termsChange_Add);
 		waitForBlockStatus(new Elements().new PerformControl_Elements().new Grid().download_Div(driver, grid_Id), false);
 	}
 	
@@ -167,7 +167,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Открыть поп-ап редактирования
 		new Elements().new PerformControl_Elements().new Grid().edit_Button(driver, grid_Id).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new PerformControl_Elements().task_Text());
+		waitUntilClickable(new Elements().new PerformControl_Elements().task_Text());
 		
 		// Добавить дату выполнения
 		new Elements().new PerformControl_Elements().perform_Date().click();
@@ -176,7 +176,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Сохранить
 		new Elements().new PerformControl_Elements().save_Button(driver).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(termsChange_Add);
+		waitUntilClickable(termsChange_Add);
 		waitForBlockStatus(new Elements().new PerformControl_Elements().new Grid().download_Div(driver, grid_Id), false);
 	}		
 	
@@ -234,7 +234,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		new Elements().new PerformControl_Elements().new Grid().number_Cell("1").click();
 		addButton.click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new TermsChange_Elements().reason_Text());
+		waitUntilClickable(new Elements().new TermsChange_Elements().reason_Text());
 		
 		// Заполнение полей
 		sendKeys(reason);
@@ -296,7 +296,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Открыть поп-ап редактирования
 		new Elements().new TermsChange_Elements().new Grid().edit_Button(driver, grid_Id).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new TermsChange_Elements().reason_Text());
+		waitUntilClickable(new Elements().new TermsChange_Elements().reason_Text());
 		
 		// Редактировать причину
 		sendKeys("2");
@@ -304,7 +304,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Сохранить
 		new Elements().new TermsChange_Elements().save_Button(driver).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(addButton);
+		waitUntilClickable(addButton);
 		waitForBlockStatus(new Elements().new TermsChange_Elements().new Grid().download_Div(driver, grid_Id), false);
 	}
 	
@@ -321,14 +321,14 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Открытие поп-апа
 		deleteButton.click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(info);
+		waitUntilClickable(info);
 		
 		// Клик 'Так'
 		yes.click();
 		new CommonActions().simpleWait(1);
 		
 		// Проверка сообщения
-		waitUntilUnblocked(info);
+		waitUntilClickable(info);
 		assertThat(info.getText(), is(equalTo(new Elements().new DeletionPopUp_Elements().new Values().inability_Message)));
 		
 		// Закрытие поп-апа
@@ -351,21 +351,21 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Открыть поп-ап добавления
 		new Elements().new PerformControl_Elements().add_Button().click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(new Elements().new PerformControl_Elements().task_Text());
+		waitUntilClickable(new Elements().new PerformControl_Elements().task_Text());
 		
 		// Заполнение полей
 		sendKeys(task);
 		new Elements().new PerformControl_Elements().number_Input().inputText(number);
 		new Elements().new PerformControl_Elements().controller_Select().selectByVisibleText(controller);
 		new Elements().new PerformControl_Elements().performer_Select().selectByVisibleText(performer);
-		waitUntilUnblocked(new Elements().new PerformControl_Elements().performerUnit_Input());		
+		waitUntilClickable(new Elements().new PerformControl_Elements().performerUnit_Input());		
 		new Elements().new PerformControl_Elements().deadline_Date().click();
 		new Elements().new PerformControl_Elements().deadline_Date().inputText(deadlineDate);
 		
 		// Сохранить
 		new Elements().new PerformControl_Elements().save_Button(driver).click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(addButton);
+		waitUntilClickable(addButton);
 		waitForBlockStatus(new Elements().new PerformControl_Elements().new Grid().download_Div(driver, grid_Id), false);
 	}
 	
@@ -423,7 +423,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Открытие поп-апа
 		deleteButton.click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(info);
+		waitUntilClickable(info);
 		
 		// Проверка сообщения
 		assertThat(info.getText(), is(equalTo(new Elements().new DeletionPopUp_Elements().new Values().message)));
@@ -448,7 +448,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Открытие поп-апа
 		deleteButton.click();
 		new CommonActions().simpleWait(1);
-		waitUntilUnblocked(info);
+		waitUntilClickable(info);
 		
 		// Проверка сообщения
 		assertThat(info.getText(), is(equalTo(new Elements().new DeletionPopUp_Elements().new Values().message)));
@@ -476,7 +476,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		{
 			//Отказ в сохранении данных
 			new CommonActions().simpleWait(1);
-			waitUntilUnblocked(info);
+			waitUntilClickable(info);
 			
 			// Проверка сообщеия
 			assertThat(info.getText(), is(equalTo(new IncomingDocs_RegistrationPage(driver).new Elements().new SaveOrNot_Elements().new Values().info)));
