@@ -110,6 +110,9 @@ public abstract class CommonElements
 			// Єлемент меню карточки
 			public WebElement inset_Link(WebDriver driver, String inset_Number)	{ return driver.findElement(By.xpath("(//div[@class='item'])[" + inset_Number + "]")); }  
 														  						// Где, 'InsetId' - номер вкладки 
+			
+			// Кнопка 'Додати' значение в словарь
+			public Button dictAdd_Button(WebDriver driver, String id) 			{ return new Button(driver, By.id("id")); }	
 		}
 		
 		// Элементы универсального грида внутри карточки

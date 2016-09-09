@@ -15,10 +15,11 @@ import com.docsflow.core.web.pages.registers.Individuals_RegPage;
 
 public class IndividualAdd_Test extends BaseTest
 {
-/*	@BeforeMethod(alwaysRun = true, dependsOnMethods = {"setUp"})
-	public void DeletionViaDatabase() throws Exception
+	@BeforeMethod(alwaysRun = true, dependsOnMethods = {"setUp"})
+	public void DeletionViaDatabase_BeforeTest() throws Exception
 	{
-	}*/
+		
+	}
 	
 	@Test(groups = { "IndividualAdd_Test" })
 	public void IndividualAdd_TestMethod() throws Exception
@@ -42,8 +43,9 @@ public class IndividualAdd_Test extends BaseTest
 		addPage.personInfo_Fill();
 		addPage.docInfo_Fill();
 		addPage.bornPlaceInfo_Fill();
+		addPage.dictValue_SetInability_Check();
 		addPage.residenceInfo_Fill();
-		addPage.card_Save();
+		Individuals_RegPage editPage = addPage.card_Save();
 		
 		
 		
@@ -51,7 +53,7 @@ public class IndividualAdd_Test extends BaseTest
 	}
 	
 	@AfterMethod(alwaysRun = true, dependsOnMethods = {"IndividualAdd_TestMethod"})
-	public void DeletionViaDatabase() throws Exception
+	public void DeletionViaDatabase_AfterTest() throws Exception
 	{
 	    // Определение ошибки, которая будет появляться в случае падения запроса
 	    String deletion_ErrorMessage = DbQueries.DictionaryTests.Deletion_Queries.cacheUpdateValueDeletion_ErrorMessage;
