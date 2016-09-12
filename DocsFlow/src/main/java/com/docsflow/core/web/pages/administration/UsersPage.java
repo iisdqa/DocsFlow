@@ -84,7 +84,7 @@ private static final String PAGE_URL = BASE_URL + "/User/Search";
 								  ""};
 		
 		// Вытянуть значения из грида
-		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(getGridBody());
+		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(getGridBody(), true);
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);
@@ -115,7 +115,7 @@ private static final String PAGE_URL = BASE_URL + "/User/Search";
 										  ""};
 		
 		// Вытянуть значения из грида
-		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(getGridBody());
+		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(getGridBody(), true);
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);

@@ -109,7 +109,7 @@ private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Edit/55/";
 		}
 		
 		// Вытянуть последнее значения из грида
-		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
+		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid, true);;
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);	

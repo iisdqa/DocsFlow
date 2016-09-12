@@ -135,7 +135,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		
 		
 		// Вытянуть последнее значения из грида
-		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
+		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid, true);;
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);
@@ -210,7 +210,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 										  condition};
 		
 		// Вытянуть последнее значения из грида
-		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
+		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid, true);;
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);	
@@ -280,7 +280,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		}
 		
 		// Вытянуть последнее значения из грида
-		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
+		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid, true);;
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);	
@@ -404,7 +404,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		String[][] ExpectedValues = new String [0][];
 		
 		// Вытянуть последнее значения из грида
-		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
+		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid, true);;
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);	

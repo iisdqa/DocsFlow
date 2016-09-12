@@ -240,7 +240,7 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		}
 		
 		// Вытянуть последнее значения из грида
-		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
+		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid, true);;
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);

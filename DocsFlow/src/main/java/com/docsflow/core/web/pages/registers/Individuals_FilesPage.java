@@ -15,7 +15,6 @@ import com.docsflow.core.web.WebPage;
 import com.docsflow.core.web.elements.Button;
 import com.docsflow.core.web.elements.Custom;
 import com.docsflow.core.web.elements.TextInput;
-import com.docsflow.core.web.pages.docs.IncomingDocs_Page;
 
 public class Individuals_FilesPage extends WebPage<Individuals_FilesPage>
 {
@@ -114,7 +113,7 @@ public class Individuals_FilesPage extends WebPage<Individuals_FilesPage>
 		}
 		
 		// Вытянуть последнее значения из грида
-		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
+		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid, true);;
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);	
@@ -191,13 +190,81 @@ public class Individuals_FilesPage extends WebPage<Individuals_FilesPage>
 		waitForBlockStatus(new Elements().new Files().new Grid().download_Div(driver, grid_Id), false);
 	}
 	
-	public IncomingDocs_Page card_Close()
+	public void doc_Add()
+	{
+		//region Variables
+		String id_Code = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().second_idCode;
+		String year = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().second_bornDate;
+		year =  year.substring(year.lastIndexOf('.') + 1);
+		String docName = new Elements().new LinkedDocs().docName;
+		//endregion
+		
+		// Перейти к добавлению
+		new Elements().new LinkedDocs().addLink_Button(driver).click();
+		new Elements().new LinkedDocs().index_TextInput(driver).waitUntilAvailable();
+		
+		// Проверка недоступности кнопки добавления документа
+		assertThat(new Elements().new LinkedDocs().linkDoc_Button(driver).getAttribute("disabled"), is(equalTo("true")));
+		
+		// Поиск
+		new Elements().new LinkedDocs().index_TextInput(driver).inputText(id_Code);
+		new Elements().new LinkedDocs().year_TextInput(driver).inputText(year);
+		new Elements().new LinkedDocs().search_Button(driver).click();
+		new Elements().new LinkedDocs().findedDoc_Text(driver, docName).waitUntilAvailable();
+		
+		// Добавить
+		new Elements().new LinkedDocs().linkDoc_Button(driver).click();
+		new Elements().new LinkedDocs().addLink_Button(driver).waitUntilAvailable();
+	}
+	
+	public void addedDoc_Check()
+	{
+		//region Variables
+		String docName = new Elements().new LinkedDocs().docName;
+		//endregion
+		
+		// Проверка добавленного документа
+		assertThat(new Elements().new LinkedDocs().addedDoc_Text(driver).getText(), is(equalTo(docName)));
+	}
+	
+	public void docView_check()
+	{
+		//region Variables
+		String surname = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().surname + "2";
+		String name = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().name + "2";
+		String idCode = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().second_idCode;
+		String citizenship = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().citizenship;
+		String birthday = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().second_bornDate;
+		//endregion
+		
+		// Проверка, что отсутствует блок просмотра
+		new CustomMethods().elementExistenceCheck(new Elements().new LinkedDocs().docInfo_Div(driver), false);
+		
+		// Открытие блока просмотра
+		new Elements().new LinkedDocs().addedDoc_Text(driver).click();
+		new CustomMethods().simpleWait(1);
+		
+		// Определение ожидаемых значений
+		String[][] ExpectedValues = new String [4][];
+		ExpectedValues[0] = new String[] {"ПІБ:", surname + " " + name};
+		ExpectedValues[1] = new String[] {"ІДН:", idCode};
+		ExpectedValues[2] = new String[] {"Громадянство:", citizenship};
+		ExpectedValues[3] = new String[] {"Дата народження:", birthday};
+		
+		// Вытянуть последнее значения из грида
+		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(new Elements().new LinkedDocs().docInfo_Tbody(driver), false);
+		
+		// Проверка значений грида
+		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);
+	}
+	
+	public Individuals_Page card_Close()
 	{		
 		// Закрытие редактирования карточки
 		new Elements().close_Button(driver).click();
 		new CommonActions().simpleWait(1);
 		
-		return new IncomingDocs_Page(driver).waitUntilAvailable();
+		return new Individuals_Page(driver).waitUntilAvailable();
 	}
 	
 	/*___________________________________________________________________________________________________________________*/
@@ -211,15 +278,15 @@ public class Individuals_FilesPage extends WebPage<Individuals_FilesPage>
 		private class Files extends CommonElements.Card_Elements.Card_Files_Elements
 		{
 			// Название файла
-			public TextInput file_Input()      			{ return new TextInput(driver, By.id("569_fname")); }
+			private TextInput file_Input()      			{ return new TextInput(driver, By.id("726_fname")); }
 			
 			// 'Комментарий'
-			public Custom comment_Text()   				{ return new Custom(driver, By.id("customTextEditor_572")); }
+			private Custom comment_Text()   				{ return new Custom(driver, By.id("customTextEditor_729")); }
 			
 			// Грид
 			private class Grid extends CommonElements.Card_Elements.Grid
 			{
-				private String grid_Id = "568";
+				private String grid_Id = "725";
 			}
 			
 			private class Values
@@ -232,7 +299,10 @@ public class Individuals_FilesPage extends WebPage<Individuals_FilesPage>
 			}
 		}
 		
-		private class LinkedDocs extends CommonElements.Card_Elements.Card_LinkedDocs_Elements{}
+		private class LinkedDocs extends CommonElements.Card_Elements.Card_LinkedDocs_Elements
+		{
+			private String docName = "Заявник ФО, 7770001110, 02.01.1975";
+		}
 	}
 
 }

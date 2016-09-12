@@ -15,13 +15,14 @@ import org.testng.Assert;
 public abstract class GridCheck 
 {
 	// Get all rows from grid
-	public String[][] GetAllRows(WebElement tbody)
+	public String[][] GetAllRows(WebElement tbody, Boolean containsHiddenRow)
 	{
 		// Define rows count
 		List<WebElement> rows = tbody.findElements(By.tagName("tr"));
 		
+		
 		// Delete hidden row
-		rows.remove(0);
+		if(containsHiddenRow) rows.remove(0);
 		
 		// Define array size for array which will be returned
 		String[][] GridValues = new String[rows.size()][];
@@ -60,13 +61,13 @@ public abstract class GridCheck
 	}
 	
 	// Get specific row from grid
-	public String[][] GetSpecificRows(WebElement table, int rowsToGet)
+	public String[][] GetSpecificRows(WebElement table, int rowsToGet, Boolean containsHiddenRow)
 	{
 		// Define rows count
 		List<WebElement> rows = table.findElements(By.tagName("tr"));
 		
 		// Delete hidden row
-		rows.remove(0);
+		if(containsHiddenRow) rows.remove(0);
 		
 		// Define array size for array which will be returned
 		String[][] GridValues = new String[rowsToGet][];

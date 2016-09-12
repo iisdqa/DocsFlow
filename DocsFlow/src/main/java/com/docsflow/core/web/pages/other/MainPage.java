@@ -22,6 +22,7 @@ import com.docsflow.core.web.pages.docs.IncomingDocs_Page;
 import com.docsflow.core.web.pages.docs.IncomingDocs_FilesPage;
 import com.docsflow.core.web.pages.docs.IncomingDocs_PerformControlPage;
 import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage;
+import com.docsflow.core.web.pages.registers.Individuals_FilesPage;
 import com.docsflow.core.web.pages.registers.Individuals_Page;
 import com.docsflow.core.web.pages.registers.Individuals_RegPage;
 import com.docsflow.core.web.elements.Text;
@@ -174,12 +175,12 @@ public class MainPage extends WebPage<MainPage>
 		
 		
 		// Для тестирования/дебагинга
-		public Individuals_RegPage direct_Redirect()
+		public Individuals_FilesPage direct_Redirect()
 		{
-			driver.get(BASE_URL + "/CommonDocs/Docs/Add/63");
+			driver.get(BASE_URL + "/CommonDocs/Docs/Edit/63/7145/65");
 			new CommonActions().simpleWait(3);
 			
-			return new Individuals_RegPage(driver).waitUntilAvailable();
+			return new Individuals_FilesPage(driver).waitUntilAvailable();
 		}
 	}
 	

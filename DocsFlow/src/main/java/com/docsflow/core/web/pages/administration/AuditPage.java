@@ -76,7 +76,7 @@ private static final String PAGE_URL = BASE_URL + "/User";
 				  						  myIp};
 		
 		// Вытянуть значения из грида
-		String[][] ActualValues = new CustomMethods().new Grid().GetSpecificRows(getGridBody(), 2);
+		String[][] ActualValues = new CustomMethods().new Grid().GetSpecificRows(getGridBody(), 2, true);
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);

@@ -13,9 +13,12 @@ import com.docsflow.core.web.CommonActions;
 import com.docsflow.core.web.CommonElements;
 import com.docsflow.core.web.CustomMethods;
 import com.docsflow.core.web.WebPage;
+import com.docsflow.core.web.CustomMethods.WorkWith_TextFiles;
 import com.docsflow.core.web.elements.Button;
 import com.docsflow.core.web.elements.Custom;
 import com.docsflow.core.web.elements.TextInput;
+import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage.Elements;
+import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage.Elements.Values;
 
 public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 {
@@ -113,6 +116,7 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		new Elements().new DocInfo().docKind_Select().selectByVisibleText(docType);
 		new Elements().new DocInfo().serial_TextInput().inputText(serial);
 		new Elements().new DocInfo().number_TextInput().inputText(number);
+		new Elements().new DocInfo().giveDate_TextInput().click();
 		new Elements().new DocInfo().giveDate_TextInput().inputText(giveDate);
 		new Elements().new DocInfo().organization_TextInput().inputText(organization);
 	}
@@ -136,7 +140,7 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		//region Variables
 		TextInput region_Input = new Elements().new ResidenceInfo().region_TextInput();
 		String region = new Elements().new ResidenceInfo().new Values().region;
-		Button add_Button = new Elements().dictAdd_Button(driver, "718");
+		Button add_Button = new Elements().dictAdd_Button(driver, "719");
 		Custom info_PopUp = new Elements().new ResidenceInfo().info_PopUp(driver);
 		String askMessage = new Elements().new PersonInfo().dictValueAdd_AskMessage(region);
 		String errorMessage = "Неможливо додати запис довідника 'МР Область', тому що не задане значення батьківського довідника 'МР Країна'.";
@@ -154,7 +158,7 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		assertThat(info_PopUp.getText(), is(equalTo(askMessage)));
 		
 		// Нажать 'Так'
-		new Elements().new ResidenceInfo().yes_Button(driver);
+		new Elements().new ResidenceInfo().yes_Button(driver).click();
 		new CustomMethods().simpleWait(1);
 		info_PopUp.waitUntilAvailable();
 		
@@ -178,7 +182,7 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		/*___________________________ 'Область' ________________________________*/
 		Button regionAdd_Button = new Elements().dictAdd_Button(driver, "719");
 		String region = new Elements().new ResidenceInfo().new Values().region;
-		TextInput region_Input =  new Elements().new ResidenceInfo().country_TextInput();
+		TextInput region_Input =  new Elements().new ResidenceInfo().region_TextInput();
 		
 		/*_________________________ 'Район(місто)' _____________________________*/
 		Button districtAdd_Button = new Elements().dictAdd_Button(driver, "720");
@@ -195,7 +199,7 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		/*___________________________ 'Вулиця' __________________________________*/
 		Button streetAdd_Button = new Elements().dictAdd_Button(driver, "722");
 		String street = new Elements().new ResidenceInfo().new Values().street;
-		TextInput street_Input =  new Elements().new ResidenceInfo().village_TextInput();
+		TextInput street_Input =  new Elements().new ResidenceInfo().street_TextInput();
 		/*_______________________________________________________________________*/
 		
 		/*_________________________ 'Помешкання' ________________________________*/
@@ -331,7 +335,7 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 	{
 		//region Variables	
 		/*____________________________ 'Особа' _________________________________*/
-		String idCode = new Elements().new PersonInfo().new Values().second_idCode;
+		String idCode = new Elements().new PersonInfo().new Values().idCode;
 		String surname = new Elements().new PersonInfo().new Values().surname + "2";
 		String name = new Elements().new PersonInfo().new Values().name + "2";
 		String gender = new Elements().new PersonInfo().new Values().gender;
@@ -373,9 +377,41 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		// Заполнение полей блока 'Місце реєстрації'
 		new Elements().new ResidenceInfo().street_TextInput().inputText(street);
 		new CommonActions().autoCompleteValue_Set(driver, new Elements().new ResidenceInfo().street_TextInput(), 1);
-		new Elements().new ResidenceInfo().house_TextInput().inputText(house);
+		new Elements().new ResidenceInfo().house_TextInput().inputText(house);	
+	}
+	
+	public void copyCardAdd_Inability_Check()
+	{
+		//region Variables			
+		Custom info_PopUp = new Elements().new ResidenceInfo().info_PopUp(driver);
+		String errorMessage = "Збереження неможливе, оскільки вже існує заявник - фізична особа з таким ІДН";
+		String second_idCode = new Elements().new PersonInfo().new Values().second_idCode;
+		//endregion
 		
+		// Нажать на кнопку 'Сохранить'
+		new Elements().save_Button(driver).click();
+		new CommonActions().simpleWait(1);
+		info_PopUp.waitUntilAvailable();
+
+		// Проверка сообщения
+		assertThat(info_PopUp.getText(), is(equalTo(errorMessage)));
 		
+		// Закрыть
+		new Elements().new ResidenceInfo().close_Button(driver).click();
+		new Elements().close_Button(driver).waitUntilAvailable();
+		
+		// Сменить ИНН
+		new Elements().new PersonInfo().idCode_TextInput().clear();
+		new Elements().new PersonInfo().idCode_TextInput().inputText(second_idCode);
+	}
+	
+	public void placeValue_Change()
+	{
+		//region Variables	
+		String place = new Elements().new BornPlaceInfo().new Values().place + "2";
+		//endregion
+		
+		new Elements().new BornPlaceInfo().place_TextInput().inputText(place);
 	}
 	
 	public Individuals_FilesPage goTo_Files_Page()
@@ -388,6 +424,21 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		insetLink.click();
 		
 		return new Individuals_FilesPage(driver).waitUntilAvailable();
+	}
+	
+	// Проверка хэдера карточки + проверка ИНН
+	public void cardHeader_Check()
+	{
+		//region Variables	
+		String expected_Header = "Заявник ФО";
+		String expected_idCode = new Elements().new PersonInfo().new Values().idCode;
+		//endregion
+		
+		// Проверка хэдера
+		new CommonActions().cardHeader_Check(driver, expected_Header);
+		
+		// Проверка ИНН
+		assertThat(new Elements().new PersonInfo().idCode_Text().getText(), is(equalTo(expected_idCode)));
 	}
 	
 	/*___________________________________________________________________________________________________________________*/
@@ -406,6 +457,9 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 			
 			// 'ІДН'
 			private TextInput idCode_TextInput() 		{ return new TextInput(driver, By.id("707")); } 
+			
+			// 'ІДН' на просмотровой страничке
+			private TextInput idCode_Text() 			{ return new TextInput(driver, By.xpath("//div[@class='break-word']/div[2]")); } 
 			
 			// 'Прізвище'
 			private TextInput surname_TextInput() 		{ return new TextInput(driver, By.id("700")); } 
@@ -440,11 +494,11 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 				protected String idCode = "0007771110";			// 'ІДН'
 				protected String second_idCode = "7770001110";	// 'ІДН'
 				protected String surname = "Автоматизатор";		// 'Прізвище'				
-				protected String name = "Петро";					// 'Ім'я'				
+				protected String name = "Петро";				// 'Ім'я'				
 				protected String patronymic = "Васильович";		// 'По-батькові'				
 				private String gender = "Чоловіча";				// 'Стать' 				
-				private String citizenship = new ResidenceInfo().new Values().country;	// 'Громадянство'				
-				protected String bornDate = "01.01.1975";			// 'Дата народження'	
+				protected String citizenship = new ResidenceInfo().new Values().country;	// 'Громадянство'				
+				protected String bornDate = "01.01.1975";		// 'Дата народження'	
 				protected String second_bornDate = "02.01.1975";	// 'Дата народження'	
 				private String phone = "(000)1112233";			// 'Телефон'				
 				private String сellPhone = "(099)3332211";		// 'Мобільний телефон'				

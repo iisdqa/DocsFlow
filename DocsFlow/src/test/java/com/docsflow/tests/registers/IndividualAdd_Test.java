@@ -16,18 +16,21 @@ import com.docsflow.core.web.pages.registers.Individuals_RegPage;
 
 public class IndividualAdd_Test extends BaseTest
 {
-	@BeforeMethod(alwaysRun = true, dependsOnMethods = {"setUp"})
+/*	@BeforeMethod(alwaysRun = true, dependsOnMethods = {"setUp"})
 	public void DeletionViaDatabase_BeforeTest() throws Exception
 	{
 	    // Определение ошибки, которая будет появляться в случае падения запроса
-	    String ErrorMessage = DbQueries.CnapTests.Registers.Individuals.Deletion_Queries.FoDeletion_ErrorMessage;
+	    String FoDeletion_ErrorMessage = DbQueries.CnapTests.Registers.Individuals.Deletion_Queries.FoDeletion_ErrorMessage;
+	    String RegPlaceDeletion_ErrorMessage = DbQueries.CnapTests.Registers.Individuals.Deletion_Queries.RegPlaceDeletion_ErrorMessage;
 	    
 	    // Определение текста запроса
-	    String DeletionStatement = DbQueries.CnapTests.Registers.Individuals.Deletion_Queries.FoDeletion_Statement;
+	    String FoDeletion_Statement = DbQueries.CnapTests.Registers.Individuals.Deletion_Queries.FoDeletion_Statement;
+	    String RegPlaceDeletion_Statement = DbQueries.CnapTests.Registers.Individuals.Deletion_Queries.RegPlaceDeletion_Statement;
 	    
 	    // Выполнение запроса
-	    new DbStatements().SimpleStatement(sqlConnection, DeletionStatement, ErrorMessage);
-	}
+	    new DbStatements().SimpleStatement(sqlConnection, FoDeletion_Statement, FoDeletion_ErrorMessage);
+	    new DbStatements().SimpleStatement(sqlConnection, RegPlaceDeletion_Statement, RegPlaceDeletion_ErrorMessage);
+	}*/
 	
 	@Test(groups = { "IndividualAdd_Test" })
 	public void IndividualAdd_TestMethod() throws Exception
@@ -37,10 +40,10 @@ public class IndividualAdd_Test extends BaseTest
 		MainPage mainPage = authorizationPage.logInAs("admin_auto", "123456");
 		
 		
-		Individuals_RegPage addPage = mainPage.new goTo().direct_Redirect();
+		//Individuals_FilesPage filesPage  = mainPage.new goTo().direct_Redirect();
 		
 		
-/*		// Добавление записи в словарь НДИ(для обновления кэша веб-сервера)
+		// Добавление записи в словарь НДИ(для обновления кэша веб-сервера)
 		Handbooks_Page handbooksPage = mainPage.new goTo().handbooksPage();
 		handbooksPage.wait_ForPageReady();
 		handbooksPage.dictionaryCache_Update(sqlConnection);
@@ -49,7 +52,7 @@ public class IndividualAdd_Test extends BaseTest
 		mainPage = handbooksPage.backToMainPage();
 		Individuals_Page individuals_Page = mainPage.new goTo().new CnapBlock().individuals_Page();
 		individuals_Page.gridDownload_Wait();
-		Individuals_RegPage addPage = individuals_Page.cardAdd_Call();*/
+		Individuals_RegPage addPage = individuals_Page.cardAdd_Call();
 		
 		// Заполнение + сохранение карточки
 		// Проверка добавленной карточки
@@ -63,26 +66,27 @@ public class IndividualAdd_Test extends BaseTest
 		editPage.card_Check();
 		
 		// Проверка подсвечивания записи в гриде
-		Individuals_Page individuals_Page = editPage.card_Close();
+	    individuals_Page = editPage.card_Close();
 		individuals_Page.gridDownload_Wait();
 		individuals_Page.rowHighlighted_Check();
 		
 		// Добавление 2го ФО
 		addPage = individuals_Page.cardAdd_Call();
 		addPage.secondCard_Fill();
+		addPage.copyCardAdd_Inability_Check();
 		addPage.card_Save();
-		individuals_Page = editPage.card_Close();
+		individuals_Page = addPage.card_Close();
 		
 		// Проверка фильтрации на страничке реестра ФО
 		individuals_Page.gridDownload_Wait();
 		individuals_Page.card_Search();
-		individuals_Page.card_Check("add");
+		individuals_Page.card_Check("add");	
 		
+		// Работа со вкладкой 'Связанные документы и файлы'(грид файлов)
 		
-		
-		// Работа со вкладкой 'Связанные документы и файлы'
-		
-		/*Individuals_FilesPage filesPage = editPage.goTo_Files_Page();		
+		editPage = individuals_Page.card_Edit();
+		editPage.placeValue_Change();
+		Individuals_FilesPage filesPage = editPage.goTo_Files_Page();		
 		filesPage.file_Add();
 		filesPage.filesGrid_Check("add");
 		filesPage.inset_Save();
@@ -92,12 +96,40 @@ public class IndividualAdd_Test extends BaseTest
 		filesPage.inset_Save();
 		filesPage.filesGrid_Check("edit");	
 		filesPage.fileUnload_check();
-		filesPage.file_Delete();*/
 		
+		// Работа со вкладкой 'Связанные документы и файлы'(блок документов)
 		
+		filesPage.doc_Add();
+		filesPage.addedDoc_Check();
+		filesPage.docView_check();
+		filesPage.inset_Save();
+		filesPage.addedDoc_Check();
+		filesPage.docView_check();
+	    individuals_Page = filesPage.card_Close();
+		
+		// Проверка просмотра
+		
+		individuals_Page.gridDownload_Wait();
+		individuals_Page.card_Search();
+		individuals_Page.card_Check("edit");	
+		Individuals_RegPage viewPage = individuals_Page.card_View();
+		viewPage.cardHeader_Check();
+		filesPage = viewPage.goTo_Files_Page();
+		filesPage.wait_ForPageReady();
+		filesPage.filesGrid_Check("edit");	
+		filesPage.fileUnload_check();
+		filesPage.addedDoc_Check();
+		filesPage.docView_check();
+		individuals_Page = filesPage.card_Close();
+		
+		// Проверка подсвечивания + выход из системы
+		
+		individuals_Page.gridDownload_Wait();
+		individuals_Page.rowHighlighted_Check();
+		individuals_Page.user_Out();
 	}
 	
-	@AfterMethod(alwaysRun = true, groups = {"DrugChanges_Test"})
+/*	@AfterMethod(alwaysRun = true, groups = {"DrugChanges_Test"})
 	public void DeletionViaDatabase_AfterTest() throws Exception
 	{
 	    // Определение ошибки, которая будет появляться в случае падения запроса
@@ -108,5 +140,5 @@ public class IndividualAdd_Test extends BaseTest
 	    
 	    // Выполнение запросов
 	    new DbStatements().SimpleStatement(sqlConnection, deletion_Statement, deletion_ErrorMessage);
-	}
+	}*/
 }

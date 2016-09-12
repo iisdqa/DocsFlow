@@ -94,7 +94,7 @@ public class Individuals_Page extends WebPage<Individuals_Page>
 			String bornDate = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().bornDate;
 			String inn = new Elements().new Filtration_Accordion().new Values().value;
 			String bornPlace = new Individuals_RegPage(driver).new Elements().new BornPlaceInfo().new Values().place;
-			if(checkType == "edit") bornDate = new Individuals_RegPage(driver).new Elements().new BornPlaceInfo().new Values().place + "2";
+			if(checkType == "edit") bornPlace = new Individuals_RegPage(driver).new Elements().new BornPlaceInfo().new Values().place + "2";
 			//endregion
 			
 			// Определение ожидаемых значений
@@ -108,12 +108,33 @@ public class Individuals_Page extends WebPage<Individuals_Page>
 											  bornPlace};
 			
 			// Вытянуть последнее значения из грида
-			String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid);;
+			String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid, true);;
 			
 			// Проверка значений грида
 			new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);
 		}
 	
+		
+		// Переход к редактированию карточки
+		public Individuals_RegPage card_Edit()
+		{
+			// Нажать на кнопку редактирования
+			new Elements().new Grid().edit_Button(driver).click();
+			new CommonActions().simpleWait(2);
+			
+			return new Individuals_RegPage(driver).waitUntilAvailable();	
+		}
+		
+		// Переход к просмотру карточки
+		public Individuals_RegPage card_View()
+		{
+			// Нажать на кнопку просмотра
+			new Elements().new Grid().view_Button(driver).click();
+			new CommonActions().simpleWait(2);
+			
+			return new Individuals_RegPage(driver).waitUntilAvailable();	
+		}
+		
 	/*___________________________________________________________________________________________________________________*/
 	
 	

@@ -112,7 +112,7 @@ public abstract class CommonElements
 														  						// Где, 'InsetId' - номер вкладки 
 			
 			// Кнопка 'Додати' значение в словарь
-			public Button dictAdd_Button(WebDriver driver, String id) 			{ return new Button(driver, By.id("id")); }	
+			public Button dictAdd_Button(WebDriver driver, String id) 			{ return new Button(driver, By.id(id + "_btn_add")); }	
 		}
 		
 		// Элементы универсального грида внутри карточки
@@ -179,6 +179,32 @@ public abstract class CommonElements
 			
 			// Кнопка 'Видалити зв'язок'
 			public Button deleteLink_Button(WebDriver driver)   			{ return new Button(driver, By.id("btnDelLink")); }
+			
+			// Индекс
+			public TextInput index_TextInput(WebDriver driver)				{return new TextInput(driver, By.id("index"));}
+			
+			// Год
+			public TextInput year_TextInput(WebDriver driver)				{return new TextInput(driver, By.id("year"));}
+			
+			// Кнопка 'Пошук'
+			public Button search_Button(WebDriver driver)   				{ return new Button(driver, By.id("btnSearch")); }
+			
+			// Найденный документ
+			public Text findedDoc_Text(WebDriver driver, String docName)	{return new Text(driver, By.xpath("//*[contains(@id, '_anchor') " +
+																											  "and text()='" + docName + "']"));}
+			
+			// Кнопка 'Прив'язати документ'
+			public Button linkDoc_Button(WebDriver driver)   				{ return new Button(driver, By.id("btnLink")); }
+			
+			
+			// Добавленный документ
+			public Text addedDoc_Text(WebDriver driver)						{return new Text(driver, By.xpath("//a[@href='#' and contains(@id, '_anchor')]"));}
+			
+			// Информация о документе
+			public WebElement docInfo_Div(WebDriver driver)					{return driver.findElement(By.id("linkPreview"));}
+			
+			// Информация о документе
+			public WebElement docInfo_Tbody(WebDriver driver)				{return driver.findElement(By.xpath("//div[@id='linkPreview']/table/tbody"));}
 		}
 	}
 	
