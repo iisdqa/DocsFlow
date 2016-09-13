@@ -22,6 +22,7 @@ import com.docsflow.core.web.pages.docs.IncomingDocs_Page;
 import com.docsflow.core.web.pages.docs.IncomingDocs_FilesPage;
 import com.docsflow.core.web.pages.docs.IncomingDocs_PerformControlPage;
 import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage;
+import com.docsflow.core.web.pages.registers.Entrepreneurs_Page;
 import com.docsflow.core.web.pages.registers.Individuals_FilesPage;
 import com.docsflow.core.web.pages.registers.Individuals_Page;
 import com.docsflow.core.web.pages.registers.Individuals_RegPage;
@@ -107,6 +108,15 @@ public class MainPage extends WebPage<MainPage>
 				new CommonActions().menu_Handler(driver, 2, 2);
 				
 			    return new Individuals_Page(driver).waitUntilAvailable();			   
+			}
+			
+			// Пункт меню 'Реестр ФОП'
+			public Entrepreneurs_Page entrepreneurs_Page()
+			{    
+				// Использовать менюшку
+				new CommonActions().menu_Handler(driver, 2, 3);
+				
+			    return new Entrepreneurs_Page(driver).waitUntilAvailable();			   
 			}
 		}
 		

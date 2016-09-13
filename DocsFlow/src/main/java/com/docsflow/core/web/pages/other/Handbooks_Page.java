@@ -3,6 +3,7 @@ package com.docsflow.core.web.pages.other;
 import java.sql.Connection;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -48,23 +49,32 @@ public class Handbooks_Page extends WebPage<Handbooks_Page>
 	public void dictionaryCache_Update(Connection sqlConnection)
 	{
 		//region Variables
-		Cell dictName_Cell = new Elements().new DictNames().new Grid().dictName_Cell("Проект");
+		String[] dictNames = {"Країна", "Область" , "Район (місто)", "Селище", "Вулиця"};
 		String fullValue = new Elements().new DictValues().new PopUps().new AddEdit().new Values().fullValue;
 		String shortValue = new Elements().new DictValues().new PopUps().new AddEdit().new Values().shortValue;
 		//endregion
 		
-		// Выбор словаря
-		dictName_Cell.click();
-		wait_ForPageReady();
+		// Перейти на нужную страничку
+		new Elements().new DictNames().new Grid().new Pager().pageNumber_Input(driver).clear();
+		new Elements().new DictNames().new Grid().new Pager().pageNumber_Input(driver).inputText("3");
+		sendKeys(Keys.ENTER.toString());
 		
-		// Добавление значения в грид
-		new Elements().new DictValues().new Grid().add_Button().click();
-		waitUntilClickable(new Elements().new DictValues().new PopUps().new AddEdit().fullValue_Input());
-		new Elements().new DictValues().new PopUps().new AddEdit().fullValue_Input().inputText(fullValue);
-		new Elements().new DictValues().new PopUps().new AddEdit().shortValue_Input().inputText(shortValue);
-		new Elements().new DictValues().new PopUps().new AddEdit().save_Button().click();
-		new Elements().new DictValues().new Grid().add_Button().waitUntilAvailable();
-		waitForBlockStatus(new Elements().new DictValues().new Grid().download_Div(), false);
+		// Установить значения в словари
+		for(int i = 0; i<dictNames.length; i++)
+		{
+			// Выбор словаря
+			new Elements().new DictNames().new Grid().dictName_Cell(dictNames[i]).click();
+			wait_ForPageReady();
+			
+			// Добавление значения в грид
+			new Elements().new DictValues().new Grid().add_Button().click();
+			waitUntilClickable(new Elements().new DictValues().new PopUps().new AddEdit().fullValue_Input());
+			new Elements().new DictValues().new PopUps().new AddEdit().fullValue_Input().inputText(fullValue);
+			new Elements().new DictValues().new PopUps().new AddEdit().shortValue_Input().inputText(shortValue);
+			new Elements().new DictValues().new PopUps().new AddEdit().save_Button().click();
+			new Elements().new DictValues().new Grid().add_Button().waitUntilAvailable();
+			wait_ForPageReady();
+		}
 	}
 	
 	
@@ -82,6 +92,8 @@ public class Handbooks_Page extends WebPage<Handbooks_Page>
 			{
 				// "Завантаження"
 				public Cell dictName_Cell(String dictName)	{return new Cell(driver, By.xpath("//td[@aria-describedby='list_dict_DIC_PARENT_NAME' and text()='" + dictName + "']"));}
+				
+				private class Pager extends CommonElements.BaseGrid_Elements.Pager_Elements{}
 			}
 		}
 		

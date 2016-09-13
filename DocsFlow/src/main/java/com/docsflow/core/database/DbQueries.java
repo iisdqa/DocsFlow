@@ -71,6 +71,20 @@ public class DbQueries
 				    public static String RegPlaceDeletion_Statement = new CustomMethods().new WorkWith_TextFiles().file_Read(queriesPath + "registration_place_deletion.sql");
 				}	
 			}
+			
+			// Реестр 'ФОП'
+			public static class Entrepreneurs
+			{
+				// Запросы для удаления данных
+				public static class Deletion_Queries
+				{
+					// Определение ошибок, которые будем выводить в случае падения запросов
+				    public static String FoDeletion_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке удаления карточек в реестре 'ФОП'.\r\nТекст ошибки:\r\n";				   		   
+				    
+				    // Определение самих запросов
+				    public static String FoDeletion_Statement = new CustomMethods().new WorkWith_TextFiles().file_Read(queriesPath + "fop_deletion.sql");				    
+				}	
+			}
 		}
 	}
 	
@@ -80,13 +94,10 @@ public class DbQueries
 		public static class Deletion_Queries
 		{
 			// Определение ошибок, которые будем выводить в случае падения запросов
-		    public static String cacheUpdateValueDeletion_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке удаления карточек в реестре 'ФО'.\r\nТекст ошибки:\r\n";
+		    public static String cacheUpdateValueDeletion_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке удаления страны, области, города и тд. из словаря НДИ(для обновления кэша).\r\nТекст ошибки:\r\n";
 		    
 		    // Определение текста запроса
-		    public static String cacheUpdateValueDeletion_Statement = "delete from [dbo].[Dictionary_Value]" + "\r\n" +
-		    														  "where DICV_IDP = (select dv.DICV_IDP from [dbo].[Dictionary_Value] dv" + "\r\n" +
-		    														  "join [dbo].[Dictionary] dc on dv.DIC_IDP = dc.DIC_IDP" + "\r\n" +
-		    														  "where dc.DIC_NAME = 'Класифікація проекту' and dv.DICV_LNAM = 'Test Automation')";
+		    public static String cacheUpdateValueDeletion_Statement = new CustomMethods().new WorkWith_TextFiles().file_Read(queriesPath + "handbook_cleanup_for_cached_data.sql");
 		}
 	}
 	

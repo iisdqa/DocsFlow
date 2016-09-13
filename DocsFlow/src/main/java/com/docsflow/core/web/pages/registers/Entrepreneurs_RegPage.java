@@ -13,24 +13,22 @@ import com.docsflow.core.web.CommonActions;
 import com.docsflow.core.web.CommonElements;
 import com.docsflow.core.web.CustomMethods;
 import com.docsflow.core.web.WebPage;
-import com.docsflow.core.web.CustomMethods.WorkWith_TextFiles;
+
 import com.docsflow.core.web.elements.Button;
 import com.docsflow.core.web.elements.Custom;
 import com.docsflow.core.web.elements.TextInput;
-import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage.Elements;
-import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage.Elements.Values;
 
-public class Individuals_RegPage extends WebPage<Individuals_RegPage>
+public class Entrepreneurs_RegPage extends WebPage<Entrepreneurs_RegPage>
 {
 	private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Add/63";
 	
-	public Individuals_RegPage(WebDriver driver) 
+	public Entrepreneurs_RegPage(WebDriver driver) 
 	{
 		super(driver);
 	}
 
 	@Override
-	public Individuals_RegPage load()
+	public Entrepreneurs_RegPage load()
 	{
 		driver.get(PAGE_URL);
 		return this;
@@ -46,31 +44,6 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 
 	/*__________________________________________________ Actions ________________________________________________________*/
 
-	// Добавить страну в словарь
-	public void country_Add()
-	{
-		//region Variables
-		Button countryAdd = new Elements().new PersonInfo().countryAdd_Button();
-		TextInput citizenshipInput = new Elements().new PersonInfo().citizenship_TextInput();
-		String citizenship = new Elements().new PersonInfo().new Values().citizenship;
-		String askMessage = new Elements().new PersonInfo().dictValueAdd_AskMessage(citizenship);
-		String successMessage = new Elements().new PersonInfo().dictValueAdd_SuccessMessage("Громадянство");
-		//endregion
-		
-		// Проверка недоступности кнопки добавления пока не внесено значение
-		assertThat(countryAdd.getAttribute("disabled"), is(equalTo("true")));
-		
-		// Внести значение
-		citizenshipInput.inputText(citizenship);
-		
-		// Доавить в словарь
-		new CommonActions().dictValue_Add(driver, countryAdd, askMessage, successMessage);
-		
-		// Обновить страничку
-		driver.navigate().refresh();
-		countryAdd.waitUntilAvailable();
-	}
-	
 	// Заполнение полей в блоке 'Особа'
 	public void personInfo_Fill()
 	{
@@ -174,83 +147,27 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 	// Заполнение полей в блоке 'Місце реєстрації'
 	public void residenceInfo_Fill()
 	{
-		//region Variables
-		/*____________________________ 'Країна' _________________________________*/
-		String country = new Elements().new ResidenceInfo().new Values().country;
-		TextInput country_Input =  new Elements().new ResidenceInfo().country_TextInput();
-		/*_______________________________________________________________________*
-		
-		/*___________________________ 'Область' ________________________________*/
-		Button regionAdd_Button = new Elements().dictAdd_Button(driver, "719");
-		String region = new Elements().new ResidenceInfo().new Values().region;
-		TextInput region_Input =  new Elements().new ResidenceInfo().region_TextInput();
-		
-		/*_________________________ 'Район(місто)' _____________________________*/
-		Button districtAdd_Button = new Elements().dictAdd_Button(driver, "720");
-		String district = new Elements().new ResidenceInfo().new Values().district;
-		TextInput district_Input =  new Elements().new ResidenceInfo().district_TextInput();
-		/*_______________________________________________________________________*/
-		
-		/*__________________________ 'Селище' ___________________________________*/
-		Button villageAdd_Button = new Elements().dictAdd_Button(driver, "721");
-		String village = new Elements().new ResidenceInfo().new Values().village;
-		TextInput village_Input =  new Elements().new ResidenceInfo().village_TextInput();
-		/*_______________________________________________________________________*/
-		
-		/*___________________________ 'Вулиця' __________________________________*/
-		Button streetAdd_Button = new Elements().dictAdd_Button(driver, "722");
+		//region Variables	
 		String street = new Elements().new ResidenceInfo().new Values().street;
 		TextInput street_Input =  new Elements().new ResidenceInfo().street_TextInput();
-		/*_______________________________________________________________________*/
-		
-		/*_________________________ 'Помешкання' ________________________________*/
 		String house = new Elements().new ResidenceInfo().new Values().house;
-		TextInput house_Input =  new Elements().new ResidenceInfo().house_TextInput();
-		/*_______________________________________________________________________*/
+		TextInput house_Input =  new Elements().new ResidenceInfo().house_TextInput();	
 		//endregion
 		
-		// Выбор значения для 'Країна'
-		country_Input.inputText(country);
-		new CommonActions().autoCompleteValue_Set(driver, country_Input, 1);
-		
-		// Выбор значения для 'Область'
-		dictValue_Add(regionAdd_Button, region_Input, region, "МР Область");
-		
-		// Выбор значения для 'Район(місто)'
-		dictValue_Add(districtAdd_Button, district_Input, district, "МР Район(місто)");
-		
-		// Выбор значения для 'Селище'
-		dictValue_Add(villageAdd_Button, village_Input, village, "МР Селище");
-		
 		// Выбор значения для 'Вулиця'
-		dictValue_Add(streetAdd_Button, street_Input, street, "МР Вулиця");
+		street_Input.inputText(street);
 		
 		// Установить значение для 'Помешкання'
 		house_Input.inputText(house);
 	}
 	
-	// Добавить запись в словарь
-	private void dictValue_Add(Button add_Button, TextInput valueInput, String Value, String FieldName)
-	{
-		//region Variables
-		String askMessage = new Elements().new PersonInfo().dictValueAdd_AskMessage(Value);
-		String successMessage = new Elements().new PersonInfo().dictValueAdd_SuccessMessage(FieldName);
-		//endregion
-	
-		// Внести значение
-		valueInput.inputText(Value);
-		
-		// Доавить в словарь
-		new CommonActions().dictValue_Add(driver, add_Button, askMessage, successMessage);
-	}
-	
-	public Individuals_RegPage card_Save()
+	public Entrepreneurs_RegPage card_Save()
 	{
 		// Сохранить введенную инфу
 		new Elements().save_Button(driver).click();
 		waitUntilClickable(new Elements().new PersonInfo().idCode_TextInput());
 		
-		return new Individuals_RegPage(driver).waitUntilAvailable();
+		return new Entrepreneurs_RegPage(driver).waitUntilAvailable();
 	}
 	
 	public void card_Check()
@@ -323,13 +240,13 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		assertThat(new Elements().new ResidenceInfo().house_TextInput().getAttribute("value"), is(equalTo(house)));
 	}
 	
-	public Individuals_Page card_Close()
+	public Entrepreneurs_Page card_Close()
 	{
 		// Закрытие редактирования карточки
 		new Elements().close_Button(driver).click();
 		new CommonActions().simpleWait(1);
 		
-		return new Individuals_Page(driver).waitUntilAvailable();
+		return new Entrepreneurs_Page(driver).waitUntilAvailable();
 	}
 	
 	public void secondCard_Fill()
@@ -385,7 +302,7 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 	{
 		//region Variables			
 		Custom info_PopUp = new Elements().new ResidenceInfo().info_PopUp(driver);
-		String errorMessage = "Збереження неможливе, оскільки вже існує заявник - фізична особа з таким ІДН";
+		String errorMessage = "Збереження неможливе, оскільки вже існує заявник - фізична особа-підприємець з таким ІДН";
 		String second_idCode = new Elements().new PersonInfo().new Values().second_idCode;
 		//endregion
 		
@@ -412,7 +329,7 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		sendKeys("2");
 	}
 	
-	public Individuals_FilesPage goTo_Files_Page()
+	public Entrepreneurs_FilesPage goTo_Files_Page()
 	{
 		//region Variables	
 		WebElement insetLink = new Elements().inset_Link(driver, "2");
@@ -421,14 +338,14 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 	 	// Клик по вкладке
 		insetLink.click();
 		
-		return new Individuals_FilesPage(driver).waitUntilAvailable();
+		return new Entrepreneurs_FilesPage(driver).waitUntilAvailable();
 	}
 	
 	// Проверка хэдера карточки + проверка ИНН
 	public void cardHeader_Check()
 	{
 		//region Variables	
-		String expected_Header = "Заявник ФО";
+		String expected_Header = "Заявник ФОП";
 		String expected_idCode = new Elements().new PersonInfo().new Values().idCode;
 		//endregion
 		
@@ -450,54 +367,52 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		// Блок 'Особа'
 		protected class PersonInfo extends CommonElements.Card_Elements.Pop_Ups
 		{
-			// 'Громадянство'
-			private Button countryAdd_Button() 			{ return new Button(driver,By.id("705_btn_add")); } 
-			
+	
 			// 'ІДН'
-			private TextInput idCode_TextInput() 		{ return new TextInput(driver, By.id("707")); } 
+			private TextInput idCode_TextInput() 		{ return new TextInput(driver, By.id("758")); } 
 			
 			// 'ІДН' на просмотровой страничке
 			private TextInput idCode_Text() 			{ return new TextInput(driver, By.xpath("//div[@class='break-word']/div[2]")); } 
 			
 			// 'Прізвище'
-			private TextInput surname_TextInput() 		{ return new TextInput(driver, By.id("700")); } 
+			private TextInput surname_TextInput() 		{ return new TextInput(driver, By.id("751")); } 
 			
 			// 'Ім'я'
-			private TextInput name_TextInput() 			{ return new TextInput(driver,By.id("701")); } 
+			private TextInput name_TextInput() 			{ return new TextInput(driver,By.id("752")); } 
 			
 			// 'По-батькові'
-			private TextInput patronymic_TextInput() 	{ return new TextInput(driver,By.id("702")); } 
+			private TextInput patronymic_TextInput() 	{ return new TextInput(driver,By.id("753")); } 
 			
 			// 'Стать'
-			private Select gender_Select() 				{ return new Select(driver.findElement(By.id("704"))); } 
+			private Select gender_Select() 				{ return new Select(driver.findElement(By.id("755"))); } 
 			
 			// 'Громадянство'
-			private TextInput citizenship_TextInput() 	{ return new TextInput(driver,By.id("705_auto")); } 
+			private TextInput citizenship_TextInput() 	{ return new TextInput(driver,By.id("756_auto")); } 
 			
 			// 'Дата народження'
-			private TextInput bornDate_TextInput() 		{ return new TextInput(driver,By.id("706")); } 
+			private TextInput bornDate_TextInput() 		{ return new TextInput(driver,By.id("757")); } 
 			
 			// 'Телефон'
-			private TextInput phone_TextInput() 		{ return new TextInput(driver,By.id("709")); } 
+			private TextInput phone_TextInput() 		{ return new TextInput(driver,By.id("760")); } 
 			
 			// 'Мобільний телефон'
-			private TextInput cellPhone_TextInput() 	{ return new TextInput(driver,By.id("708")); } 
+			private TextInput cellPhone_TextInput() 	{ return new TextInput(driver,By.id("759")); } 
 			
 			// 'Email'
-			private TextInput email_TextInput() 		{ return new TextInput(driver,By.id("710")); } 
+			private TextInput email_TextInput() 		{ return new TextInput(driver,By.id("761")); } 
 			
 			// Используемые значения
 			protected class Values 
 			{
-				protected String idCode = "0007771110";			// 'ІДН'
-				protected String second_idCode = "7770001110";	// 'ІДН'
-				protected String surname = "Автоматизатор";		// 'Прізвище'				
-				protected String name = "Петро";				// 'Ім'я'				
-				protected String patronymic = "Васильович";		// 'По-батькові'				
+				protected String idCode = "0008881110";			// 'ІДН'
+				protected String second_idCode = "8880001110";	// 'ІДН'
+				protected String surname = "Підприємець";		// 'Прізвище'				
+				protected String name = "Василь";				// 'Ім'я'				
+				protected String patronymic = "Петрович";		// 'По-батькові'				
 				private String gender = "Чоловіча";				// 'Стать' 				
 				protected String citizenship = new ResidenceInfo().new Values().country;	// 'Громадянство'				
-				protected String bornDate = "01.01.1975";		// 'Дата народження'	
-				protected String second_bornDate = "02.01.1975";	// 'Дата народження'	
+				protected String bornDate = "01.01.1985";		// 'Дата народження'	
+				protected String second_bornDate = "02.01.1985";	// 'Дата народження'	
 				private String phone = "(000)1112233";			// 'Телефон'				
 				private String сellPhone = "(099)3332211";		// 'Мобільний телефон'				
 				private String email = "autmtn@email.com";		// 'Email'
@@ -508,27 +423,27 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		private class DocInfo
 		{
 			// 'Вид документа'
-			private Select docKind_Select() 				{ return new Select(driver.findElement(By.id("711"))); } 
+			private Select docKind_Select() 				{ return new Select(driver.findElement(By.id("762"))); } 
 			
 			// 'Серія'
-			private TextInput serial_TextInput() 			{ return new TextInput(driver, By.id("712")); } 
+			private TextInput serial_TextInput() 			{ return new TextInput(driver, By.id("763")); } 
 			
 			// 'Номер'
-			private TextInput number_TextInput() 			{ return new TextInput(driver, By.id("713")); } 
+			private TextInput number_TextInput() 			{ return new TextInput(driver, By.id("764")); } 
 			
 			// 'Дата видачі'
-			private TextInput giveDate_TextInput() 			{ return new TextInput(driver, By.id("714")); } 
+			private TextInput giveDate_TextInput() 			{ return new TextInput(driver, By.id("765")); } 
 			
 			// 'ІДН'
-			private TextInput organization_TextInput() 		{ return new TextInput(driver, By.id("715")); } 
+			private TextInput organization_TextInput() 		{ return new TextInput(driver, By.id("767")); } 
 			
 			// Используемые значения
 			private class Values 
 			{
 				private String docType = "Паспорт громадянина України";		// 'Вид документа'
-				private String serial = "СС";								// 'Серія'
-				private String number = "222555";							// 'Номер'
-				private String giveDate = "01.01.1980";						// 'Дата видачі'
+				private String serial = "ПП";								// 'Серія'
+				private String number = "555222";							// 'Номер'
+				private String giveDate = "01.01.1988";						// 'Дата видачі'
 				private String organization = "Київським ДМС";				// 'ІДН'
 			}
 		}
@@ -537,10 +452,10 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		protected class BornPlaceInfo
 		{
 			// 'Країна народження'
-			private Select country_Select() 				{ return new Select(driver.findElement(By.id("716"))); } 
+			private Select country_Select() 				{ return new Select(driver.findElement(By.id("767"))); } 
 			
 			// 'Місце народження'
-			private TextInput place_TextInput() 			{ return new TextInput(driver, By.id("717")); } 
+			private TextInput place_TextInput() 			{ return new TextInput(driver, By.id("768")); } 
 			
 			// Используемые значения
 			protected class Values 
@@ -554,22 +469,22 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		private class ResidenceInfo extends CommonElements.Card_Elements.Pop_Ups
 		{
 			// 'Країна'
-			private TextInput country_TextInput() 			{ return new TextInput(driver, By.id("718_auto")); } 
+			private TextInput country_TextInput() 			{ return new TextInput(driver, By.id("769_auto")); } 
 			
 			// 'Область'
-			private TextInput region_TextInput() 			{ return new TextInput(driver, By.id("719_auto")); } 
+			private TextInput region_TextInput() 			{ return new TextInput(driver, By.id("770_auto")); } 
 			
 			// 'Район(місто)'
-			private TextInput district_TextInput() 			{ return new TextInput(driver, By.id("720_auto")); } 
+			private TextInput district_TextInput() 			{ return new TextInput(driver, By.id("771_auto")); } 
 			
 			// 'Селище'
-			private TextInput village_TextInput() 			{ return new TextInput(driver, By.id("721_auto")); } 
+			private TextInput village_TextInput() 			{ return new TextInput(driver, By.id("772_auto")); } 
 			
 			// 'Вулиця'
-			private TextInput street_TextInput() 			{ return new TextInput(driver, By.id("722_auto")); } 
+			private TextInput street_TextInput() 			{ return new TextInput(driver, By.id("773_auto")); } 
 			
 			// 'Помешкання'
-			private TextInput house_TextInput() 			{ return new TextInput(driver, By.id("723")); } 
+			private TextInput house_TextInput() 			{ return new TextInput(driver, By.id("774")); } 
 			
 			private class Values
 			{

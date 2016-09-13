@@ -16,7 +16,7 @@ import com.docsflow.core.web.pages.registers.Individuals_RegPage;
 
 public class IndividualAdd_Test extends BaseTest
 {
-/*	@BeforeMethod(alwaysRun = true, dependsOnMethods = {"setUp"})
+	@BeforeMethod(alwaysRun = true, dependsOnMethods = {"setUp"})
 	public void DeletionViaDatabase_BeforeTest() throws Exception
 	{
 	    // Определение ошибки, которая будет появляться в случае падения запроса
@@ -30,10 +30,10 @@ public class IndividualAdd_Test extends BaseTest
 	    // Выполнение запроса
 	    new DbStatements().SimpleStatement(sqlConnection, FoDeletion_Statement, FoDeletion_ErrorMessage);
 	    new DbStatements().SimpleStatement(sqlConnection, RegPlaceDeletion_Statement, RegPlaceDeletion_ErrorMessage);
-	}*/
+	}
 	
 	@Test(groups = { "IndividualAdd_Test" })
-	public void IndividualAdd_TestMethod() throws Exception
+	public void IndividualAdd_TestMethod()
 	{	
 		// Переход на главную
 		LogInPage authorizationPage = new MainPage(driver).redirectToLogInPage();
@@ -86,6 +86,7 @@ public class IndividualAdd_Test extends BaseTest
 		
 		editPage = individuals_Page.card_Edit();
 		editPage.placeValue_Change();
+		editPage.card_Save();
 		Individuals_FilesPage filesPage = editPage.goTo_Files_Page();		
 		filesPage.file_Add();
 		filesPage.filesGrid_Check("add");
@@ -116,7 +117,7 @@ public class IndividualAdd_Test extends BaseTest
 		viewPage.cardHeader_Check();
 		filesPage = viewPage.goTo_Files_Page();
 		filesPage.wait_ForPageReady();
-		filesPage.filesGrid_Check("edit");	
+		filesPage.filesGrid_Check("view");	
 		filesPage.fileUnload_check();
 		filesPage.addedDoc_Check();
 		filesPage.docView_check();
@@ -129,7 +130,7 @@ public class IndividualAdd_Test extends BaseTest
 		individuals_Page.user_Out();
 	}
 	
-/*	@AfterMethod(alwaysRun = true, groups = {"DrugChanges_Test"})
+	@AfterMethod(alwaysRun = true, groups = {"IndividualAdd_Test"})
 	public void DeletionViaDatabase_AfterTest() throws Exception
 	{
 	    // Определение ошибки, которая будет появляться в случае падения запроса
@@ -140,5 +141,5 @@ public class IndividualAdd_Test extends BaseTest
 	    
 	    // Выполнение запросов
 	    new DbStatements().SimpleStatement(sqlConnection, deletion_Statement, deletion_ErrorMessage);
-	}*/
+	}
 }

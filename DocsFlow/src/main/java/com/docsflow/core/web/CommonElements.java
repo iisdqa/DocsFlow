@@ -87,6 +87,13 @@ public abstract class CommonElements
 			
 		//  нопка удалени€
 		public Button delete_Button(WebDriver driver)   		{ return new Button(driver, By.xpath("//td[@aria-describedby='grid_del']")); }
+		
+		// Ёлементы пагинатора
+		public static class Pager_Elements
+		{
+			// ѕолное значение
+			public TextInput pageNumber_Input(WebDriver driver){return new TextInput(driver, By.className("ui-pg-input"));}
+		}
 	}
 	
 	// Ёлементы карточек
