@@ -19,6 +19,7 @@ import com.docsflow.core.web.elements.Custom;
 import com.docsflow.core.web.elements.TextInput;
 import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage.Elements;
 import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage.Elements.Values;
+import com.docsflow.core.web.pages.registers.Entrepreneurs_RegPage.Elements.PersonInfo;
 
 public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 {
@@ -366,6 +367,7 @@ public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 		new Elements().new PersonInfo().gender_Select().selectByVisibleText(gender);
 		new Elements().new PersonInfo().citizenship_TextInput().inputText(citizenship);
 		new CommonActions().autoCompleteValue_Set(driver, new Elements().new PersonInfo().citizenship_TextInput(), 1);
+		new Elements().new PersonInfo().bornDate_TextInput().click();
 		new Elements().new PersonInfo().bornDate_TextInput().inputText(bornDate);
 		
 		// Заполнение полей блока 'Документ'

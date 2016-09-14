@@ -17,6 +17,7 @@
     		
     		<define name="registers_tests">
       			<include name="IndividualAdd_Test"/>
+      			<include name="EntrepreneurAdd_Test"/>
     		</define>
 			
 			<define name="cnap_tests">
@@ -37,7 +38,8 @@
     	<classes>
        		<class name="com.docsflow.tests.administration.UsersAndAudit_Test" />
 			<class name="com.docsflow.tests.docs.IncomingDocsAdd_Test" />
-    		<class name="com.docsflow.tests.registers.IndividualAdd_Test" /> 		
+    		<class name="com.docsflow.tests.registers.IndividualAdd_Test" />
+    		<class name="com.docsflow.tests.registers.EntrepreneurAdd_Test" />	
     	</classes>
 	</test>
 </suite>

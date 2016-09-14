@@ -79,10 +79,10 @@ public class DbQueries
 				public static class Deletion_Queries
 				{
 					// Определение ошибок, которые будем выводить в случае падения запросов
-				    public static String FoDeletion_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке удаления карточек в реестре 'ФОП'.\r\nТекст ошибки:\r\n";				   		   
+				    public static String FopDeletion_ErrorMessage = "\r\n\r\nПроизошла ошибка при попытке удаления карточек в реестре 'ФОП'.\r\nТекст ошибки:\r\n";				   		   
 				    
 				    // Определение самих запросов
-				    public static String FoDeletion_Statement = new CustomMethods().new WorkWith_TextFiles().file_Read(queriesPath + "fop_deletion.sql");				    
+				    public static String FopDeletion_Statement = new CustomMethods().new WorkWith_TextFiles().file_Read(queriesPath + "fop_deletion.sql");				    
 				}	
 			}
 		}

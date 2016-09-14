@@ -57,7 +57,7 @@ public class Entrepreneurs_Page extends WebPage<Entrepreneurs_Page>
 	public void rowHighlighted_Check()
 	{
 		//region Variables	
-		String inn = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().idCode;
+		String inn = new Entrepreneurs_RegPage(driver).new Elements().new PersonInfo().new Values().idCode;
 		WebElement inn_Cell = new Elements().new Grid().inn_Cell(inn);
 		WebElement row = inn_Cell.findElement(By.xpath(".."));
 		//endregion
@@ -88,13 +88,13 @@ public class Entrepreneurs_Page extends WebPage<Entrepreneurs_Page>
 		{
 			//region Variables
 			WebElement grid = new Elements().new Grid().grid_Body(driver);
-			String surname = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().surname;
-			String name = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().name;
-			String patronymic = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().patronymic;
-			String bornDate = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().bornDate;
+			String surname = new Entrepreneurs_RegPage(driver).new Elements().new PersonInfo().new Values().surname;
+			String name = new Entrepreneurs_RegPage(driver).new Elements().new PersonInfo().new Values().name;
+			String patronymic = new Entrepreneurs_RegPage(driver).new Elements().new PersonInfo().new Values().patronymic;
+			String bornDate = new Entrepreneurs_RegPage(driver).new Elements().new PersonInfo().new Values().bornDate;
 			String inn = new Elements().new Filtration_Accordion().new Values().value;
-			String bornPlace = new Individuals_RegPage(driver).new Elements().new BornPlaceInfo().new Values().place;
-			if(checkType == "edit") bornPlace = new Individuals_RegPage(driver).new Elements().new BornPlaceInfo().new Values().place + "2";
+			String bornPlace = new Entrepreneurs_RegPage(driver).new Elements().new BornPlaceInfo().new Values().place;
+			if(checkType == "edit") bornPlace = new Entrepreneurs_RegPage(driver).new Elements().new BornPlaceInfo().new Values().place + "2";
 			//endregion
 			
 			// Определение ожидаемых значений
@@ -158,7 +158,7 @@ public class Entrepreneurs_Page extends WebPage<Entrepreneurs_Page>
 			{
 				private String fieldName = "ІДН";
 				private String matchType = "Дорівнює";
-				private String value = new Individuals_RegPage(driver).new Elements().new PersonInfo().new Values().idCode;
+				private String value = new Entrepreneurs_RegPage(driver).new Elements().new PersonInfo().new Values().idCode;
 			}
 		}	
 	}

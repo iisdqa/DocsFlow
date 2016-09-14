@@ -44,6 +44,46 @@ public class Entrepreneurs_RegPage extends WebPage<Entrepreneurs_RegPage>
 
 	/*__________________________________________________ Actions ________________________________________________________*/
 
+	// Проверка невозможности добавления записей в словарь при наличии такой записи в словаре
+	public void dictValue_SetInability_Check()
+	{
+		//region Variables
+		TextInput citizenship_TextInput = new Elements().new PersonInfo().citizenship_TextInput();
+		String citizenship = new Elements().new PersonInfo().new Values().citizenship;
+		Button add_Button = new Elements().dictAdd_Button(driver, "756");
+		Custom info_PopUp = new Elements().new ResidenceInfo().info_PopUp(driver);
+		String askMessage = new Elements().new PersonInfo().dictValueAdd_AskMessage(citizenship);
+		String errorMessage = "Значення вже є в довіднику 'Громадянство'";
+		//endregion
+		
+		// Внести значнеие
+		citizenship_TextInput.inputText(citizenship);
+		
+		// Нажать кнопку добавления
+		add_Button.click();
+		new CustomMethods().simpleWait(1);
+		info_PopUp.waitUntilAvailable();
+
+		// Проверка сообщения
+		assertThat(info_PopUp.getText(), is(equalTo(askMessage)));
+		
+		// Нажать 'Так'
+		new Elements().new ResidenceInfo().yes_Button(driver).click();
+		new CustomMethods().simpleWait(1);
+		info_PopUp.waitUntilAvailable();
+		
+		// Проверка сообщения об успешном добавлении
+		assertThat(info_PopUp.getText(), is(equalTo(errorMessage)));
+		
+		// Закрыть
+		new Elements().new ResidenceInfo().close_Button(driver).click();
+		add_Button.waitUntilAvailable();
+		
+		// Очистить значение
+		citizenship_TextInput.clear();
+	}
+	
+	
 	// Заполнение полей в блоке 'Особа'
 	public void personInfo_Fill()
 	{
@@ -108,42 +148,6 @@ public class Entrepreneurs_RegPage extends WebPage<Entrepreneurs_RegPage>
 		new Elements().new BornPlaceInfo().place_TextInput().inputText(place);
 	}
 	
-	// Проверка невозможности добавления записей в словарь при отсутствии значения в родительском словаре
-	public void dictValue_SetInability_Check()
-	{
-		//region Variables
-		TextInput region_Input = new Elements().new ResidenceInfo().region_TextInput();
-		String region = new Elements().new ResidenceInfo().new Values().region;
-		Button add_Button = new Elements().dictAdd_Button(driver, "719");
-		Custom info_PopUp = new Elements().new ResidenceInfo().info_PopUp(driver);
-		String askMessage = new Elements().new PersonInfo().dictValueAdd_AskMessage(region);
-		String errorMessage = "Неможливо додати запис довідника 'МР Область', тому що не задане значення батьківського довідника 'МР Країна'.";
-		//endregion
-		
-		// Внести значнеие
-		region_Input.inputText(region);
-		
-		// Нажать кнопку добавления
-		add_Button.click();
-		new CustomMethods().simpleWait(1);
-		info_PopUp.waitUntilAvailable();
-
-		// Проверка сообщения
-		assertThat(info_PopUp.getText(), is(equalTo(askMessage)));
-		
-		// Нажать 'Так'
-		new Elements().new ResidenceInfo().yes_Button(driver).click();
-		new CustomMethods().simpleWait(1);
-		info_PopUp.waitUntilAvailable();
-		
-		// Проверка сообщения об успешном добавлении
-		assertThat(info_PopUp.getText(), is(equalTo(errorMessage)));
-		
-		// Закрыть
-		new Elements().new ResidenceInfo().close_Button(driver).click();
-		add_Button.waitUntilAvailable();
-	}
-	
 	// Заполнение полей в блоке 'Місце реєстрації'
 	public void residenceInfo_Fill()
 	{
@@ -156,6 +160,8 @@ public class Entrepreneurs_RegPage extends WebPage<Entrepreneurs_RegPage>
 		
 		// Выбор значения для 'Вулиця'
 		street_Input.inputText(street);
+		new CommonActions().autoCompleteValue_Set(driver, street_Input, 1);
+		new CustomMethods().simpleWait(3);
 		
 		// Установить значение для 'Помешкання'
 		house_Input.inputText(house);
@@ -283,6 +289,7 @@ public class Entrepreneurs_RegPage extends WebPage<Entrepreneurs_RegPage>
 		new Elements().new PersonInfo().gender_Select().selectByVisibleText(gender);
 		new Elements().new PersonInfo().citizenship_TextInput().inputText(citizenship);
 		new CommonActions().autoCompleteValue_Set(driver, new Elements().new PersonInfo().citizenship_TextInput(), 1);
+		new Elements().new PersonInfo().bornDate_TextInput().click();
 		new Elements().new PersonInfo().bornDate_TextInput().inputText(bornDate);
 		
 		// Заполнение полей блока 'Документ'
@@ -435,7 +442,7 @@ public class Entrepreneurs_RegPage extends WebPage<Entrepreneurs_RegPage>
 			private TextInput giveDate_TextInput() 			{ return new TextInput(driver, By.id("765")); } 
 			
 			// 'ІДН'
-			private TextInput organization_TextInput() 		{ return new TextInput(driver, By.id("767")); } 
+			private TextInput organization_TextInput() 		{ return new TextInput(driver, By.id("766")); } 
 			
 			// Используемые значения
 			private class Values 

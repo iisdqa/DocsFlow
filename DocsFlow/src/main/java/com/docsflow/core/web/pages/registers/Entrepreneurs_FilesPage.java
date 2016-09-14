@@ -278,15 +278,15 @@ public class Entrepreneurs_FilesPage extends WebPage<Entrepreneurs_FilesPage>
 		private class Files extends CommonElements.Card_Elements.Card_Files_Elements
 		{
 			// Название файла
-			private TextInput file_Input()      			{ return new TextInput(driver, By.id("726_fname")); }
+			private TextInput file_Input()      			{ return new TextInput(driver, By.id("777_fname")); }
 			
 			// 'Комментарий'
-			private Custom comment_Text()   				{ return new Custom(driver, By.id("customTextEditor_729")); }
+			private Custom comment_Text()   				{ return new Custom(driver, By.id("customTextEditor_780")); }
 			
 			// Грид
 			private class Grid extends CommonElements.Card_Elements.Grid
 			{
-				private String grid_Id = "725";
+				private String grid_Id = "776";
 			}
 			
 			private class Values
@@ -301,7 +301,7 @@ public class Entrepreneurs_FilesPage extends WebPage<Entrepreneurs_FilesPage>
 		
 		private class LinkedDocs extends CommonElements.Card_Elements.Card_LinkedDocs_Elements
 		{
-			private String docName = "Заявник ФО, 7770001110, 02.01.1975";
+			private String docName = "Заявник ФОП, 8880001110, 02.01.1985";
 		}
 	}
 

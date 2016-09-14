@@ -18,10 +18,10 @@ public class EntrepreneurAdd_Test extends BaseTest
 	public void DeletionViaDatabase_BeforeTest() throws Exception
 	{
 	    // Определение ошибки, которая будет появляться в случае падения запроса
-	    String FoDeletion_ErrorMessage = DbQueries.CnapTests.Registers.Entrepreneurs.Deletion_Queries.FoDeletion_ErrorMessage;
+	    String FoDeletion_ErrorMessage = DbQueries.CnapTests.Registers.Entrepreneurs.Deletion_Queries.FopDeletion_ErrorMessage;
 	
 	    // Определение текста запроса
-	    String FoDeletion_Statement = DbQueries.CnapTests.Registers.Entrepreneurs.Deletion_Queries.FoDeletion_Statement;	  
+	    String FoDeletion_Statement = DbQueries.CnapTests.Registers.Entrepreneurs.Deletion_Queries.FopDeletion_Statement;	  
 	    
 	    // Выполнение запроса
 	    new DbStatements().SimpleStatement(sqlConnection, FoDeletion_Statement, FoDeletion_ErrorMessage);
@@ -44,10 +44,10 @@ public class EntrepreneurAdd_Test extends BaseTest
 		
 		// Заполнение + сохранение карточки
 		// Проверка добавленной карточки
+		addPage.dictValue_SetInability_Check();
 		addPage.personInfo_Fill();
 		addPage.docInfo_Fill();
-		addPage.bornPlaceInfo_Fill();
-		addPage.dictValue_SetInability_Check();
+		addPage.bornPlaceInfo_Fill();		
 		addPage.residenceInfo_Fill();
 		Entrepreneurs_RegPage editPage = addPage.card_Save();
 		editPage.card_Check();
