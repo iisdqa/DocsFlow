@@ -114,7 +114,6 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		// Определение ожидаемых значений
 		String[][] ExpectedValues = new String [1][];
 		ExpectedValues[0] = new String[] {"",
-										  "",
 										  "1",
 										  number, 
 										  task, 
@@ -124,12 +123,13 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 										  deadlineDate,
 										  periodicity,
 										  performDate,
-										  condition};
+										  condition,
+										  ""};
 		
 		// Удалить лишние поля для просмотровой формы
 		if(checkType == "view")
 		{
-			int[] elements_ToRemove = new int[]{ 0, 0};
+			int[] elements_ToRemove = new int[]{ 0, ExpectedValues.length - 1};
 			ExpectedValues[0] = new CustomMethods().new Grid().arrayElements_Remove(ExpectedValues[0], elements_ToRemove);
 		}
 		
@@ -265,17 +265,17 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 		
 		// Определение ожидаемых значений
 		String[][] ExpectedValues = new String [1][];
-		ExpectedValues[0] = new String[] {"",
-										  "",
+		ExpectedValues[0] = new String[] {"",										  
 										  number, 
 										  oldDate, 
 										  newDate, 
-										  reason};
+										  reason,
+										  ""};
 		
 		// Удалить лишние поля для просмотровой формы
 		if(checkType == "view")
 		{
-			int[] elements_ToRemove = new int[]{ 0, 0};
+			int[] elements_ToRemove = new int[]{ 0, ExpectedValues.length - 1};
 			ExpectedValues[0] = new CustomMethods().new Grid().arrayElements_Remove(ExpectedValues[0], elements_ToRemove);
 		}
 		
@@ -548,7 +548,7 @@ public class IncomingDocs_PerformControlPage extends WebPage<IncomingDocs_Perfor
 				private Custom number_Cell(String Number)  	{ return new Custom(driver, By.xpath("//td[(@aria-describedby='grid539_GRD_NUM1') and text()='" + Number + "']")); }
 				
 				// Кнопка удаления
-				public Button delete_Button(String row)   	{ return new Button(driver, By.xpath("(//td[@aria-describedby='grid" + grid_Id + "_del'])[" + row + "]")); }
+				public Button delete_Button(String row)   	{ return new Button(driver, By.xpath("(//td[@aria-describedby='grid" + grid_Id + "_Del'])[" + row + "]")); }
 			}
 			
 			// Значения, которые будут использоваться для заполнения элементов

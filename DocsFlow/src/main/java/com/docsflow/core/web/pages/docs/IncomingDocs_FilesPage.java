@@ -94,12 +94,12 @@ private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Edit/55/";
 		// Определение ожидаемых значений
 		String[][] ExpectedValues = new String [1][];
 		ExpectedValues[0] = new String[] {"",
-										  "",
-										  "",
+										  "",										  
 										  fileName, 
 										  date, 
 										  user, 
-										  comment};
+										  comment,
+										  ""};
 		
 		// Удалить лишние поля для просмотровой формы
 		if(checkType == "view")
@@ -110,6 +110,7 @@ private static final String PAGE_URL = BASE_URL + "/CommonDocs/Docs/Edit/55/";
 		
 		// Вытянуть последнее значения из грида
 		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(grid, true);;
+		ActualValues[0][3] = ActualValues[0][3] + ":";
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);	

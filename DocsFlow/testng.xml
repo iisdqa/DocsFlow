@@ -53,11 +53,11 @@
 	<test name="preserve-order Other tests" preserve-order="true">
 	    <groups>
         	<run>
-      			<include name="IndividualAdd_Test"/>
+      			<include name="UsersAndAudit_Test"/>
         	</run>
     	</groups>
     	<classes>
-    		<class name="com.docsflow.tests.registers.IndividualAdd_Test" />
+    		<class name="com.docsflow.tests.administration.UsersAndAudit_Test" />
     	</classes>
 	</test>
 </suite>

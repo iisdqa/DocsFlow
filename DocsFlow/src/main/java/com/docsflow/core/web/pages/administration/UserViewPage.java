@@ -42,7 +42,7 @@ private static final String PAGE_URL = BASE_URL + "/User/EditUser/";
 	public void ViewPageCheck()
 	{		
 		// Определение ожидаемых значений
-		String[][] ExpectedValues = new String [10][];
+		String[][] ExpectedValues = new String [11][];
 		ExpectedValues[0] = new String[] {"Логин:", "auto_user"};
 		ExpectedValues[1] = new String[] {"Фамилия:", "Тестовко"};
 		ExpectedValues[2] = new String[] {"Имя:", "Василий"};
@@ -50,9 +50,10 @@ private static final String PAGE_URL = BASE_URL + "/User/EditUser/";
 		ExpectedValues[4] = new String[] {"Должность:", "Специалист"};
 		ExpectedValues[5] = new String[] {"Телефон:", "(000) 111-22-33"};
 		ExpectedValues[6] = new String[] {"Адрес электронной почты:", "auto_user@email.com"};
-		ExpectedValues[7] = new String[] {"Страна пользователя:", "Катар"};
-		ExpectedValues[8] = new String[] {"Роль:", "Системный администратор\nЭксперт центрального уровня\nЭксперт локального уровня\nУЛОФ"};
+		ExpectedValues[7] = new String[] {"Страна пользователя:", "Автоматизация"};
+		ExpectedValues[8] = new String[] {"Роль:", "NotNull"};
 		ExpectedValues[9] = new String[] {"Активный", "Да"};
+		ExpectedValues[10] = new String[] {"Параметри плагіну 'Документи'"};
 		
 		// Вытянуть значения из грида
 		String[][] ActualValues = getValuesFromViewPage(getGridBody());
@@ -122,7 +123,7 @@ private static final String PAGE_URL = BASE_URL + "/User/EditUser/";
 	
 	private Link getBackToUsersPageLink()
 	{
-		return new Link(driver, By.xpath("//a[@href='/User/Search']"));
+		return new Link(driver, By.xpath("//a[@href='/Core/User/Search']"));
 	}
 	
 	private Custom getViewForm()

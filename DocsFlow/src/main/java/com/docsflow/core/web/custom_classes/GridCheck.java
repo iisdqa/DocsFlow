@@ -1,8 +1,7 @@
 package com.docsflow.core.web.custom_classes;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,9 +144,21 @@ public abstract class GridCheck
 						ActualValues[rowNum][colNum] = ActualValues[rowNum][colNum].substring(0, (ActualValues[rowNum][colNum].indexOf(" ")));
 					}
 				}
-
-				// Assert equality of actual and expected values
-				assertThat(ActualValues[rowNum][colNum], is(equalTo(ExpectedValues[rowNum][colNum])));
+				
+				// Check that not empty
+				if(ExpectedValues[rowNum][colNum] == "NotNull")
+				{
+					// Assert equality of actual and expected values
+					assertThat(ActualValues[rowNum][colNum], is(not(equalTo(("")))));
+					assertThat(ActualValues[rowNum][colNum], is(not(equalTo((" ")))));
+				}
+				
+				// Check that actual == expected
+				else
+				{
+					// Assert equality of actual and expected values
+					assertThat(ActualValues[rowNum][colNum], is(equalTo(ExpectedValues[rowNum][colNum])));
+}
 			}			
 		}
 	}

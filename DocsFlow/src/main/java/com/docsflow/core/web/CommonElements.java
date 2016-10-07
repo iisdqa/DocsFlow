@@ -135,10 +135,10 @@ public abstract class CommonElements
 			public Custom download_Div(WebDriver driver, String grid_Id)  		{ return new Custom(driver, By.id("load_grid" + grid_Id)); }
 				
 			// Кнопка редактирования
-			public Button edit_Button(WebDriver driver, String grid_Id)   		{ return new Button(driver, By.xpath("//td[@aria-describedby='grid" + grid_Id + "_edit']")); }
+			public Button edit_Button(WebDriver driver, String grid_Id)   		{ return new Button(driver, By.xpath("//td[@aria-describedby='grid" + grid_Id + "_Edit']")); }
 				
 			// Кнопка удаления
-			public Button delete_Button(WebDriver driver, String grid_Id)   	{ return new Button(driver, By.xpath("//td[@aria-describedby='grid" + grid_Id + "_del']")); }
+			public Button delete_Button(WebDriver driver, String grid_Id)   	{ return new Button(driver, By.xpath("//td[@aria-describedby='grid" + grid_Id + "_Del']")); }
 		}
 		
 		// Поп-апы

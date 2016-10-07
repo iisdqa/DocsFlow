@@ -73,15 +73,15 @@ private static final String PAGE_URL = BASE_URL + "/User/Search";
 		// Определение ожидаемых значений
 		String[][] ExpectedValues = new String [1][];
 		ExpectedValues[0] = new String[] {"", 
-								  "", 
-								  "auto_user", 
-								  "  - Эксперт локального уровня", 
-								  "Тестовко", 
-								  "Спец", 
-								  "Катар",
-								  currentDate,
-								  currentDate,
-								  ""};
+								  		  "",
+								  		  "",
+								  		  "auto_user", 
+								  		  "  - Эксперт локального уровня", 
+								  		  "Тестовко", 
+								  		  "Спец", 
+								  		  "Автоматизация",
+								  		  currentDate,
+								  		  currentDate};
 		
 		// Вытянуть значения из грида
 		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(getGridBody(), true);
@@ -105,14 +105,14 @@ private static final String PAGE_URL = BASE_URL + "/User/Search";
 		String[][] ExpectedValues = new String [1][];
 		ExpectedValues[0] = new String[] {"", 
 								  		  "", 
+								  		  "",
 								  		  "auto_user", 
 								  		  "  - Эксперт локального уровня", 
 								  		  "Тестовко", 
 								  		  "Специалист", 
-								  		  "Катар",
+								  		  "Автоматизация",
 								  		  currentDate,
-								  		  currentDate,
-										  ""};
+								  		  currentDate};
 		
 		// Вытянуть значения из грида
 		String[][] ActualValues = new CustomMethods().new Grid().GetAllRows(getGridBody(), true);

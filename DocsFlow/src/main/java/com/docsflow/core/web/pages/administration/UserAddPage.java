@@ -62,16 +62,16 @@ private static final String PAGE_URL = BASE_URL + "/User/AddUser";
 			try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 
 			// Проверка валидатора логина
-			assertThat(new ValidationFields().getLoginValidator().getText(), is(equalTo("Поле \"Логин\" является обязательным.")));
+			assertThat(new ValidationFields().getLoginValidator().getText(), is(equalTo("Поле \"Логін\" є обов'язковим.")));
 			
 			// Проверка валидатора логина
-			assertThat(new ValidationFields().getPasswordValidator().getText(), is(equalTo("Поле \"Пароль\" является обязательным.")));
+			assertThat(new ValidationFields().getPasswordValidator().getText(), is(equalTo("Поле \"Пароль\" є обов'язковим.")));
 			
 			// Проверка валидатора логина
-			assertThat(new ValidationFields().getEmailValidator().getText(), is(equalTo("Поле \"Адрес электронной почты\" обязательно для заполнения.")));
+			assertThat(new ValidationFields().getEmailValidator().getText(), is(equalTo("Поле \"Адреса електронної пошти\" обов'язковe для заповнення.")));
 			
 			// Проверка валидатора логина
-			assertThat(new ValidationFields().getRoleValidator().getText(), is(equalTo("Должна быть выбрана хотя бы одна роль.")));
+			assertThat(new ValidationFields().getRoleValidator().getText(), is(equalTo("Повинна бути обрана хоча б одна роль.")));
 	}
 	
 	// Заполнить Обязательные поля

@@ -124,7 +124,7 @@ public class MainPage extends WebPage<MainPage>
 		public Handbooks_Page handbooksPage()
 		{
 			// Использовать менюшку
-			new CommonActions().menu_Handler(driver, 4, 0);
+			new CommonActions().menu_Handler(driver, 5, 1);
 			
 			return new Handbooks_Page(driver).waitUntilAvailable();
 		}
@@ -145,7 +145,7 @@ public class MainPage extends WebPage<MainPage>
 			public UsersPage Users_Page()
 			{    
 				// Использовать менюшку
-				new CommonActions().menu_Handler(driver, 4, 2);
+				new CommonActions().menu_Handler(driver, 6, 2);
 		    
 			    return new UsersPage(driver).waitUntilAvailable();
 			}
@@ -185,12 +185,12 @@ public class MainPage extends WebPage<MainPage>
 		
 		
 		// Для тестирования/дебагинга
-		public Individuals_FilesPage direct_Redirect()
+		public IncomingDocs_FilesPage direct_Redirect()
 		{
-			driver.get(BASE_URL + "/CommonDocs/Docs/Edit/63/7145/65");
+			driver.get(BASE_URL + "/CommonDocs/Docs/Edit/55/8595/58");
 			new CommonActions().simpleWait(3);
 			
-			return new Individuals_FilesPage(driver).waitUntilAvailable();
+			return new IncomingDocs_FilesPage(driver).waitUntilAvailable();
 		}
 	}
 	

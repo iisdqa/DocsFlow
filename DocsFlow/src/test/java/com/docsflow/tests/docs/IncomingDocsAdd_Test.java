@@ -32,7 +32,7 @@ public class IncomingDocsAdd_Test extends BaseTest
 	public void IncomingDocsAdd_TestMethod() throws Exception
 	{	
 			// Переход на главную
-			LogInPage authorizationPage = new MainPage(driver).redirectToLogInPage();
+			LogInPage authorizationPage = new LogInPage(driver).load();
 			MainPage mainPage = authorizationPage.logInAs("admin_auto", "123456");
 			
 			// Переход на страничку пользователей
@@ -40,10 +40,10 @@ public class IncomingDocsAdd_Test extends BaseTest
 			docsPage.waitFor_PageReady();
 			
 			// Добавление карточки
-			docsPage.tree_Open();
+			//docsPage.tree_Open();
 			IncomingDocs_RegistrationPage addPage = docsPage.card_add();
 			addPage.card_Generate(sqlConnection);
-
+			
 			IncomingDocs_RegistrationPage editPage = addPage.cardInfo_Set();
 			editPage.card_Check();
 
@@ -92,7 +92,7 @@ public class IncomingDocsAdd_Test extends BaseTest
 			
 			// Работа со вкладкой 'Связанные документы и файлы'
 						
-			IncomingDocs_FilesPage filesPage = controlPage.goTo_Files_Page("tricky");		
+			IncomingDocs_FilesPage filesPage = controlPage.goTo_Files_Page("tricky");	
 			filesPage.file_Add();
 			filesPage.filesGrid_Check("add");
 			filesPage.inset_Save();
@@ -109,10 +109,10 @@ public class IncomingDocsAdd_Test extends BaseTest
 			
 			docsPage = filesPage.card_Close("tricky");
 			docsPage.waitFor_PageReady();
-			docsPage.tree_Open();
+			//docsPage.tree_Open();
 			docsPage.card_Search();
 			docsPage.card_Check("add");
-		    editPage = docsPage.card_Edit();
+			editPage = docsPage.card_Edit();
 			editPage.cardHeader_Check();
 			editPage.resolution_grid_check("edit");
 			editPage = editPage.shortSummary_Edit();
@@ -120,7 +120,7 @@ public class IncomingDocsAdd_Test extends BaseTest
 			
 			// Проверка просмотра
 			docsPage.waitFor_PageReady();
-			docsPage.tree_Open();
+			//docsPage.tree_Open();
 			docsPage.card_Search();
 			docsPage.card_Check("edit");
 			IncomingDocs_RegistrationPage viewPage = docsPage.card_View();

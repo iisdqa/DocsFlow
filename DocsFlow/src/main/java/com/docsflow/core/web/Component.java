@@ -57,6 +57,36 @@ public abstract class Component <T extends Component<T>>
 		}
 	}
 	
+	// ќжидание пока элемент кликабельный
+	public void waitWhileClickable(WebComponent<?> element)
+	{
+		// ќпределение необходимых переменных
+		boolean existResult = true;
+		int timePassed = 0;
+		
+		// —амо ожидание 
+		while(existResult && (timePassed < WAIT_TIMEOUT))
+		{
+			try
+			{
+				element.click();
+				existResult = true;
+			}
+			catch(Exception e)
+			{
+				existResult = false;
+			}
+			timePassed = timePassed + delay();
+		}
+		
+		if(existResult)
+		{
+			System.err.println("¬рем€ ожидани€ невозможности кликнуть по элементу превысило " + WAIT_TIMEOUT/1000 + "сек." +
+							   "\r\n Ёлемент: " + element.getWebElement().toString());
+			Assert.fail();
+		}
+	}
+	
 	// ќжидание определенного статуса блокировки элемента
 	public void waitForBlockStatus(Custom element, boolean ExpectedBlockStatus)
 	{

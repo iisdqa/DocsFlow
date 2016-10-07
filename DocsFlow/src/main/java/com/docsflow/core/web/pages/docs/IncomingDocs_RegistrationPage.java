@@ -227,15 +227,15 @@ public class IncomingDocs_RegistrationPage extends WebPage<IncomingDocs_Registra
 		// Определение ожидаемых значений
 		String[][] ExpectedValues = new String [1][];
 		ExpectedValues[0] = new String[] {"",
-										  "",
 										  projectType,
 										  author,
 										  resolutionDate, 
 										  resolution, 										   
-										  deadlineDate};
+										  deadlineDate,
+										  ""};
 		if(checkType == "view")
 		{
-			int[] elements_ToRemove = new int[]{ 0, 0};
+			int[] elements_ToRemove = new int[]{ 0, ExpectedValues.length - 1};
 			ExpectedValues[0] = new CustomMethods().new Grid().arrayElements_Remove(ExpectedValues[0], elements_ToRemove);
 		}
 		

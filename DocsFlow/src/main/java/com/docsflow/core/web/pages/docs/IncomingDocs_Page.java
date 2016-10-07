@@ -36,14 +36,15 @@ public class IncomingDocs_Page extends WebPage<IncomingDocs_Page>
 	// Ожидание готовности странички
 	public void waitFor_PageReady()
 	{
-		waitUntilClickable(new Elements().new Units_Tree().tree_Div(driver));
+		//waitUntilClickable(new Elements().new Units_Tree().tree_Div(driver));
+		new Elements().new Grid().add_Button(driver).waitUntilAvailable();
 	}
 	
 	// Открыть дерево подразделений
 	public void tree_Open()
 	{
 		// Путь к подразделению
-		int[] tree_Path = {0, 5, 1};
+		int[] tree_Path = {1, 4, 1};
 		
 		// Переход к подразделению
 		new CommonActions().tree_Handler(driver, tree_Path);

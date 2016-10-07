@@ -30,7 +30,7 @@ public class DbQueries
 			    public static String IndexesCount_Define = "select dc.DNM_NUM" + "\r\n" +
 			    								           "from [dbo].[DocNum] dc"  + "\r\n" +
 			    								           "join [dbo].Tree_Staff tf on dc.STT_IDP = tf.STT_IDP"  + "\r\n" +
-			    								           "where dc.DNM_YER = 2020 and tf.STT_LNAM = 'Автоматизация'";
+			    								           "where dc.DNM_YER = 2020 and tf.STT_LNAM = 'Входящие документы'";
 			}
 			
 			public static class Deletion_Queries
