@@ -80,7 +80,7 @@ public class UsersAndAudit_Test extends BaseTest
 			// Удаление пользователя
 			
 			mainPage = auditPage.BackTo_MainPage();
-			mainPage.new goTo().new AdministrationBlock().Users_Page();
+			usersPage = mainPage.new goTo().new AdministrationBlock().Users_Page();
 			usersPage.WaitForGridReady();
 			usersPage.UserSearch();
 			usersPage.EditedUserCheck();

@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.docsflow.core.web.CommonActions;
+import com.docsflow.core.web.CommonElements;
 import com.docsflow.core.web.CustomMethods;
 import com.docsflow.core.web.WebPage;
 import com.docsflow.core.web.elements.Button;
@@ -37,18 +38,18 @@ private static final String PAGE_URL = BASE_URL + "/User";
 	@Override
 	public boolean isAvailable()
 	{
-		return getLoginInput().isAvailable() && 
-			   getSearchButton().isAvailable();
+		return new Elements().login_Input().isAvailable() && 
+			   new Elements().search_Button().isAvailable();
 	}
 	
 	public void operationsSearch()
 	{
-		getLoginInput().inputText("auto_user");
-		getSearchButton().click();
+		new Elements().login_Input().inputText("auto_user");
+		new Elements().search_Button().click();
 		new CommonActions().simpleWait(1);
 		
 		// Ожидание прогрузки грида
-		waitUntilClickable(getGridTable());
+		waitUntilClickable(new Elements().new Grid().grid_Table());
 	}
 	
 	public void operationsCheck()
@@ -76,21 +77,21 @@ private static final String PAGE_URL = BASE_URL + "/User";
 				  						  myIp};
 		
 		// Вытянуть значения из грида
-		String[][] ActualValues = new CustomMethods().new Grid().GetSpecificRows(getGridBody(), 2, true);
+		String[][] ActualValues = new CustomMethods().new Grid().GetSpecificRows(new Elements().new Grid().grid_Body(), 2, true);
 		
 		// Проверка значений грида
 		new CustomMethods().new Grid().gridValuesEqualityCheck(ExpectedValues, ActualValues);
 	}
 	
-	public AdministrationPage BackTo_AdministrationPage()
+/*	public AdministrationPage BackTo_AdministrationPage()
 	{
 		getBackToAdministrationButton().click();
 		return new AdministrationPage(driver).waitUntilAvailable();
-	}
+	}*/
 	
 	public MainPage BackTo_MainPage()
 	{
-		getBackToAdministrationButton().click();
+		new Elements().backToMain_Link(driver).click();
 		return new MainPage(driver).waitUntilAvailable();
 	}
 	
@@ -108,28 +109,19 @@ private static final String PAGE_URL = BASE_URL + "/User";
         return null;
     }
 	
-	private TextInput getLoginInput()
+	private class Elements extends CommonElements.Other_Elements
 	{
-		return new TextInput(driver, By.id("Login"));
-	}
+		private TextInput login_Input()					{return new TextInput(driver, By.id("Login"));}	
+		private Button search_Button()					{return new Button(driver, By.id("btnSearch"));}
 	
-	private Button getSearchButton()
-	{
-		return new Button(driver, By.id("btnSearch"));
-	}
-	
-	private Button getBackToAdministrationButton()
-	{
-		return new Button(driver, By.xpath("//a[@href='/User/']"));
-	}
-	
-	private Custom getGridTable()
-	{
-		return new Custom(driver, By.id("list"));
-	}
-	
-	private WebElement getGridBody()
-	{
-		return driver.findElement(By.xpath("//*[@id='list']/tbody"));
+	/*	private Button getBackToAdministrationButton()
+		{
+			return new Button(driver, By.xpath("//a[@href='/User/']"));
+		}*/
+		private class Grid
+		{
+			private Custom grid_Table()						{return new Custom(driver, By.id("list"));}
+			private WebElement grid_Body()					{return driver.findElement(By.xpath("//*[@id='list']/tbody"));}
+		}
 	}
 }

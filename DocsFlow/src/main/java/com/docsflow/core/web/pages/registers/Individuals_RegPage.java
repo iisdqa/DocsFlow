@@ -13,13 +13,9 @@ import com.docsflow.core.web.CommonActions;
 import com.docsflow.core.web.CommonElements;
 import com.docsflow.core.web.CustomMethods;
 import com.docsflow.core.web.WebPage;
-import com.docsflow.core.web.CustomMethods.WorkWith_TextFiles;
 import com.docsflow.core.web.elements.Button;
 import com.docsflow.core.web.elements.Custom;
 import com.docsflow.core.web.elements.TextInput;
-import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage.Elements;
-import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage.Elements.Values;
-import com.docsflow.core.web.pages.registers.Entrepreneurs_RegPage.Elements.PersonInfo;
 
 public class Individuals_RegPage extends WebPage<Individuals_RegPage>
 {

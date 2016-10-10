@@ -43,17 +43,17 @@ private static final String PAGE_URL = BASE_URL + "/User/EditUser/";
 	{		
 		// Определение ожидаемых значений
 		String[][] ExpectedValues = new String [11][];
-		ExpectedValues[0] = new String[] {"Логин:", "auto_user"};
-		ExpectedValues[1] = new String[] {"Фамилия:", "Тестовко"};
-		ExpectedValues[2] = new String[] {"Имя:", "Василий"};
-		ExpectedValues[3] = new String[] {"Отчество:", "Петрович"};
-		ExpectedValues[4] = new String[] {"Должность:", "Специалист"};
+		ExpectedValues[0] = new String[] {"Логін:", "auto_user"};
+		ExpectedValues[1] = new String[] {"Прізвище:", "Тестовко"};
+		ExpectedValues[2] = new String[] {"Ім'я:", "Василий"};
+		ExpectedValues[3] = new String[] {"По батькові:", "Петрович"};
+		ExpectedValues[4] = new String[] {"Посада:", "Специалист"};
 		ExpectedValues[5] = new String[] {"Телефон:", "(000) 111-22-33"};
-		ExpectedValues[6] = new String[] {"Адрес электронной почты:", "auto_user@email.com"};
-		ExpectedValues[7] = new String[] {"Страна пользователя:", "Автоматизация"};
+		ExpectedValues[6] = new String[] {"Адреса електронної пошти:", "auto_user@email.com"};
+		ExpectedValues[7] = new String[] {"Установа:", "Автоматизация"};
 		ExpectedValues[8] = new String[] {"Роль:", "NotNull"};
-		ExpectedValues[9] = new String[] {"Активный", "Да"};
-		ExpectedValues[10] = new String[] {"Параметри плагіну 'Документи'"};
+		ExpectedValues[9] = new String[] {"Активний:", "Так"};
+		ExpectedValues[10] = new String[] {"Параметри плагіну 'Документи'\nМова інтерфейсу\nУкраїнська"};
 		
 		// Вытянуть значения из грида
 		String[][] ActualValues = getValuesFromViewPage(getGridBody());
@@ -80,13 +80,9 @@ private static final String PAGE_URL = BASE_URL + "/User/EditUser/";
 		// Определение количества рядов
 		List<WebElement> rows = table.findElements(By.tagName("tr"));
 		
-		// Удаление лишних элементов(скрытые + из блока 'Роль')
-		rows.remove(14);
-		rows.remove(13);
-		rows.remove(12);
-		rows.remove(11);
-		rows.remove(9);
-		rows.remove(0);
+		// Удаление лишних элементов(из блока 'Роль')
+		int[] elementsToDelete = {20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9};
+		for(int i=0; i < elementsToDelete.length; i++) rows.remove(elementsToDelete[i]);
 		
 		// Определение количества рядов в возвращаемом массиве
 		String[][] GridValues = new String[rows.size()][];

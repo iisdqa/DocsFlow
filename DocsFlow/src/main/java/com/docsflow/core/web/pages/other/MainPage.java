@@ -5,12 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.docsflow.core.web.CommonActions;
 import com.docsflow.core.web.WebPage;
@@ -20,12 +15,8 @@ import com.docsflow.core.web.pages.administration.AuditPage;
 import com.docsflow.core.web.pages.administration.UsersPage;
 import com.docsflow.core.web.pages.docs.IncomingDocs_Page;
 import com.docsflow.core.web.pages.docs.IncomingDocs_FilesPage;
-import com.docsflow.core.web.pages.docs.IncomingDocs_PerformControlPage;
-import com.docsflow.core.web.pages.docs.IncomingDocs_RegistrationPage;
 import com.docsflow.core.web.pages.registers.Entrepreneurs_Page;
-import com.docsflow.core.web.pages.registers.Individuals_FilesPage;
 import com.docsflow.core.web.pages.registers.Individuals_Page;
-import com.docsflow.core.web.pages.registers.Individuals_RegPage;
 import com.docsflow.core.web.elements.Text;
 
 public class MainPage extends WebPage<MainPage> 
@@ -136,7 +127,7 @@ public class MainPage extends WebPage<MainPage>
 			public AuditPage Audit_Page()
 			{    
 				// Использовать менюшку
-				new CommonActions().menu_Handler(driver, 4, 1);
+				new CommonActions().menu_Handler(driver, 6, 1);
 		    
 			    return new AuditPage(driver).waitUntilAvailable();
 			}

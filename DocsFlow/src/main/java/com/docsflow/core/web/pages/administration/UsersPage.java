@@ -139,7 +139,7 @@ private static final String PAGE_URL = BASE_URL + "/User/Search";
 	
 	public void UserDeletionCheck()
 	{
-		String expectedValue = "Нет записей для просмотра";
+		String expectedValue = "Немає записів для перегляду";
 		String actualValue = getGridPagerInfo().getText();
 		
 		// Проверка удаления пользователя
@@ -214,11 +214,11 @@ private static final String PAGE_URL = BASE_URL + "/User/Search";
 
 	private Custom getDeletionPopUp()
 	{
-		return new Custom(driver, By.xpath("//span[text() = 'Удаление записи']"));
+		return new Custom(driver, By.id("dialog-confirm"));
 	}
 	
 	private Custom getDeletionAcceptButton()
 	{
-		return new Custom(driver, By.xpath("//span[text() = 'Да']"));
+		return new Custom(driver, By.xpath("//span[(@class='ui-button-text') and contains(text(), 'Так')]"));
 	}
 }
